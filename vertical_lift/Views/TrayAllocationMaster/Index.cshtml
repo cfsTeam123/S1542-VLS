@@ -1,0 +1,76 @@
+﻿@model vertical_lift.Models.TrayAllocation
+@using vertical_lift.Models
+@{
+
+
+    ViewBag.Title = "Index";
+    S1542Entities conn = new S1542Entities();
+    var data = conn.Goods_Existing
+        .Where(s => s.QualityInspection != "NA" && s.Type == "Material")
+        .GroupBy(s => s.TrayNo)
+        .Select(g => g.OrderBy(s => s.MTransNo).Skip(1).FirstOrDefault()) // Selects second record only
+        .Where(s => s != null) // Ensure only valid second-side records are returned
+        .ToList();
+
+
+
+}
+<style>
+    .master {
+        background-color: black !important;
+    }
+</style>
+<main>
+    <div class="row">
+        <div class="common-heading">
+            <h2 class="common-head"><i class="fa-solid fa-list hicon"></i> Index </h2>
+            <a href="AddEdit"> <h4 class="index-head"><i class="fa-solid fa-plus m-1"></i>Add</h4></a>
+        </div>
+    </div>
+
+
+    <br />
+    <div class="main-content">
+        <div class="inner-content-other">
+            <table id="example" class="display">
+                <thead>
+                    <tr>
+                        <th>Sl No</th>
+                        <th>Quality Inspectione</th>
+                        <th>Bin Type</th>
+                        <th>Dimension</th>
+                        <th>Tray No</th>
+                        <th>Side</th>
+                        @* <th>Action</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int rowNo = 0; }
+                    @foreach (var item in data)
+                    {
+                        <tr>
+                            <td class="text-sm-right"><h6 style="margin-right:5px;">@(rowNo += 1)</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-right:5px;">@item.QualityInspection</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-right:5px;">@item.BinType</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-right:5px;">@item.Dimension</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-left:5px;">@(item.TrayNo )</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-left:5px;">@(item.Side )</h6></td>
+                            @* <td class="text-sm-center">
+            <div class="action-icons">
+                <a href="AddEdit?MTransNo=@item.MTransNo" class="edit-icon" title="Edit">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a href="#" class="delete-icon" title="Delete" data-id="@item.MTransNo">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </div>
+        </td>*@
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+

@@ -1,0 +1,631 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="S1542Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BinMaster">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="status" Type="char" MaxLength="1" />
+          <Property Name="dimension" Type="varchar" MaxLength="50" />
+          <Property Name="barcode" Type="int" />
+          <Property Name="BinType" Type="varchar" MaxLength="50" />
+          <Property Name="DeleteStatus" Type="char" MaxLength="1" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="BinMasterTable">
+          <Key>
+            <PropertyRef Name="MtransNo" />
+          </Key>
+          <Property Name="MtransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TrayNo" Type="int" />
+          <Property Name="BinNo" Type="int" />
+          <Property Name="BinBarcode" Type="int" Nullable="false" />
+          <Property Name="MaxQty" Type="int" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="ExistingDetails">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Side" Type="int" />
+          <Property Name="TrayNo" Type="int" />
+          <Property Name="BinType" Type="varchar" MaxLength="50" />
+          <Property Name="BinLocation" Type="int" />
+          <Property Name="BinBarcode" Type="int" />
+          <Property Name="MaterialDescription" Type="varchar" MaxLength="200" />
+          <Property Name="MaterialBarcode" Type="int" />
+          <Property Name="BatchNo" Type="varchar" MaxLength="100" />
+          <Property Name="Style" Type="varchar" MaxLength="100" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="GRNNO" Type="varchar" MaxLength="200" />
+          <Property Name="InspectionType" Type="varchar" MaxLength="50" />
+          <Property Name="UloadKittingCategory" Type="varchar" MaxLength="50" />
+          <Property Name="Action" Type="varchar" MaxLength="50" />
+          <Property Name="ConfirmQty" Type="int" />
+          <Property Name="LineNos" Type="int" />
+          <Property Name="KittingCat" Type="varchar" MaxLength="50" />
+          <Property Name="Remark" Type="varchar" MaxLength="200" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="MaxQty" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'S1542.dbo.finger_id' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="finger_id">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+            <PropertyRef Name="finger" />
+          </Key>
+          <Property Name="MTransNo" Type="int" Nullable="false" />
+          <Property Name="finger" Type="smallint" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Goods_Existing">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Side" Type="int" Nullable="false" />
+          <Property Name="TrayNo" Type="int" Nullable="false" />
+          <Property Name="BinType" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Dimension" Type="varchar" MaxLength="100" />
+          <Property Name="Location" Type="int" Nullable="false" />
+          <Property Name="BinLocation" Type="int" />
+          <Property Name="BinBarcode" Type="int" />
+          <Property Name="QualityInspection" Type="varchar" MaxLength="100" />
+          <Property Name="Status" Type="varchar" MaxLength="100" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="MaxQty" Type="int" />
+        </EntityType>
+        <EntityType Name="Load_Temp_Table">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BinNo" Type="int" Nullable="false" />
+          <Property Name="BinBarcode" Type="int" Nullable="false" />
+          <Property Name="GRNNO" Type="varchar" MaxLength="200" />
+          <Property Name="MaterialDesc" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="MaterialBarcode" Type="int" Nullable="false" />
+          <Property Name="BatchNo" Type="varchar" MaxLength="100" />
+          <Property Name="Style" Type="varchar" MaxLength="100" />
+          <Property Name="Qty" Type="int" Nullable="false" />
+          <Property Name="MaxQty" Type="int" />
+        </EntityType>
+        <EntityType Name="MaterialMaster">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaterialName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" />
+          <Property Name="Status" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DeleteStatus" Type="char" MaxLength="1" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TransactionDetails">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Side" Type="int" />
+          <Property Name="TrayNo" Type="int" />
+          <Property Name="BinType" Type="varchar" MaxLength="100" />
+          <Property Name="BinLocation" Type="int" />
+          <Property Name="BinBarcode" Type="int" />
+          <Property Name="MaterialDescription" Type="varchar" MaxLength="200" />
+          <Property Name="MaterialBarcode" Type="int" />
+          <Property Name="BatchNo" Type="varchar" MaxLength="100" />
+          <Property Name="Style" Type="varchar" MaxLength="100" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="GRNNO" Type="varchar" MaxLength="200" />
+          <Property Name="InspectionType" Type="varchar" MaxLength="50" />
+          <Property Name="UloadKittingCategory" Type="varchar" MaxLength="50" />
+          <Property Name="Action" Type="varchar" MaxLength="50" />
+          <Property Name="ConfirmQty" Type="int" />
+          <Property Name="LineNos" Type="int" />
+          <Property Name="KittingCat" Type="varchar" MaxLength="100" />
+          <Property Name="Remark" Type="varchar" MaxLength="200" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="MaxQty" Type="int" />
+        </EntityType>
+        <EntityType Name="TrayMaster">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BinType" Type="varchar" MaxLength="50" />
+          <Property Name="BinQty" Type="int" />
+        </EntityType>
+        <EntityType Name="UserMaster">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserId" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="PW" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="UserType" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="ContactNo" Type="varchar" MaxLength="20" />
+          <Property Name="LineNos" Type="varchar" MaxLength="50" />
+          <Property Name="EmailId" Type="varchar" MaxLength="80" />
+          <Property Name="FloorNo" Type="varchar" MaxLength="250" />
+          <Property Name="BioId1" Type="varchar" MaxLength="250" />
+          <Property Name="BioId2" Type="varchar" MaxLength="250" />
+          <Property Name="BioData1" Type="varchar" MaxLength="3000" />
+          <Property Name="BioData2" Type="varchar" MaxLength="3000" />
+          <Property Name="ImagePath" Type="varchar" MaxLength="250" />
+          <Property Name="PWExpiry" Type="tinyint" />
+          <Property Name="BadLogins" Type="tinyint" />
+          <Property Name="LockCounter" Type="tinyint" />
+          <Property Name="LockStatus" Type="char" MaxLength="1" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="DeleteStatus" Type="char" MaxLength="1" />
+          <Property Name="SubscID" Type="smallint" />
+          <Property Name="LastLogin" Type="date" />
+        </EntityType>
+        <EntityContainer Name="S1542ModelStoreContainer">
+          <EntitySet Name="BinMaster" EntityType="Self.BinMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BinMasterTable" EntityType="Self.BinMasterTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExistingDetails" EntityType="Self.ExistingDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Goods_Existing" EntityType="Self.Goods_Existing" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Load_Temp_Table" EntityType="Self.Load_Temp_Table" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MaterialMaster" EntityType="Self.MaterialMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TrayMaster" EntityType="Self.TrayMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="finger_id" EntityType="Self.finger_id" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [finger_id].[MTransNo] AS [MTransNo], 
+    [finger_id].[finger] AS [finger], 
+    [finger_id].[status] AS [status]
+    FROM [dbo].[finger_id] AS [finger_id]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="S1542Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="S1542Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BinMasters" EntityType="S1542Model.BinMaster" />
+          <EntitySet Name="BinMasterTables" EntityType="S1542Model.BinMasterTable" />
+          <EntitySet Name="ExistingDetails" EntityType="S1542Model.ExistingDetail" />
+          <EntitySet Name="Goods_Existing" EntityType="S1542Model.Goods_Existing" />
+          <EntitySet Name="Load_Temp_Table" EntityType="S1542Model.Load_Temp_Table" />
+          <EntitySet Name="MaterialMasters" EntityType="S1542Model.MaterialMaster" />
+          <EntitySet Name="TransactionDetails" EntityType="S1542Model.TransactionDetail" />
+          <EntitySet Name="TrayMasters" EntityType="S1542Model.TrayMaster" />
+          <EntitySet Name="UserMasters" EntityType="S1542Model.UserMaster" />
+          <EntitySet Name="finger_id" EntityType="S1542Model.finger_id" />
+        </EntityContainer>
+        <EntityType Name="BinMaster">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="dimension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="barcode" Type="Int32" />
+          <Property Name="BinType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="BinMasterTable">
+          <Key>
+            <PropertyRef Name="MtransNo" />
+          </Key>
+          <Property Name="MtransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TrayNo" Type="Int32" />
+          <Property Name="BinNo" Type="Int32" />
+          <Property Name="BinBarcode" Type="Int32" Nullable="false" />
+          <Property Name="MaxQty" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ExistingDetail">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Side" Type="Int32" />
+          <Property Name="TrayNo" Type="Int32" />
+          <Property Name="BinType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BinLocation" Type="Int32" />
+          <Property Name="BinBarcode" Type="Int32" />
+          <Property Name="MaterialDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MaterialBarcode" Type="Int32" />
+          <Property Name="BatchNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Style" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="GRNNO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="InspectionType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UloadKittingCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ConfirmQty" Type="Int32" />
+          <Property Name="LineNos" Type="Int32" />
+          <Property Name="KittingCat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="MaxQty" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Goods_Existing">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Side" Type="Int32" Nullable="false" />
+          <Property Name="TrayNo" Type="Int32" Nullable="false" />
+          <Property Name="BinType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Dimension" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="Int32" Nullable="false" />
+          <Property Name="BinLocation" Type="Int32" />
+          <Property Name="BinBarcode" Type="Int32" />
+          <Property Name="QualityInspection" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="MaxQty" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Load_Temp_Table">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BinNo" Type="Int32" Nullable="false" />
+          <Property Name="BinBarcode" Type="Int32" Nullable="false" />
+          <Property Name="GRNNO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MaterialDesc" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MaterialBarcode" Type="Int32" Nullable="false" />
+          <Property Name="BatchNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Style" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Qty" Type="Int32" Nullable="false" />
+          <Property Name="MaxQty" Type="Int32" />
+        </EntityType>
+        <EntityType Name="MaterialMaster">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaterialName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="TransactionDetail">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Side" Type="Int32" />
+          <Property Name="TrayNo" Type="Int32" />
+          <Property Name="BinType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="BinLocation" Type="Int32" />
+          <Property Name="BinBarcode" Type="Int32" />
+          <Property Name="MaterialDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MaterialBarcode" Type="Int32" />
+          <Property Name="BatchNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Style" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Qty" Type="Int32" />
+          <Property Name="GRNNO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="InspectionType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UloadKittingCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Action" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ConfirmQty" Type="Int32" />
+          <Property Name="LineNos" Type="Int32" />
+          <Property Name="KittingCat" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="MaxQty" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TrayMaster">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BinType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BinQty" Type="Int32" />
+        </EntityType>
+        <EntityType Name="UserMaster">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PW" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="UserType" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ContactNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LineNos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmailId" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="FloorNo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="BioId1" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="BioId2" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="BioData1" Type="String" MaxLength="3000" FixedLength="false" Unicode="false" />
+          <Property Name="BioData2" Type="String" MaxLength="3000" FixedLength="false" Unicode="false" />
+          <Property Name="ImagePath" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="PWExpiry" Type="Byte" />
+          <Property Name="BadLogins" Type="Byte" />
+          <Property Name="LockCounter" Type="Byte" />
+          <Property Name="LockStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="DeleteStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="SubscID" Type="Int16" />
+          <Property Name="LastLogin" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="finger_id">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+            <PropertyRef Name="finger" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" />
+          <Property Name="finger" Type="Int16" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="S1542ModelStoreContainer" CdmEntityContainer="S1542Entities">
+          <EntitySetMapping Name="BinMasters">
+            <EntityTypeMapping TypeName="S1542Model.BinMaster">
+              <MappingFragment StoreEntitySet="BinMaster">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DeleteStatus" ColumnName="DeleteStatus" />
+                <ScalarProperty Name="BinType" ColumnName="BinType" />
+                <ScalarProperty Name="barcode" ColumnName="barcode" />
+                <ScalarProperty Name="dimension" ColumnName="dimension" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BinMasterTables">
+            <EntityTypeMapping TypeName="S1542Model.BinMasterTable">
+              <MappingFragment StoreEntitySet="BinMasterTable">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="MaxQty" ColumnName="MaxQty" />
+                <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+                <ScalarProperty Name="BinNo" ColumnName="BinNo" />
+                <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
+                <ScalarProperty Name="MtransNo" ColumnName="MtransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExistingDetails">
+            <EntityTypeMapping TypeName="S1542Model.ExistingDetail">
+              <MappingFragment StoreEntitySet="ExistingDetails">
+                <ScalarProperty Name="MaxQty" ColumnName="MaxQty" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="KittingCat" ColumnName="KittingCat" />
+                <ScalarProperty Name="LineNos" ColumnName="LineNos" />
+                <ScalarProperty Name="ConfirmQty" ColumnName="ConfirmQty" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="UloadKittingCategory" ColumnName="UloadKittingCategory" />
+                <ScalarProperty Name="InspectionType" ColumnName="InspectionType" />
+                <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
+                <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
+                <ScalarProperty Name="MaterialDescription" ColumnName="MaterialDescription" />
+                <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+                <ScalarProperty Name="BinLocation" ColumnName="BinLocation" />
+                <ScalarProperty Name="BinType" ColumnName="BinType" />
+                <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
+                <ScalarProperty Name="Side" ColumnName="Side" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Goods_Existing">
+            <EntityTypeMapping TypeName="S1542Model.Goods_Existing">
+              <MappingFragment StoreEntitySet="Goods_Existing">
+                <ScalarProperty Name="MaxQty" ColumnName="MaxQty" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="QualityInspection" ColumnName="QualityInspection" />
+                <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+                <ScalarProperty Name="BinLocation" ColumnName="BinLocation" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Dimension" ColumnName="Dimension" />
+                <ScalarProperty Name="BinType" ColumnName="BinType" />
+                <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
+                <ScalarProperty Name="Side" ColumnName="Side" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Load_Temp_Table">
+            <EntityTypeMapping TypeName="S1542Model.Load_Temp_Table">
+              <MappingFragment StoreEntitySet="Load_Temp_Table">
+                <ScalarProperty Name="MaxQty" ColumnName="MaxQty" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
+                <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
+                <ScalarProperty Name="MaterialDesc" ColumnName="MaterialDesc" />
+                <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
+                <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+                <ScalarProperty Name="BinNo" ColumnName="BinNo" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MaterialMasters">
+            <EntityTypeMapping TypeName="S1542Model.MaterialMaster">
+              <MappingFragment StoreEntitySet="MaterialMaster">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DeleteStatus" ColumnName="DeleteStatus" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionDetails">
+            <EntityTypeMapping TypeName="S1542Model.TransactionDetail">
+              <MappingFragment StoreEntitySet="TransactionDetails">
+                <ScalarProperty Name="MaxQty" ColumnName="MaxQty" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="KittingCat" ColumnName="KittingCat" />
+                <ScalarProperty Name="LineNos" ColumnName="LineNos" />
+                <ScalarProperty Name="ConfirmQty" ColumnName="ConfirmQty" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="UloadKittingCategory" ColumnName="UloadKittingCategory" />
+                <ScalarProperty Name="InspectionType" ColumnName="InspectionType" />
+                <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
+                <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
+                <ScalarProperty Name="MaterialDescription" ColumnName="MaterialDescription" />
+                <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+                <ScalarProperty Name="BinLocation" ColumnName="BinLocation" />
+                <ScalarProperty Name="BinType" ColumnName="BinType" />
+                <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
+                <ScalarProperty Name="Side" ColumnName="Side" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrayMasters">
+            <EntityTypeMapping TypeName="S1542Model.TrayMaster">
+              <MappingFragment StoreEntitySet="TrayMaster">
+                <ScalarProperty Name="BinQty" ColumnName="BinQty" />
+                <ScalarProperty Name="BinType" ColumnName="BinType" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserMasters">
+            <EntityTypeMapping TypeName="S1542Model.UserMaster">
+              <MappingFragment StoreEntitySet="UserMaster">
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="SubscID" ColumnName="SubscID" />
+                <ScalarProperty Name="DeleteStatus" ColumnName="DeleteStatus" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="LockStatus" ColumnName="LockStatus" />
+                <ScalarProperty Name="LockCounter" ColumnName="LockCounter" />
+                <ScalarProperty Name="BadLogins" ColumnName="BadLogins" />
+                <ScalarProperty Name="PWExpiry" ColumnName="PWExpiry" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="BioData2" ColumnName="BioData2" />
+                <ScalarProperty Name="BioData1" ColumnName="BioData1" />
+                <ScalarProperty Name="BioId2" ColumnName="BioId2" />
+                <ScalarProperty Name="BioId1" ColumnName="BioId1" />
+                <ScalarProperty Name="FloorNo" ColumnName="FloorNo" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="LineNos" ColumnName="LineNos" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="PW" ColumnName="PW" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="finger_id">
+            <EntityTypeMapping TypeName="S1542Model.finger_id">
+              <MappingFragment StoreEntitySet="finger_id">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="finger" ColumnName="finger" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

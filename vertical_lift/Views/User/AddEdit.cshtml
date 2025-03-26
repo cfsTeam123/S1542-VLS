@@ -1,0 +1,308 @@
+﻿@model vertical_lift.Models.UserMasterValidation
+@using vertical_lift.Models;
+@{
+    ViewBag.Title = "AddEdit";
+}
+<style>
+    .master {
+        background-color: black !important;
+    }
+</style>
+<main>
+    <div class="row">
+        <div class="common-heading">
+            <h2 class="common-head"><i class="fa-solid fa-plus hicon"></i> User Master </h2>
+            <a href="index"> <h4 class="index-head"><i class="fa-solid fa-list m-1"></i>Index</h4></a>
+        </div>
+    </div>
+
+
+    <br />
+
+    <div class="container-outer">
+        <div class="custom-form">
+            @*  @Html.AntiForgeryToken()*@
+            <div class="row mb-4">
+                @Html.HiddenFor(model => model.MTransNo)
+                <div class="col-md-4">
+                    <label class="form-label">User Name</label>
+                    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", maxlength = "100", @autofocus = "True" })
+                    <span class="text-danger" id="username"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">User ID</label>
+                    @Html.TextBoxFor(model => model.UserId, new { @class = "form-control", maxlength = "15" })
+                    <span class="text-danger" id="userid"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Password</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(model => model.PW, new
+                        {
+                            @type = "password",
+                            @class = "form-control",
+                            maxlength = "20",
+                            @autofocus = "true"
+                        })
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="togglePassword">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <span class="text-danger" id="password"></span>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label class="form-label">User Type</label>
+                    @Html.DropDownListFor(model => model.UserType, null, "", new { @class = "form-control populate" })
+                    <span class="text-danger" id="type"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Line Number</label>
+                    @Html.DropDownListFor(model => model.LineNos, null, "", new { @class = "form-control populate" })
+                    <span class="text-danger" id="line"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Floor No</label>
+                    @Html.DropDownListFor(model => model.FloorNo, null, "", new { @class = "form-control populate" })
+                    <span class="text-danger" id="floorno"></span>
+                </div>
+
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label class="form-label">Contact No</label>
+                    @Html.TextBoxFor(model => model.ContactNo, new { @class = "form-control" })
+                    <span class="text-danger" id="contact"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Email Id</label>
+                    @Html.TextBoxFor(model => model.EmailId, new { @type = "email", @class = "form-control" })
+                    <span class="text-danger" id="email"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">User Status</label>
+                    @Html.DropDownListFor(model => model.DeleteStatus, null, "", new { @class = "form-control populate" })
+                    <span class="text-danger" id="DeleteStatus"></span>
+                </div>
+
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-4">
+
+
+                    @try
+                    {
+                        if (Model != null && Model.MTransNo > 0)
+                        {
+                            <script>
+                                $('#UserType, #UserId').prop('disabled', true);
+                            </script>
+                            <button class="addbtn" id="update-btn">Update</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary" id="add-btn">Add</button>
+                        }
+                    }
+                    catch
+                    {
+                        <button type="submit" class="btn btn-primary" id="add-btn">Add</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    $(document).ready(function () {
+
+        $("input, select").on("input change", function () {
+            $(".text-danger").text("");
+        });
+        $('#togglePassword').on('click', function () {
+            var passwordField = $('#PW');
+            var passwordFieldType = passwordField.attr('type');
+            if (passwordFieldType === 'password') {
+                passwordField.attr('type', 'text');
+                $(this).find('i').removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                passwordField.attr('type', 'password');
+                $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
+            }
+        });
+
+
+        /* $("#UserType").change(function () {
+             var randomNumber = Math.floor(1000 + Math.random() * 9000);
+             $("#UserId").val(randomNumber);
+         });*/
+
+        $("#ContactNo").on("input", function () {
+            let value = $(this).val().replace(/\D/g, '').slice(0, 10);
+            $(this).val(value);
+        });
+
+        $("#add-btn").click(function () {
+        
+            $(".text-danger").text("");
+            var isValid = true;
+
+            // Validate each field
+
+            var UserType = $("#UserType").val().trim();
+            var LineNos = $("#LineNos").val().trim();
+            var UserName = $("#UserName").val().trim();
+            var ContactNo = $("#ContactNo").val().trim();
+            var EmailId = $("#EmailId").val().trim();
+            var UserId = $("#UserId").val().trim();
+            var FloorNo = $("#FloorNo").val().trim();
+            var DeleteStatus = $("#DeleteStatus").val().trim();
+            var PW = $("#PW").val();
+            var mTransNo = $("#MTransNo").val().trim();
+
+            if (UserName === "") {
+                $("#username").text("Username is required.");
+                isValid = false;
+            } else if (UserId === "") {
+                $("#userid").text("User Id is required.");
+                isValid = false;
+            } else if (PW === "") {
+                $("#password").text("Password is required.");
+                isValid = false;
+            } else if (UserType === "") {
+                $("#type").text("User Type is required.");
+                isValid = false;
+            }
+            else if (LineNos === "") {
+                $("#line").text("Line No is required.");
+                isValid = false;
+            } else if (FloorNo === "") {
+                $("#floorno").text("User Type is required.");
+                isValid = false;
+            }
+            else if (ContactNo === "") {
+                $("#contact").text("Contact No is required.");
+                isValid = false;
+            } else if (DeleteStatus === "") {
+                $("#DeleteStatus").text("User Status No is required.");
+                isValid = false;
+            }
+
+
+            if (!isValid) return;
+
+            var Userdata = {
+                MTransNo: mTransNo,
+                UserType: UserType,
+                LineNos: LineNos,
+                UserName: UserName,
+                ContactNo: ContactNo,
+                EmailId: EmailId,
+                FloorNo: FloorNo,
+                DeleteStatus: DeleteStatus,
+                UserId: UserId,
+                PW: PW
+            };
+
+            $.ajax({
+                url: "/User/AddEdit1",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(Userdata),
+                success: function (response) {
+                    if (response === "userExist") {
+                        $("#userid").text("User ID is already exists.");
+
+                    }
+                    else {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'User Registered successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'Ok!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/User/Index';
+                        }
+                    });
+                    }
+                    /*  window.location.href = "/User/Index";*/
+                },
+                error: function (xhr) {
+                    alert("hii");
+                }
+            });
+
+        });
+
+
+
+        $("#update-btn").click(function () {
+            var UserType = $("#UserType").val().trim();
+            var LineNos = $("#LineNos").val().trim();
+            var UserName = $("#UserName").val().trim();
+            var ContactNo = $("#ContactNo").val().trim();
+            var EmailId = $("#EmailId").val().trim();
+            var FloorNo = $("#FloorNo").val().trim();
+            var DeleteStatus = $("#DeleteStatus").val().trim();
+            var UserId = $("#UserId").val().trim();
+            var PW = $("#PW").val();
+            var isValid = true;
+            if (PW === "") {
+                $("#password").text("Password is required.");
+                isValid = false;
+            }
+            if (!isValid) return;
+            var mTransNo = $("#MTransNo").val().trim();
+            var Userdata = {
+                MTransNo: mTransNo,
+                UserType: UserType,
+                LineNos: LineNos,
+                UserName: UserName,
+                ContactNo: ContactNo,
+                FloorNo: FloorNo,
+                DeleteStatus: DeleteStatus,
+                EmailId: EmailId,
+                UserId: UserId,
+                PW: PW
+            };
+            $.ajax({
+                url: "/User/AddEdit1",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(Userdata),
+                success: function (response) {
+                    if (response === "userExist1") {
+                        $("#userid").text("User ID is already exists.");
+
+                    } else {
+                        Swal.fire({
+                        title: 'Success!',
+                        text: 'User Record Updated successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'Ok!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/User/Index';
+                        }
+                    });
+                    }
+                },
+                error: function (xhr) {
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+
+        });
+
+    });
+</script>

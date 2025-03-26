@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="S1542Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BinMaster">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="status" Type="char" MaxLength="1" />
+    <Property Name="dimension" Type="varchar" MaxLength="50" />
+    <Property Name="barcode" Type="int" />
+    <Property Name="BinType" Type="varchar" MaxLength="50" />
+    <Property Name="DeleteStatus" Type="char" MaxLength="1" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="ModifiedOn" Type="datetime" />
+  </EntityType>
+  <EntityType Name="BinMasterTable">
+    <Key>
+      <PropertyRef Name="MtransNo" />
+    </Key>
+    <Property Name="MtransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrayNo" Type="int" />
+    <Property Name="BinNo" Type="int" />
+    <Property Name="BinBarcode" Type="int" Nullable="false" />
+    <Property Name="MaxQty" Type="int" />
+    <Property Name="Status" Type="varchar" MaxLength="50" />
+    <Property Name="Type" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="ExistingDetails">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Side" Type="int" />
+    <Property Name="TrayNo" Type="int" />
+    <Property Name="BinType" Type="varchar" MaxLength="50" />
+    <Property Name="BinLocation" Type="int" />
+    <Property Name="BinBarcode" Type="int" />
+    <Property Name="MaterialDescription" Type="varchar" MaxLength="200" />
+    <Property Name="MaterialBarcode" Type="int" />
+    <Property Name="BatchNo" Type="varchar" MaxLength="100" />
+    <Property Name="Style" Type="varchar" MaxLength="100" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="GRNNO" Type="varchar" MaxLength="200" />
+    <Property Name="InspectionType" Type="varchar" MaxLength="50" />
+    <Property Name="UloadKittingCategory" Type="varchar" MaxLength="50" />
+    <Property Name="Action" Type="varchar" MaxLength="50" />
+    <Property Name="ConfirmQty" Type="int" />
+    <Property Name="LineNos" Type="int" />
+    <Property Name="KittingCat" Type="varchar" MaxLength="50" />
+    <Property Name="Remark" Type="varchar" MaxLength="200" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="MaxQty" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'S1542.dbo.finger_id' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="finger_id">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+      <PropertyRef Name="finger" />
+    </Key>
+    <Property Name="MTransNo" Type="int" Nullable="false" />
+    <Property Name="finger" Type="smallint" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Goods_Existing">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Side" Type="int" Nullable="false" />
+    <Property Name="TrayNo" Type="int" Nullable="false" />
+    <Property Name="BinType" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Dimension" Type="varchar" MaxLength="100" />
+    <Property Name="Location" Type="int" Nullable="false" />
+    <Property Name="BinLocation" Type="int" />
+    <Property Name="BinBarcode" Type="int" />
+    <Property Name="QualityInspection" Type="varchar" MaxLength="100" />
+    <Property Name="Status" Type="varchar" MaxLength="100" />
+    <Property Name="Type" Type="varchar" MaxLength="50" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="MaxQty" Type="int" />
+  </EntityType>
+  <EntityType Name="Load_Temp_Table">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BinNo" Type="int" Nullable="false" />
+    <Property Name="BinBarcode" Type="int" Nullable="false" />
+    <Property Name="GRNNO" Type="varchar" MaxLength="200" />
+    <Property Name="MaterialDesc" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="MaterialBarcode" Type="int" Nullable="false" />
+    <Property Name="BatchNo" Type="varchar" MaxLength="100" />
+    <Property Name="Style" Type="varchar" MaxLength="100" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="MaxQty" Type="int" />
+  </EntityType>
+  <EntityType Name="MaterialMaster">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaterialName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" />
+    <Property Name="Status" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="DeleteStatus" Type="char" MaxLength="1" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="ModifiedOn" Type="datetime" />
+  </EntityType>
+  <EntityType Name="TransactionDetails">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Side" Type="int" />
+    <Property Name="TrayNo" Type="int" />
+    <Property Name="BinType" Type="varchar" MaxLength="100" />
+    <Property Name="BinLocation" Type="int" />
+    <Property Name="BinBarcode" Type="int" />
+    <Property Name="MaterialDescription" Type="varchar" MaxLength="200" />
+    <Property Name="MaterialBarcode" Type="int" />
+    <Property Name="BatchNo" Type="varchar" MaxLength="100" />
+    <Property Name="Style" Type="varchar" MaxLength="100" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="GRNNO" Type="varchar" MaxLength="200" />
+    <Property Name="InspectionType" Type="varchar" MaxLength="50" />
+    <Property Name="UloadKittingCategory" Type="varchar" MaxLength="50" />
+    <Property Name="Action" Type="varchar" MaxLength="50" />
+    <Property Name="ConfirmQty" Type="int" />
+    <Property Name="LineNos" Type="int" />
+    <Property Name="KittingCat" Type="varchar" MaxLength="100" />
+    <Property Name="Remark" Type="varchar" MaxLength="200" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="MaxQty" Type="int" />
+  </EntityType>
+  <EntityType Name="TrayMaster">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BinType" Type="varchar" MaxLength="50" />
+    <Property Name="BinQty" Type="int" />
+  </EntityType>
+  <EntityType Name="UserMaster">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserId" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="PW" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="UserType" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="ContactNo" Type="varchar" MaxLength="20" />
+    <Property Name="LineNos" Type="varchar" MaxLength="50" />
+    <Property Name="EmailId" Type="varchar" MaxLength="80" />
+    <Property Name="FloorNo" Type="varchar" MaxLength="250" />
+    <Property Name="BioId1" Type="varchar" MaxLength="250" />
+    <Property Name="BioId2" Type="varchar" MaxLength="250" />
+    <Property Name="BioData1" Type="varchar" MaxLength="3000" />
+    <Property Name="BioData2" Type="varchar" MaxLength="3000" />
+    <Property Name="ImagePath" Type="varchar" MaxLength="250" />
+    <Property Name="PWExpiry" Type="tinyint" />
+    <Property Name="BadLogins" Type="tinyint" />
+    <Property Name="LockCounter" Type="tinyint" />
+    <Property Name="LockStatus" Type="char" MaxLength="1" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="DeleteStatus" Type="char" MaxLength="1" />
+    <Property Name="SubscID" Type="smallint" />
+    <Property Name="LastLogin" Type="date" />
+  </EntityType>
+  <EntityContainer Name="S1542ModelStoreContainer">
+    <EntitySet Name="BinMaster" EntityType="Self.BinMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BinMasterTable" EntityType="Self.BinMasterTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ExistingDetails" EntityType="Self.ExistingDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Goods_Existing" EntityType="Self.Goods_Existing" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Load_Temp_Table" EntityType="Self.Load_Temp_Table" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MaterialMaster" EntityType="Self.MaterialMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TrayMaster" EntityType="Self.TrayMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="finger_id" EntityType="Self.finger_id" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [finger_id].[MTransNo] AS [MTransNo], 
+    [finger_id].[finger] AS [finger], 
+    [finger_id].[status] AS [status]
+    FROM [dbo].[finger_id] AS [finger_id]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "LoadOperation";
+}
+
+<main>
+    <style>
+        .operation {
+            background-color: black !important;
+        }
+    </style>
+    <div class="row">
+        <div class="common-heading">
+            <h2 class="common-head"><i class="fa-solid fa-code-compare hicon"></i> Operations </h2>
+        </div>
+    </div>
+
+    <br />
+    <div class="container-outer">
+        <div class="container-inner-body">
+            <div class="load-flex">
+
+                <div class="e-card playing" id="load-grn">
+                    <div class="image"></div>
+                    <div class="one wave"></div>
+                    <div class="one wave"></div>
+                    <div class="one wave"></div>
+                    <div class="infotop">
+                        <img src="../../Content/img/box2.gif" alt="icon">
+                        <br>
+                        Load material With GRN
+                    </div>
+                </div>
+
+                <div class="e-card playing" id="load-withoutgrn">
+                    <div class="image"></div>
+                    <div class="two wave"></div>
+                    <div class="two wave"></div>
+                    <div class="two wave"></div>
+                    <div class="infotop">
+                        <img src="../../Content/img/box1.gif" alt="icon">
+                        <br>
+                        Load material Without GRN
+                    </div>
+                </div>
+
+                <div class="e-card playing" id="load-kitting">
+                    <div class="image"></div>
+                    <div class="three wave"></div>
+                    <div class="three wave"></div>
+                    <div class="three wave"></div>
+                    <div class="infotop">
+                        <img src="../../Content/img/BOX3.gif" alt="icon">
+                        <br>
+                        Load Kitting
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    $(document).ready(function () {
+        $('#load-grn').click(function () {
+            window.location.href = "LoadOperationWithGRN"
+        })
+        $('#load-withoutgrn').click(function () {
+            window.location.href = "../../LoadOperationWithoutGRN/LoadWithoutGRN"
+        })
+    });
+</script>

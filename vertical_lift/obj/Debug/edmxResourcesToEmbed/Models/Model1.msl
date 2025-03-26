@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="S1542Model1StoreContainer" CdmEntityContainer="UserMasterValidation">
+    <EntitySetMapping Name="BinMasters">
+      <EntityTypeMapping TypeName="S1542Model1.BinMaster">
+        <MappingFragment StoreEntitySet="BinMaster">
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="dimension" ColumnName="dimension" />
+          <ScalarProperty Name="barcode" ColumnName="barcode" />
+          <ScalarProperty Name="BinType" ColumnName="BinType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserMasters">
+      <EntityTypeMapping TypeName="S1542Model1.UserMaster">
+        <MappingFragment StoreEntitySet="UserMaster">
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="PW" ColumnName="PW" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="RfId" ColumnName="RfId" />
+          <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+          <ScalarProperty Name="BioId1" ColumnName="BioId1" />
+          <ScalarProperty Name="BioId2" ColumnName="BioId2" />
+          <ScalarProperty Name="BioData1" ColumnName="BioData1" />
+          <ScalarProperty Name="BioData2" ColumnName="BioData2" />
+          <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+          <ScalarProperty Name="PWExpiry" ColumnName="PWExpiry" />
+          <ScalarProperty Name="BadLogins" ColumnName="BadLogins" />
+          <ScalarProperty Name="LockCounter" ColumnName="LockCounter" />
+          <ScalarProperty Name="LockStatus" ColumnName="LockStatus" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="DeleteStatus" ColumnName="DeleteStatus" />
+          <ScalarProperty Name="SubscID" ColumnName="SubscID" />
+          <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

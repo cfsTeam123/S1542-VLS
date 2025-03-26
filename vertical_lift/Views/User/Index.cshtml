@@ -1,0 +1,223 @@
+﻿@model vertical_lift.Models.UserMasterValidation
+@using vertical_lift.Models
+@{
+    ViewBag.Title = "Index";
+    S1542Entities conn = new S1542Entities();
+    var data = conn.UserMasters.Where(s => s.UserName != null && s.LockStatus=="N").ToList();
+
+}
+<style>
+    .master {
+        background-color: black !important;
+    }
+</style>
+<main>
+    <div class="row">
+        <div class="common-heading">
+            <h2 class="common-head"><i class="fa-solid fa-list hicon"></i> Index </h2>
+            <a href="AddEdit"> <h4 class="index-head"><i class="fa-solid fa-plus m-1"></i>Add</h4></a>
+        </div>
+    </div>
+
+
+    <br />
+    <div class="main-content">
+        <div class="inner-content-other table-overflow">
+            <table id="example" class="display">
+                <thead>
+                    <tr>
+                        <th>Sl No</th>
+                        <th>User Type</th>
+                        <th>User ID</th>
+                        <th>User Name</th>
+                        <th>Mobile </th>
+                        <th>Email</th>
+                        <th>Line No</th>
+                        <th>Floor No</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int rowNo = 0; }
+                    @foreach (var item in data)
+                    {
+                        <tr>
+                            <td class="text-sm-right"><h6 style="margin-right:5px;">@(rowNo += 1)</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-right:5px;">@item.UserType</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-right:5px;">@item.UserId</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-right:5px;">@item.UserName</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-right:5px;">@item.ContactNo</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-left:5px;">@item.EmailId</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-left:5px;">@item.LineNos</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-left:5px;">@item.FloorNo</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-left:5px;">@(item.DeleteStatus == "Y" ? "Active" : "Inactive")</h6></td>
+                            @* <td class="text-sm-center"><h6 style="margin-left:5px;">@item.DeleteStatus</h6></td>*@
+                            <td class="text-sm-center">
+                                <div class="action-icons">
+                                    <a href="AddEdit?MTransNo=@item.MTransNo" class="edit-icon" title="Edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="delete-icon" title="Delete" data-id="@item.MTransNo">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+
+    @*    <div class="main-content">
+        <div class="inner-content-other table-overflow">
+            <div class="row">
+                <h5>Fingerprint Register</h5>
+            </div>
+            <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="UserId">Select User Id</label>
+                        @Html.DropDownListFor(model => model.UserId, ViewBag.UserList as SelectList, "-- Select User ID --", new { @class = "form-control", id = "UserId" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="UserName">User Name</label>
+                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", maxlength = "115", id = "UserName" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="Fingerprint" style="color:white;">Fingerprint</label>
+                        <button class="btn btn-primary" id="BioData1">Register Fingerprint</button>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <br /><br />
+</main>
+
+<script>
+    $(document).ready(function () {
+        $('.delete-icon').click(function () {
+            var MTransNo = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This user record will delete permanently.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/User/Delete",
+                        type: 'POST',
+                        data: { MTransNo: MTransNo },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire('Deleted!', 'User Record has been deleted.', 'success').then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire('Error!', 'First Inactive The User Then Delete.', 'error')
+                            }
+                        },
+                        error: function () {
+                            Swal.fire('Error!', 'An error occurred while deleting the user.', 'error');
+                        }
+                    });
+                } else {
+                    // If canceled, you can log or handle it here
+                    console.log('User chose not to delete');
+                }
+            });
+        });
+
+        /*user fetch*/
+        $("#UserId").change(function () {
+            var userId = $(this).val();
+
+            if (userId) {
+                $.ajax({
+                    url: '/User/GetUserName',
+                    type: 'GET',
+                    data: { userId: userId },
+                    success: function (response) {
+                        if (response.success) {
+                            $("#UserName").val(response.userName);
+                        }
+                    },
+                    error: function () {
+                        alert("Error occurred while fetching username.");
+                    }
+                });
+            } else {
+                $("#UserName").val('');
+            }
+        });
+
+
+    });
+    /*saturday pending*/
+    /*   $(function () {
+           $('#BioData1').on('click', function () {
+               *//* $("#loading").show();*//*
+    if ($("#UserId").val() != "") {
+        enroll_finger($("#UserId").val(), "1");
+    } else {
+        alert ("Please select User Id");
+    }
+
+});
+});
+function enroll_finger(finger, id) {
+*//* var finger = $("#UserName").val();
+     var id = $("#UserId").val();*//*
+    alert("Please place your finger on biometric module");
+    voiceMsg("Please place your finger on biometric module");
+
+    $.ajax({
+        url: "/Utility/ExecuteCommand",
+        data:
+        {
+            finger_name: finger,
+            fid: id
+        },
+        success: function (response) {
+            //  alert("response" + response);
+            if (response == ":Success1.") {
+                alert("Successfully Registered");
+                voiceMsg("Successfully Registered");
+                pNofsuc("Successfully Registered", "");
+
+
+            } else if (response == ":Success2.") {
+                alert("Successfully Registered");
+                voiceMsg("Successfully Registered");
+                pNofsuc("Successfully Registered", "");
+            } else {
+                voiceMsg(response);
+                alert(response);
+                pNoffail(response, "");
+            }
+        },
+        error: function (data) {
+            alert(data);
+            pNoffail(response, "");
+        }
+    });
+}*/
+
+
+    /*voie message*/
+    function voiceMsg(voice_msg) {
+        //  var msg = new SpeechSynthesisUtterance();
+        var msg = new SpeechSynthesisUtterance();
+        var voices = window.speechSynthesis.getVoices();
+        msg.voice = voices[9];
+        msg.text = voice_msg;
+        window.speechSynthesis.speak(msg);
+    }
+</script>

@@ -1,0 +1,923 @@
+﻿@model vertical_lift.Models.LoadTempTableValidation
+@using vertical_lift.Models;
+
+@{
+    ViewBag.Title = "LoadOperationWithGRN";
+}
+<style>
+    #sidebar {
+        width: 0px !important;
+        overflow: hidden;
+    }
+    .binimg{
+        width:60px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 26px;
+        position: absolute;
+        top: 8px !important;
+        right: 10px !important;
+        width: 20px;
+    }
+    .select2-container--default .select2-selection--single{
+        border:0 !important;
+    }
+    .select2-container {
+        display: block !important;
+        width: 100%;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: .375rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+        #sidebar.collapsed {
+            width: 230px !important;
+        }
+
+    .operation {
+        background-color: black !important;
+    }
+
+    .form-control:disabled {
+        background-color: #e9ecef !important;
+    }
+
+    #weighterror {
+        color: red;
+    }
+
+    #Types1 {
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+        width: 50%;
+        padding: 20px;
+        background-color: #1958DF;
+    }
+
+        #Types1 > .bin-item {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 5px;
+        }
+
+    #Types2 {
+        display: grid;
+        grid-template-columns: repeat(18, 1fr); /* Finer control */
+        gap: 4px;
+        width: 100%;
+        max-width: 800px;
+        background-color: #1958DF;
+        padding: 20px;
+    }
+
+        #Types2 > .bin-item {
+            background-color: red;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Top 9 bins: each spans 2 columns */
+        #Types2 .bin-item:nth-child(-n+9) {
+            grid-column: span 2;
+        }
+
+        /* Bottom 6 bins: each spans 3 columns */
+        #Types2 .bin-item:nth-child(n+10) {
+            grid-column: span 3;
+        }
+
+    #Types3 {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+        width: 50%;
+        padding: 20px;
+        background-color: #1958DF;
+    }
+
+        #Types3 > .bin-item {
+            width: 85px;
+            height: 50px;
+            background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 5px;
+        }
+    .bin-item{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        height:60px;
+    }
+    @@keyframes binblink {
+        50% {
+            background-color: green;
+        }
+
+        100% {
+            background-color: orange;
+        }
+    }
+
+    .highlight {
+        border: 1px solid white;
+        background-color: green;
+        animation: binblink 1s infinite alternate;
+    }
+
+    #other-content {
+        display: none;
+    }
+
+
+
+    /* Full-screen overlay */
+    .loadonscreen {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        z-index: 9999; /* Ensure it appears above everything */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Loader animation */
+    .loader1 {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #fff;
+        border-top: 5px solid green;
+        border-radius: 50%;
+        animation: spinloaders 1s linear infinite;
+    }
+
+    @@keyframes spinloaders {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    tbody, td, tfoot, th, thead, tr {
+        border: 1px solid #B5ACAC;
+    }
+
+    td {
+        padding: 10px;
+        font-size: 13px;
+    }
+</style>
+
+<main>
+    <style>
+    </style>
+    <div class="row">
+        <div class="common-heading">
+            <h2 class="common-head"><i class="fa-solid fa-code-compare hicon"></i> Load Material With GRN  </h2>
+        </div>
+    </div>
+
+    <br />
+    <div class="container-outer">
+        <div class="custom-form">
+            <div class="row mb-4">
+                @Html.HiddenFor(model => model.TrayNo)
+                @Html.HiddenFor(model => model.Side)
+
+                <div class="col-md-4">
+                    <label class="form-label">Loading Type</label>
+                    @Html.DropDownListFor(model => model.Type, null, "", new { @class = "form-control populate" })
+                    <span class="text-danger" id="Loadtype"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Select Bin Type</label>
+                    @Html.DropDownListFor(model => model.BinType, null, "", new { @class = "form-control populate" })
+                    <span class="text-danger" id="type"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Dimension</label>
+                    @* <input type="text" class="form-control" id="dimension">*@
+                    @Html.TextBoxFor(model => model.Dimension, new { @class = "form-control" })
+                    <span class="text-danger" id="Dimension"></span>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <button class="btn btn-primary w-100" id="call-tray">Call</button>
+                </div>
+            </div>
+            <div id="other-content">
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label">Scan Bin Barcode</label>
+                        @Html.TextBoxFor(model => model.binbarcode, new { @class = "form-control" })
+
+                        @* <input type="text" class="form-control" id="binbarcode">*@
+                        <span class="text-danger" id="bincode"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">GRN</label>
+                        <input type="text" class="form-control" id="grn">
+                        <span class="text-danger" id="grns"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label"> Material</label>
+                        @Html.DropDownListFor(model => model.Material, null, "", new { @class = "form-control populate" })
+                        <span class="text-danger" id="materials"></span>
+                    </div>
+
+
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label">Scan Material Barcode</label>
+                        @Html.TextBoxFor(model => model.materialbarcode, new { @class = "form-control" })
+                        @* <input type="text" class="form-control" id="materialbarcode">*@
+                        <span class="text-danger" id="materialbarcodes"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Batch No</label>
+                        @Html.TextBoxFor(model => model.batchno, new { @class = "form-control" })
+                        @* <input type="text" class="form-control" id="batchno">*@
+                        <span class="text-danger" id="batchnos"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Style</label>
+                        @Html.TextBoxFor(model => model.style, new { @class = "form-control" })
+                        @* <input type="text" class="form-control" id="style">*@
+
+                        <span class="text-danger" id="styles"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label">Qty</label>
+                        @Html.TextBoxFor(model => model.qty, new { @class = "form-control" })
+                        @* <input type="text" class="form-control" id="qty">*@
+                        <span class="text-danger" id="qtys"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Max Qty</label>
+                        @Html.TextBoxFor(model => model.MaxQty, new { @class = "form-control" })
+                        @* <input type="text" class="form-control" id="qty">*@
+                        <span class="text-danger" id="max"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label text-white">.</label>
+                        <button class="btn btn-primary w-100" id="add-btn">Add</button>
+                    </div>
+
+                </div>
+
+                <h5 id="bin-poss" class="mt-2"><b>Bin Position</b></h5>
+                <div class="bin-grid binposition" id="Types1">
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                </div>
+                <div class="bin-grid binposition1" id="Types2">
+
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+
+                </div>
+                <div class="bin-grid binposition2" id="Types3">
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+                    <div class="bin-item"></div>
+
+                </div>
+                <h6 id="BinPos"></h6>
+
+                <h5 class="mt-4"><b>View List</b></h5>
+                <table id="" class="display">
+                    <thead>
+                        <tr>
+                            <th>Bin No</th>
+                            <th>Bin Barcode</th>
+                            <th>GRN</th>
+                            <th>Material Barcode</th>
+                            <th>Material</th>
+                            <th>Batch No</th>
+                            <th>Style</th>
+                            <th>Qty</th>
+                            <th>Max Qty</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <br />
+                <center>
+
+                    <h6>Total Weight:<span id="weightkg">190 </span> KG</h6>
+                    <p id="weighterror"></p>
+                    <button class="btn btn-success w-30" id="submit">Submit</button>
+                </center>
+
+            </div>
+        </div>
+        @*<h6 id="Side"></h6>
+            <h6 id="TrayNoDisplay"></h6>
+            <h6 id="StatusDisplay"></h6>
+            <h6 id="location"></h6>*@
+    </div>
+    <!-- Loader Overlay -->
+    <div id="loader-overlay" class="loadonscreen" style="display:none;">
+        <div class="d-block">
+            <center>
+                <div class="loader1">
+                  
+                </div>
+                <h6 class="text-center text-white mt-4">Please Wait Tray  Is Arriving To the Loading Station...</h6>
+            </center>
+        </div>
+    </div>
+
+    <div id="loader-overlay1" class="loadonscreen" style="display:none;">
+        <div class="d-block">
+            <center>
+                <div class="loader1">
+                    @* <img src="../../Content/img/loader.gif" alt="icon">*@
+                </div>
+                <h6 class="text-center text-white mt-4">Please Wait Operation Is Processing...</h6>
+            </center>
+        </div>
+    </div>
+</main>
+<script>
+    $(document).ready(function () {
+      /*  $('#Material').select2({
+            placeholder: "Select Material",
+            allowClear: true // Optional: adds a clear (x) button
+        });*/
+        loadTable();
+        //on input or change error msg clear
+        $("input, select").on("input change", function () {
+            $(".text-danger").text("");
+        });
+
+        //only allow numeric value with minimun digit
+        $("#binbarcode, #materialbarcode").on("input", function () {
+            let value = $(this).val().replace(/\D/g, '').slice(0, 4);
+            $(this).val(value);
+        });
+        $("#qty").on("input", function () {
+            let value = $(this).val().replace(/\D/g, '');
+            $(this).val(value);
+        });
+
+        //onload field disable
+        $('#Dimension').prop('disabled', true);
+        $('#BinType').prop('disabled', true);
+
+        //on select enable other fields
+    /*    $("#Type").change(function () {
+            $('#BinType').prop('disabled', false);
+        });
+*/
+//hide and show fields
+        function enableFields() {
+            $('#grn').prop('disabled', false);
+            $('#Material').prop('disabled', false);
+            $('#materialbarcode').prop('disabled', false);
+            $('#batchno').prop('disabled', false);
+            $('#style').prop('disabled', false);
+            $('#qty').prop('disabled', false);
+            $('#add-btn').prop('disabled', false);
+            $('#MaxQty').prop('disabled', false);
+        }
+
+        function disableFields() {
+            $('#grn').prop('disabled', true);
+            $('#Material').prop('disabled', true);
+            $('#materialbarcode').prop('disabled', true);
+            $('#batchno').prop('disabled', true);
+            $('#style').prop('disabled', true);
+            $('#qty').prop('disabled', true);
+            $('#add-btn').prop('disabled', true);
+            $('#MaxQty').prop('disabled', true);
+        }
+        disableFields();
+
+
+//select on load type filter bintype
+       $('#Type').change(function () {
+            var selectedType = $(this).val();
+           $('#BinType').prop('disabled', false);
+
+            if (selectedType) {
+                $.ajax({
+                    url: '@Url.Action("GetBinTypes", "LoadOperation")', 
+                    type: 'GET',
+                    data: { type: selectedType },
+                    success: function (data) {
+                        var binTypeDropdown = $('#BinType');
+                        binTypeDropdown.empty();
+                        binTypeDropdown.append($('<option></option>').val('').text('-- Select Bin Type --'));
+                        $("#Dimension").val('');
+
+                        $.each(data, function (index, item) {
+                            binTypeDropdown.append($('<option></option>').val(item.Value).text(item.Text));
+                        });
+                    }
+                });
+            } else {
+                $('#BinType').empty().append($('<option></option>').val('').text('-- Select Bin Type --'));
+
+            }
+        });
+
+        //selection on bin type fetch dimension
+        $("#BinType").change(function () {
+            var BinType = $(this).val();
+
+            if (BinType) {
+                $.ajax({
+                    url: '/LoadOperation/GetDimension',
+                    type: 'GET',
+                    data: { BinType: BinType },
+                    success: function (response) {
+                        if (response.success) {
+                            $("#Dimension").val(response.Dimension || "N/A");
+
+                        } else {
+                            alert(response.message || "No records found.");
+                            $("#Dimension").val('');
+                        }
+                    },
+                    error: function () {
+                        $("#Dimension").val('');
+                    }
+                });
+            } else {
+                $("#Dimension").val('');
+            }
+        });
+
+
+        //Click on call button function start
+        $('#call-tray').click(function () {
+
+            var Typess = $("#BinType").val().trim();
+
+            $('#Types1, #Types2, #Types3').hide();
+            if (Typess === 'Type A') {
+                $('#Types1').show();
+            } else if (Typess === 'Type B') {
+                $('#Types2').show();
+            } else if (Typess === 'Type C') {
+                $('#Types3').show();
+            }
+        $(".text-danger").text("");
+        var isValid = true;
+
+        // Get field values
+        var LoadType = $("#Type").val().trim();
+        var binType = $("#BinType").val().trim();
+        var dimension = $("#Dimension").val().trim();
+
+        if (LoadType === "") {
+            $("#Loadtype").text("Loading Type is required.");
+            isValid = false;
+        } else if (binType === "") {
+            $("#type").text("Bin Type is required.");
+            isValid = false;
+        }
+
+            if (!isValid) return;
+
+        // Show loader
+        $("#loader-overlay").fadeIn();
+       /* setTimeout(function () {
+            $("#loader-overlay").fadeOut();
+        }, 3000);*/
+
+        //  get the closest available tray (from both LHS and RHS)
+            const checkInterval = setInterval(function () {
+        $.ajax({
+            url: '@Url.Action("GetNearestAvailableTray", "LoadOperation")',
+            type: "GET",
+            data: {
+                type: LoadType,
+                binType: binType,
+                dimension: dimension
+            },
+            dataType: "json",
+            success: function (response) {
+                console.log(response.tray.data);
+
+                if (response.tray.data) {
+                    clearInterval(checkInterval); 
+                    $("#loader-overlay").fadeOut();
+                    // Disable fields and button after call
+                    $('#other-content').show();
+                    $('#toggle-btn').prop('disabled', true);
+
+                    $('#call-tray').prop('disabled', true);
+                    $('#BinType').prop('disabled', true);
+                    $('#Type').prop('disabled', true);
+                    $("#Side").val(response.tray.Side);
+                    $("#TrayNo").val(response.tray.TrayNo);
+                    console.log('Tray No', response.tray.TrayNo);
+                    console.log('Side No', response.tray.Side);
+                    /*console.log('bit', response.tray.data);*/
+
+                }
+               /* else {
+                    alert('Something went wrong');
+                }*/
+            },
+            error: function (xhr, status, error) {
+                clearInterval(checkInterval);
+                console.error("AJAX Error:", error);
+                alert("Error fetching tray data.");
+            }
+        });
+            }, 1000);
+    });
+    //on enter barcode  check if bar code exist or not in DB
+        $('#binbarcode').on("keypress", function (e) {
+            if (e.which === 13) {
+
+                var barcode = parseInt($(this).val()) || 0; 
+                var TrayNo = parseInt($("#TrayNo").val()) || 0;
+
+                $.ajax({
+                    url: '@Url.Action("ValidateBarcode", "LoadOperation")',
+                    type: 'GET',
+                    data: {
+                        barcode: barcode,
+                        TrayNo: TrayNo
+                    },
+                    success: function (response) {
+                        console.log(response);
+
+                        if (barcode === 0) {
+                            // First-time scan: enable fields
+                            enableFields();
+                            $("#bincode").text("");
+                            return;
+                        }
+
+                        if (response.binExists) {
+                            if (response.status === "true") {
+                                disableFields();
+                                $("#bincode").text("Scanned Bin already full. Please Scan Empty Bin");
+                            } else if (response.status === "false") {
+                                enableFields();
+                                $("#bincode").text("");
+                            } else {
+                                disableFields();
+                                $("#bincode").text("No status found for this bin.");
+                            }
+                        } else {
+                            disableFields();
+                            $("#bincode").text("Bin barcode does not exist in Bin Master.");
+                        }
+                    },
+                    error: function () {
+                        alert("Error occurred while validating the barcode.");
+                    }
+                });
+
+               
+
+            }
+});
+
+        //Click on Add button function start
+        $('#add-btn').click(function () {
+            $(".text-danger").text("");
+
+            var isValid = true;
+
+            // Validate each field
+            var binbarcode = $("#binbarcode").val().trim();
+            var grn = $("#grn").val().trim();
+            var material = $("#Material").val();
+            var materialbarcode = $("#materialbarcode").val().trim();
+            var batchno = $("#batchno").val().trim();
+            var style = $("#style").val().trim();
+            var qty = $("#qty").val().trim();
+            var MaxQty = $("#MaxQty").val().trim();
+            if (binbarcode === "") {
+                // alert("Bin barcode is required")
+                $("#bincode").text("Bin barcode is required.");
+                isValid = false;
+            } else if (grn === "") {
+                $("#grns").text("grn is required.");
+                isValid = false;
+            } else if (material === "" || material === null) {
+                $("#materials").text("Material is required.");
+                isValid = false;
+            } else if (materialbarcode === "") {
+                $("#materialbarcodes").text("Material barcode is required.");
+                isValid = false;
+            } else if (batchno === "") {
+                $("#batchnos").text("Batch no is required.");
+                isValid = false;
+            } else if (style === "") {
+                $("#styles").text("Style is required.");
+                isValid = false;
+            } else if (qty === "") {
+                $("#qtys").text("Qty is required.");
+                isValid = false;
+            } else if (MaxQty === "") {
+                $("#max").text("Max Qty is required.");
+                isValid = false;
+            }
+            if (!isValid) return;
+
+            var formData = {
+                BinBarcode: $("#binbarcode").val(),
+                GRNNO: $("#grn").val(),
+                MaterialDesc: $("#Material").val(),
+                MaterialBarcode: $("#materialbarcode").val(),
+                BatchNo: $("#batchno").val(),
+                Style: $("#style").val(),
+                Qty: $("#qty").val(),
+                TrayNo: $("#TrayNo").val(),
+                Side: $("#Side").val(),
+                MaxQty: $("#MaxQty").val()
+            };
+
+            $.ajax({
+                url: '/LoadOperation/InsertTempData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function (response) {
+                  
+                    alert("Material Inserted To Table!");
+                    loadTable(); 
+                    clearForm(); 
+                    disableFields();
+                    $("#BinPos").text('Please place the material in the bin position shown on the screen.');
+                },
+                error: function (error) {
+                    alert("Error inserting data.");
+                    console.log(error);
+                }
+            });
+        });
+
+        //after click on add button clear all fields
+        function clearForm() {
+            $("#binbarcode").val('');
+            $("#grn").val('');
+            $("#Material").val('');
+            $("#materialbarcode").val('');
+            $("#batchno").val('');
+            $("#style").val('');
+            $("#qty").val('');
+            $("#MaxQty").val('');
+        }
+
+        //fetch items in table
+        function loadTable() {
+            $.ajax({
+                url: '/LoadOperation/FetchDataToTable',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                   /* if ($.fn.DataTable.isDataTable("#example")) {
+                        $("#example").DataTable().destroy();
+                    }*/
+
+                    var tableBody = $("table tbody");
+
+                    tableBody.empty(); 
+
+                    $.each(response, function (index, item) {
+                        var row = `<tr>
+                        <td>${item.BinNo || ''}</td>
+                        <td>${item.BinBarcode}</td>
+                        <td>${item.GRNNO}</td>
+                        <td>${item.MaterialBarcode}</td>
+                        <td>${item.MaterialDesc}</td>
+                        <td>${item.BatchNo}</td>
+                        <td>${item.Style}</td>
+                        <td>${item.Qty}</td>
+                        <td>${item.MaxQty}</td>
+                        <td>
+                            <a href="#" class="delete-icon" title="Delete" data-id="${item.MTransNo}">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>`;
+                        tableBody.append(row);
+                    });
+
+                // $("#example").DataTable();
+
+                    //Show bin position based on barcode
+                    if (response.length > 0) {
+                        var lastItem = response[response.length - 1];
+                        var binNo = lastItem.BinNo;
+
+                        // Clear previous highlights
+                        $('.bin-item').css('background-color', '');
+                        $('.bin-item > img').remove();
+
+
+
+                        if (binNo) {
+                            var binIndex = parseInt(binNo) - 1; // Convert binNo to index
+
+                            var binItems1 = $('.binposition .bin-item');
+                            var binItems2 = $('.binposition1 .bin-item');
+                            var binItems3 = $('.binposition2 .bin-item');
+
+                            if (binIndex >= 0 && binIndex < binItems1.length) {
+                                $(binItems1[binIndex]).css('background-color', 'green');
+                                $(binItems1[binIndex]).html('<img class="binimg" src="../../../Content/img/bins.gif" alt="Image" />');
+
+                            }
+
+                            if (binIndex >= 0 && binIndex < binItems2.length) {
+                                $(binItems1[binIndex]).css('background-color', 'green');
+                                $(binItems2[binIndex]).html('<img class="binimg" src="../../../Content/img/bins.gif" alt="Image" />');
+                            }
+
+                            if (binIndex >= 0 && binIndex < binItems3.length) {
+                                $(binItems1[binIndex]).css('background-color', 'green');
+                                $(binItems3[binIndex]).html('<img class="binimg" src="../../../Content/img/bins.gif" alt="Image" />');
+                            }
+                        }
+                    }
+
+
+
+                },
+                error: function (error) {
+                    console.log("Error fetching data:", error);
+                }
+            });
+        }
+
+
+        // Delete item
+        $(document).on("click", ".delete-icon", function () {
+            var MTransNo = $(this).data("id");
+                $.ajax({
+                    url: '/LoadOperation/DeleteMaterial/',
+                    type: 'POST',
+                    data: { MTransNo: MTransNo },
+                    success: function (response) {
+                        alert("Data deleted successfully!");
+                        loadTable(); 
+                    },
+                    error: function (error) {
+                        alert("Error deleting data.");
+                        console.log(error);
+                    }
+                });
+
+        });
+
+
+
+        //check weight every 1 second
+        var alertShown = false;
+        setInterval(function () {
+            var weightkg = $('#weightkg').text(); 
+            if (weightkg !== "") {
+                if (parseFloat(weightkg) > 200) {
+                    if (!alertShown) {
+                        $('#weighterror').text('Weight should be less than 200KG');
+                        $('#submit').hide();
+                        alertShown = true;
+                    }
+                } else {
+                    $('#weighterror').text(''); 
+                    $('#submit').show();       
+                    alertShown = false;
+                }
+
+            }
+        }, 1000);
+
+
+        //click on submit button
+        $('#submit').on('click', function () {
+        
+            // Show loader
+            $("#loader-overlay1").fadeIn();
+            setTimeout(function () {
+                $("#loader-overlay1").fadeOut();
+            }, 3000);
+
+            var loadingType = $('#Type').val();
+            var binType = $('#BinType').val();
+            var dimension = $('#Dimension').val();
+            var Side =$("#Side").val();
+            var TrayNo =$("#TrayNo").val();
+
+
+            // Get table row data
+            var dataList = [];
+            $('table tbody tr').each(function () {
+                var row = $(this);
+                var dataItem = {
+                    BinNo: parseInt(row.find('td:eq(0)').text()),
+                    BinBarcode: parseInt(row.find('td:eq(1)').text()),
+                    GRNNO: row.find('td:eq(2)').text(),
+                    MaterialBarcode: parseInt(row.find('td:eq(3)').text()),
+                    MaterialDesc: row.find('td:eq(4)').text(),
+                    BatchNo: row.find('td:eq(5)').text(),
+                    Style: row.find('td:eq(6)').text(),
+                    Qty: parseInt(row.find('td:eq(7)').text()),
+                    MaxQty: parseInt(row.find('td:eq(8)').text()),
+                    binType: binType,
+                    TrayNo: parseInt(TrayNo),
+                    Side: parseInt(Side)
+                };
+                dataList.push(dataItem);
+            });
+
+            console.log(dataList);
+            //  Send to backend
+           $.ajax({
+            url: '@Url.Action("SaveAllData", "LoadOperation")',
+            type: 'POST',
+            //data: JSON.stringify(dataList),
+            data: JSON.stringify(dataList), 
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (response) {
+                location.reload();
+            }
+        });
+
+        });
+
+
+    });
+</script>

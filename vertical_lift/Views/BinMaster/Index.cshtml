@@ -1,0 +1,113 @@
+﻿@model vertical_lift.Models.BinMasterValidation
+@using vertical_lift.Models 
+@{
+
+
+    ViewBag.Title = "Index";
+    S1542Entities conn = new S1542Entities();
+    var data = conn.BinMasters.Where(s=>s.barcode!=null && s.DeleteStatus =="N").ToList();
+}
+<style>
+    .master {
+        background-color: black !important;
+    }
+</style>
+<main>
+    <div class="row">
+        <div class="common-heading">
+            <h2 class="common-head"><i class="fa-solid fa-list hicon"></i> Index </h2>
+            <a href="AddEdit"> <h4 class="index-head"><i class="fa-solid fa-plus m-1"></i>Add</h4></a>
+        </div>
+    </div>
+
+
+    <br />
+    <div class="main-content">
+        <div class="inner-content-other">
+            <table id="example" class="display">
+                <thead>
+                    <tr>
+                        <th>Sl No</th>
+                        <th>Bin Barcode</th>
+                        <th>Bin Type</th>
+                        <th>Dimension</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int rowNo = 0; }
+                    @foreach (var item in data)
+                    {
+
+                        <tr>
+                            <td class="text-sm-right"><h6 style="margin-right:5px;">@(rowNo += 1)</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-right:5px;">@item.barcode</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-right:5px;">@item.BinType</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-right:5px;">@item.dimension</h6></td>
+                            <td class="text-sm-center"><h6 style="margin-left:5px;">@(item.status  == "Y" ? "Active" : "Inactive")</h6></td>
+                            <td class="text-sm-center">
+                                <div class="action-icons">
+                                    <a href="AddEdit?MTransNo=@item.MTransNo" class="edit-icon" title="Edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="delete-icon" title="Delete" data-id="@item.MTransNo">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+         </div>
+    </div>
+
+</main>
+
+<script>
+    $(document).ready(function () {
+        $('.delete-icon').click(function () {
+            var MTransNo = $(this).data('id');  // Get the ID for the Bin Master to be deleted
+
+            // Show SweetAlert confirmation popup
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This Bin record will be deleted permanently.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Proceed with the AJAX request if confirmed
+                    $.ajax({
+                        url: "/BinMaster/Delete",  // Server-side URL to handle deletion
+                        type: 'POST',              // Use POST method
+                        data: { MTransNo: MTransNo }, // Send the MTransNo to the server for deletion
+                        success: function (response) {
+                            if (response.success) {
+                                // Show success message and reload the page
+                                Swal.fire('Deleted!', 'Bin Master has been deleted.', 'success').then(() => {
+                                    location.reload();  // Reload the page after successful deletion
+                                });
+                            } else {
+                                // Show failure message if deletion fails
+                                Swal.fire('Error!', 'First Inactive The Bin Master Then Delete.', 'error');
+                            }
+                        },
+                        error: function () {
+                            // Show error message if AJAX request fails
+                            Swal.fire('Error!', 'An error occurred while deleting Bin Master.', 'error');
+                        }
+                    });
+                } else {
+                    // If canceled, you can log or handle it here
+                    console.log('User chose not to delete');
+                }
+            });
+        });
+
+    });
+
+</script>

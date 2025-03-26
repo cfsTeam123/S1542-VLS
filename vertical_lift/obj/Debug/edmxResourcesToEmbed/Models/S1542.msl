@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="S1542ModelStoreContainer" CdmEntityContainer="S1542Entities">
+    <EntitySetMapping Name="BinMasters">
+      <EntityTypeMapping TypeName="S1542Model.BinMaster">
+        <MappingFragment StoreEntitySet="BinMaster">
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="DeleteStatus" ColumnName="DeleteStatus" />
+          <ScalarProperty Name="BinType" ColumnName="BinType" />
+          <ScalarProperty Name="barcode" ColumnName="barcode" />
+          <ScalarProperty Name="dimension" ColumnName="dimension" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BinMasterTables">
+      <EntityTypeMapping TypeName="S1542Model.BinMasterTable">
+        <MappingFragment StoreEntitySet="BinMasterTable">
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="MaxQty" ColumnName="MaxQty" />
+          <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+          <ScalarProperty Name="BinNo" ColumnName="BinNo" />
+          <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
+          <ScalarProperty Name="MtransNo" ColumnName="MtransNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ExistingDetails">
+      <EntityTypeMapping TypeName="S1542Model.ExistingDetail">
+        <MappingFragment StoreEntitySet="ExistingDetails">
+          <ScalarProperty Name="MaxQty" ColumnName="MaxQty" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="KittingCat" ColumnName="KittingCat" />
+          <ScalarProperty Name="LineNos" ColumnName="LineNos" />
+          <ScalarProperty Name="ConfirmQty" ColumnName="ConfirmQty" />
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="UloadKittingCategory" ColumnName="UloadKittingCategory" />
+          <ScalarProperty Name="InspectionType" ColumnName="InspectionType" />
+          <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Style" ColumnName="Style" />
+          <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
+          <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
+          <ScalarProperty Name="MaterialDescription" ColumnName="MaterialDescription" />
+          <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+          <ScalarProperty Name="BinLocation" ColumnName="BinLocation" />
+          <ScalarProperty Name="BinType" ColumnName="BinType" />
+          <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
+          <ScalarProperty Name="Side" ColumnName="Side" />
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Goods_Existing">
+      <EntityTypeMapping TypeName="S1542Model.Goods_Existing">
+        <MappingFragment StoreEntitySet="Goods_Existing">
+          <ScalarProperty Name="MaxQty" ColumnName="MaxQty" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="QualityInspection" ColumnName="QualityInspection" />
+          <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+          <ScalarProperty Name="BinLocation" ColumnName="BinLocation" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Dimension" ColumnName="Dimension" />
+          <ScalarProperty Name="BinType" ColumnName="BinType" />
+          <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
+          <ScalarProperty Name="Side" ColumnName="Side" />
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Load_Temp_Table">
+      <EntityTypeMapping TypeName="S1542Model.Load_Temp_Table">
+        <MappingFragment StoreEntitySet="Load_Temp_Table">
+          <ScalarProperty Name="MaxQty" ColumnName="MaxQty" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Style" ColumnName="Style" />
+          <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
+          <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
+          <ScalarProperty Name="MaterialDesc" ColumnName="MaterialDesc" />
+          <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
+          <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+          <ScalarProperty Name="BinNo" ColumnName="BinNo" />
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MaterialMasters">
+      <EntityTypeMapping TypeName="S1542Model.MaterialMaster">
+        <MappingFragment StoreEntitySet="MaterialMaster">
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="DeleteStatus" ColumnName="DeleteStatus" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TransactionDetails">
+      <EntityTypeMapping TypeName="S1542Model.TransactionDetail">
+        <MappingFragment StoreEntitySet="TransactionDetails">
+          <ScalarProperty Name="MaxQty" ColumnName="MaxQty" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="KittingCat" ColumnName="KittingCat" />
+          <ScalarProperty Name="LineNos" ColumnName="LineNos" />
+          <ScalarProperty Name="ConfirmQty" ColumnName="ConfirmQty" />
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="UloadKittingCategory" ColumnName="UloadKittingCategory" />
+          <ScalarProperty Name="InspectionType" ColumnName="InspectionType" />
+          <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Style" ColumnName="Style" />
+          <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
+          <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
+          <ScalarProperty Name="MaterialDescription" ColumnName="MaterialDescription" />
+          <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+          <ScalarProperty Name="BinLocation" ColumnName="BinLocation" />
+          <ScalarProperty Name="BinType" ColumnName="BinType" />
+          <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
+          <ScalarProperty Name="Side" ColumnName="Side" />
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrayMasters">
+      <EntityTypeMapping TypeName="S1542Model.TrayMaster">
+        <MappingFragment StoreEntitySet="TrayMaster">
+          <ScalarProperty Name="BinQty" ColumnName="BinQty" />
+          <ScalarProperty Name="BinType" ColumnName="BinType" />
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserMasters">
+      <EntityTypeMapping TypeName="S1542Model.UserMaster">
+        <MappingFragment StoreEntitySet="UserMaster">
+          <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+          <ScalarProperty Name="SubscID" ColumnName="SubscID" />
+          <ScalarProperty Name="DeleteStatus" ColumnName="DeleteStatus" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="LockStatus" ColumnName="LockStatus" />
+          <ScalarProperty Name="LockCounter" ColumnName="LockCounter" />
+          <ScalarProperty Name="BadLogins" ColumnName="BadLogins" />
+          <ScalarProperty Name="PWExpiry" ColumnName="PWExpiry" />
+          <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+          <ScalarProperty Name="BioData2" ColumnName="BioData2" />
+          <ScalarProperty Name="BioData1" ColumnName="BioData1" />
+          <ScalarProperty Name="BioId2" ColumnName="BioId2" />
+          <ScalarProperty Name="BioId1" ColumnName="BioId1" />
+          <ScalarProperty Name="FloorNo" ColumnName="FloorNo" />
+          <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+          <ScalarProperty Name="LineNos" ColumnName="LineNos" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="PW" ColumnName="PW" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="finger_id">
+      <EntityTypeMapping TypeName="S1542Model.finger_id">
+        <MappingFragment StoreEntitySet="finger_id">
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="finger" ColumnName="finger" />
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

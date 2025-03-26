@@ -1,0 +1,248 @@
+﻿@model vertical_lift.Models.GoodsExistingValidation
+@using vertical_lift.Models;
+@{
+    ViewBag.Title = "AddEdit";
+}
+<style>
+    .master {
+        background-color: black !important;
+    }
+</style>
+<main>
+    <div class="row">
+        <div class="common-heading">
+            <h2 class="common-head"><i class="fa-solid fa-plus hicon"></i> Tray Allocation </h2>
+            <a href="index"> <h4 class="index-head"><i class="fa-solid fa-list m-1"></i>Index</h4></a>
+        </div>
+    </div>
+
+
+    <br />
+
+    <div class="container-outer">
+        <div class="custom-form">
+            @*  @Html.AntiForgeryToken()*@
+            <div class="row mb-4">
+                @Html.HiddenFor(model => model.MTransNo)
+                <div class="col-md-4">
+                    <label class="form-label">Quality Inspection</label>
+                    @Html.DropDownListFor(model => model.QualityInspection, null, "", new { @class = "form-control populate" })
+                    <span class="text-danger" id="QualityInspection"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Bin Type</label>
+                    @Html.DropDownListFor(model => model.BinType, null, "", new { @class = "form-control populate" })
+                    <span class="text-danger" id="BinType"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Dimension</label>
+                    @Html.TextBoxFor(model => model.Dimension, new { @class = "form-control" })
+
+                </div>
+
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label class="form-label">Side</label>
+                    @Html.DropDownListFor(model => model.Side, Enumerable.Empty<SelectListItem>(), new { @class = "form-control populate" })
+                    <span class="text-danger" id="pos-side"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Tray No</label>
+                    @Html.DropDownListFor(model => model.TrayNo, Enumerable.Empty<SelectListItem>(), new { @class = "form-control populate" })
+                    <span class="text-danger" id="TrayNo"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label" style="color:white">Tray No</label>
+
+                    @try
+                    {
+                        if (Model != null && Model.MTransNo > 0)
+                        {
+                            <script>
+                                $('#UserType, #UserId').prop('disabled', true);
+                            </script>
+                            <button class="addbtn" id="update-btn">Update</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary" id="add-btn">Submit</button>
+                        }
+                    }
+                    catch
+                    {
+                        <button type="submit" class="btn btn-primary" id="add-btn">Submit</button>
+                    }
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</main>
+
+<script>
+
+    $(document).ready(function () {
+        $('#Dimension').prop('disabled', true);
+
+        $("input, select").on("input change", function () {
+            $(".text-danger").text("");
+        });
+
+        $("#BinType").change(function () {
+            var BinType = $(this).val();
+            
+            $("#Dimension").val(""); // Clear previous Dimension value
+            $("#Side").empty().append('<option value="">Select Side</option>'); // Clear previous Side options
+
+            if (BinType) {
+                $.ajax({
+                    url: '/TrayAllocationMaster/GetDimension',
+                    type: 'GET',
+                    data: { BinType: BinType },
+                    success: function (response) {
+                        if (response.success) {
+                            $("#Dimension").val(response.Dimension || "NA");
+
+                            // Populate Side dropdown
+                            $("#Side").empty().append('<option value="">Select Side</option>');
+                            $.each(response.sideNo, function (index, item) {
+                                $("#Side").append('<option value="' + item + '">' + item + '</option>');
+                            });
+
+                        } else {
+                            alert(response.message || "No records found.");
+                            $("#Dimension").val('');
+                            $("#Side").empty().append('<option value="">No Sides</option>');
+                            
+                        }
+                    },
+                    error: function () {
+                        alert("Error occurred while fetching Dimension, Side, and Tray Numbers.");
+                        $("#Dimension").val('');
+                        $("#Side").empty().append('<option value="">Error Loading</option>');
+                        
+                    }
+                });
+            } else {
+                $("#Dimension").val('');
+                $("#Side").empty().append('<option value="">Select Bin Type First</option>');
+               
+            }
+        });
+
+
+
+        $("#Side").change(function () {
+            var BinType = $("#BinType").val();
+            var Side = $(this).val();
+            $("#TrayNo").empty().append('<option value="">Loading...</option>');
+
+            if (BinType && Side) {
+                $.ajax({
+                    url: '/TrayAllocationMaster/GetTrays',
+                    type: 'GET',
+                    data: { BinType: BinType, Side: Side },
+                    success: function (response) {
+                        if (response.success) {
+                            $("#TrayNo").empty().append('<option value="">Select Tray No</option>');
+                            $.each(response.TrayNos, function (index, item) {
+                                $("#TrayNo").append('<option value="' + item + '">' + item + '</option>');
+                            });
+                        } else {
+                            alert(response.message || "No Tray Numbers found.");
+                            $("#TrayNo").empty().append('<option value="">No Tray Numbers</option>');
+                        }
+                    },
+                    error: function () {
+                        alert("Error occurred while fetching Tray Numbers.");
+                    }
+                });
+            } else {
+                $("#TrayNo").empty().append('<option value="">Select Side First</option>');
+            }
+        });
+
+
+
+
+        $("#add-btn").click(function () {
+
+            $(".text-danger").text("");
+            var isValid = true;
+
+            // Validate each field
+
+            var QualityInspection = $("#QualityInspection").val();
+            var BinType = $("#BinType").val();
+            var Dimension = $("#Dimension ").val();
+            var Side = $("#Side ").val();
+            var TrayNo = $("#TrayNo").val();
+            var mTransNo = $("#MTransNo").val();
+
+            if (QualityInspection === "") {
+
+                alert("Quality Inspection required")
+                isValid = false;
+            } else if (BinType === "") {
+                alert("Bin Type required")
+
+                isValid = false;
+            } else if (Side === "") {
+                alert("Side is required")
+
+                isValid = false;
+            } else if (TrayNo === "") {
+                alert("Tray No required")
+
+                isValid = false;
+            }
+
+
+            if (!isValid) return;
+
+            var Userdata = {
+                TrayNo: TrayNo,
+                QualityInspection: QualityInspection,
+                Side: Side
+
+            };
+
+            $.ajax({
+                url: "/TrayAllocationMaster/UpdateQualityInspection",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(Userdata),
+                success: function (response) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: ' successfully Allocated Tray.',
+                        icon: 'success',
+                        confirmButtonText: 'Ok!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/TrayAllocationMaster/Index';
+                        }
+                    });
+                },
+                error: function (xhr) {
+                    alert("hii");
+                }
+            });
+
+        });
+
+
+    });
+
+
+
+
+</script>

@@ -1,0 +1,228 @@
+﻿
+@model vertical_lift.Models.BinMasterValidation
+@using vertical_lift.Models;
+@{
+    //ViewBag.Title = "AddEdit";
+    //var AllList = conn.OtherMasters.Where(x => x.DeleteStatus == "N").OrderBy(x => x.MasterType).ThenBy(x => x.MasterName).ToList();
+}
+<style>
+    .master {
+        background-color: black !important;
+    }
+</style>
+
+<main>
+    <div class="row">
+        <div class="common-heading">
+            <h2 class="common-head"><i class="fa-solid fa-plus hicon"></i> Bin Master </h2>
+           <a href="index"> <h4 class="index-head"><i class="fa-solid fa-list m-1"></i>Index</h4></a>
+        </div>
+    </div>
+    <br />
+
+    <div class="main-content">
+        <div class="inner-content">
+            <div class="container">
+                <div class="mb-4">
+                    @Html.HiddenFor(model => model.MTransNo)
+                    <label for="btype" class="form-label">Select Bin Type</label>
+                    @Html.DropDownListFor(model => model.BinType, null, "", new { @class = "form-control populate" })
+                    <span class="text-danger" id="btype-error"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label for="dimension" class="form-label">Select Dimension</label>
+                 @*   @Html.DropDownListFor(model => model.dimension, null, "", new { @class = "form-control populate" })*@
+                    @Html.TextBoxFor(model => model.dimension, null, new { @class = "form-control populate", @readonly = "readonly" })
+                    <span class="text-danger" id="dimension-error"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label for="status" class="form-label">Select Status</label>
+                    @Html.DropDownListFor(model => model.status, null, "", new { @class = "form-control populate" })
+                    <span class="text-danger" id="status-error"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label for="barcode" class="form-label">Scan Bin Barcode</label>
+                    @Html.TextBoxFor(model => model.barcode, null, new { @class = "form-control populate" })
+                    <span class="text-danger" id="barcode-error"></span>
+                </div>
+                @try
+                {
+                    if (Model != null && Model.MTransNo > 0)
+                    {
+                        <script>
+                            $('#BinType, #dimension').prop('disabled', true);
+                        </script>
+                        <button class="addbtn" id="update-btn">Update</button>
+                    }
+                    else
+                    {
+                        <button class="addbtn" id="add-btn">Add</button>
+                    }
+                }
+                catch
+                {
+                    <button class="addbtn" id="add-btn">Add</button>
+                }
+
+
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<script>
+    $(document).ready(function () {
+        $("input, select").on("input change", function () {
+            $(".text-danger").text("");
+        });
+        $("#barcode").on("input", function () {
+            let value = $(this).val().replace(/\D/g, '').slice(0, 6);
+            $(this).val(value);
+        });
+        
+        var dimensions = {
+            "Type A": "300mm × 400mm × 150mm",
+            "Type B": "500mm × 325mm × 200mm",
+            "Type C": "650mm × 450mm × 325mm"
+        };
+
+        // On change event of the dropdown
+        $('#BinType').change(function () {
+            var selectedType = $(this).val(); // Get selected value
+
+            if (dimensions[selectedType]) {
+                $('#dimension').val(dimensions[selectedType]); // Auto-fill the dimension
+            } else {
+                $('#dimension').val(''); // Clear if no match
+            }
+        });
+       
+
+        $("#add-btn").click(function () {
+            $(".text-danger").text("");
+            var isValid = true;
+
+            // Validate each field
+
+            var BinType = $("#BinType").val().trim();
+            var dimension = $("#dimension").val().trim();
+            var status = $("#status").val().trim();
+            var barcode = $("#barcode").val().trim();
+            var mTransNo = $("#MTransNo").val().trim();
+
+            if (BinType === "") {
+                $("#btype-error").text("Bin Type is required.");
+                isValid = false;
+            }
+            else if (dimension === "") {
+                $("#dimension-error").text("Dimension is required.");
+                isValid = false;
+            }
+            else if (status === "") {
+                $("#status-error").text("Status is required.");
+                isValid = false;
+            }
+            else if (barcode === "") {
+                $("#barcode-error").text("Barcode is required.");
+                isValid = false;
+            }
+
+            if (!isValid) return; 
+
+            var binData = {
+                BinType: BinType,
+                Dimension: dimension,
+                Status: status,
+                Barcode: barcode,
+                MTransNo: mTransNo
+            };
+           //sending data to controler for add bin master data
+            $.ajax({
+                url: "/BinMaster/AddEdit1",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(binData),
+                success: function (response) {
+                    if (response === "Not Found") {
+                        alert("The specified MTransNo does not exist.");
+                    }
+                    else if (response === "BCExist") {
+                        $("#barcode-error").text("BinMaster with this barcode already exists.");
+                    }
+                    else {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Bin Added successfully.',
+                            icon: 'success',
+                            confirmButtonText: 'Ok!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/BinMaster/Index';
+                            }
+
+                        });
+                    }
+                   
+                },
+                error: function (xhr) {
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+        });
+        //click on update sending data to controler for update bin master data
+        $("#update-btn").click(function () {
+            var isValid = true;
+            var BinType = $("#BinType").val().trim();
+            var dimension = $("#dimension").val().trim();
+            var status = $("#status").val().trim();
+            var barcode = $("#barcode").val().trim();
+            var mTransNo = $("#MTransNo").val().trim();
+
+            if (barcode === "") {
+                $("#barcode-error").text("Barcode is required.");
+                isValid = false;
+            }
+            if (!isValid) return; 
+            var binData = {
+                BinType: BinType,
+                Dimension: dimension,
+                Status: status,
+                Barcode: barcode,
+                MTransNo: mTransNo
+            };
+            $.ajax({
+                url: "/BinMaster/AddEdit1",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(binData),
+                success: function (response) {
+                    
+                    if (response === "BCExist1") {
+                        $("#barcode-error").text("BinMaster with this barcode already exists.");
+                       
+                    } else {
+                        Swal.fire({
+                        title: 'Success!',
+                        text: 'Bin Updated successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'Ok!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/BinMaster/Index';
+                        }
+                    });
+                    }
+                },
+                error: function (xhr) {
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+
+        });
+});
+    </script>
+

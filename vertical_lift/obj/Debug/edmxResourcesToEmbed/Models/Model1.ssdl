@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="S1542Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BinMaster">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="status" Type="char" MaxLength="1" />
+    <Property Name="dimension" Type="varchar" MaxLength="50" />
+    <Property Name="barcode" Type="int" />
+    <Property Name="BinType" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="UserMaster">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserId" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="PW" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="UserType" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="ContactNo" Type="varchar" MaxLength="20" />
+    <Property Name="RfId" Type="varchar" MaxLength="250" />
+    <Property Name="EmailId" Type="varchar" MaxLength="80" />
+    <Property Name="BioId1" Type="varchar" MaxLength="250" />
+    <Property Name="BioId2" Type="varchar" MaxLength="250" />
+    <Property Name="BioData1" Type="varchar" MaxLength="3000" />
+    <Property Name="BioData2" Type="varchar" MaxLength="3000" />
+    <Property Name="ImagePath" Type="varchar" MaxLength="250" />
+    <Property Name="PWExpiry" Type="tinyint" />
+    <Property Name="BadLogins" Type="tinyint" />
+    <Property Name="LockCounter" Type="tinyint" />
+    <Property Name="LockStatus" Type="char" MaxLength="1" />
+    <Property Name="CreatedBy" Type="smallint" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="ModifiedBy" Type="smallint" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="DeleteStatus" Type="char" MaxLength="1" />
+    <Property Name="SubscID" Type="smallint" />
+    <Property Name="LastLogin" Type="date" />
+  </EntityType>
+  <EntityContainer Name="S1542Model1StoreContainer">
+    <EntitySet Name="BinMaster" EntityType="Self.BinMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
