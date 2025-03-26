@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -13,6 +14,8 @@ namespace vertical_lift.Models
         public string GRNNO { get; set; }
         public string GrnType { get; set; }
         public string MaterialDesc { get; set; }
+
+        [RegularExpression(@"^\d{4}$", ErrorMessage = "MaterialBarcode must be exactly 4 digits.")]
         public string MaterialBarcode { get; set; }
         public string batchno { get; set; }
         public string style { get; set; }

@@ -17,7 +17,7 @@
 
 
     @*Fontawason link*@
-   @* <link rel="stylesheet" href="../../../Scripts/css/all.min.css">*@
+    @* <link rel="stylesheet" href="../../../Scripts/css/all.min.css">*@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     @*Custome style*@
@@ -32,12 +32,22 @@
     <link rel="stylesheet" href="../../../scripts/css/jquery.dataTables.min.css">
     <script src="../../../scripts/js/query.dataTables.min.js"></script>
 
+    <!-- PNotify CSS -->
+    <link rel="stylesheet" href="~/Content/pnotify/pnotify.custom.css" />
+
+    <!-- PNotify JS -->
+    <script src="~/Content/pnotify/pnotify.custom.js"></script>
+
+
     <style>
+
+
         .dhover {
             margin-left: 15px;
             margin-right: 15px;
             border-radius: 5px;
         }
+
         .inner-list {
             font-size: 14px;
             padding: 4px 10px 4px 10px;
@@ -267,7 +277,7 @@
 
 
             @* <li class="dhover"><a href="../../Home/Logout" class="text-white"><i class="fa-solid fa-right-from-bracket sicon"></i> Logout</a></li>*@
-          @*  <li class="dhover"> <i class="fa-solid fa-right-from-bracket sicon"></i> @Floorno </li>*@
+            @*  <li class="dhover"> <i class="fa-solid fa-right-from-bracket sicon"></i> @Floorno </li>*@
             <li class="dhover" id="logout"><a href="#" class="text-white"><i class="fa-solid fa-right-from-bracket sicon"></i> Logout</a></li>
         </ul>
     </div>
@@ -300,7 +310,7 @@
                 $("#sidebar").toggleClass("collapsed");
                 /*  $("#fa-arrow-left").addClass("highlight");*/
             });
-        
+
 
             /*dropdown slide down*/
             $(".dropdown > a").click(function (e) {
@@ -342,6 +352,37 @@
         });
 
     </script>
+    <script>
+        function pNof(title, text) {
+            new PNotify({
+                title: title,
+                text: text,
+                shadow: true,
+                addclass: 'stack-bottomright'
+            });
+        }
+
+        function pNofsuc(title, text) {
+            new PNotify({
+                title: title,
+                text: text,
+                type: 'success',
+                shadow: true,
+                addclass: 'stack-bottomright'
+            });
+        }
+
+        function pNoffail(title, text) {
+            new PNotify({
+                title: title,
+                text: text,
+                type: 'error',
+                shadow: true,
+                addclass: 'stack-bottomright'
+            });
+        }
+    </script>
+
 
 </body>
 </html>

@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Lift</title>
+
+    <!-- PNotify CSS -->
+  <!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pnotify/5.2.0/PNotify.min.css" />-->
+    <link rel="stylesheet" href="~/Content/pnotify/pnotify.custom.css" />
+
+    <!-- PNotify JS -->
+  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/pnotify/5.2.0/PNotify.min.js"></script>-->
+    <script src="~/Content/pnotify/pnotify.custom.js"></script>
+
+    <!-- Custom Notification Functions -->
+    <script>
+        function pNof(til, txt) {
+            new PNotify({
+                title: til,
+                text: txt,
+                shadow: true,
+                addclass: 'stack-bottomright'
+            });
+        }
+
+        function pNofsuc(til, txt) {
+            new PNotify({
+                title: til,
+                text: txt,
+                type: 'success',
+                shadow: true,
+                addclass: 'stack-bottomright'
+            });
+        }
+
+        function pNoffail(til, txt) {
+            new PNotify({
+                title: til,
+                text: txt,
+                type: 'error',
+                shadow: true,
+                addclass: 'stack-bottomright'
+            });
+        }
+    </script>
+</head>
+<!--<body>-->
+
+    <!-- Add a button to test the notifications -->
+    <!--<button onclick="pNof('Notification Title', 'This is a regular notification')">Show Notification</button>
+    <button onclick="pNofsuc('Success!', 'This is a success notification')">Show Success</button>
+    <button onclick="pNoffail('Error!', 'This is an error notification')">Show Error</button>
+
+</body>-->
+</html>

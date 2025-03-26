@@ -14,41 +14,42 @@ namespace vertical_lift.Controllers
         public ActionResult Refill()
         {
             //for GRN dropdown
-            ViewBag.GrnType = new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "With GRN", Value = "Yes",Selected=false },
-                    new SelectListItem { Text = "Without GRN", Value = "No",Selected=false },                   
-                };
+            //ViewBag.GrnType = new List<SelectListItem>
+            //    {
+            //        new SelectListItem { Text = "With GRN", Value = "Yes",Selected=false },
+            //        new SelectListItem { Text = "Without GRN", Value = "No",Selected=false },                   
+            //    };
 
-            //var MaterialsAndBinTypes = conn.ExistingDetails
-            //                   .Where(x => x.Action == "LOAD MATERIAL")
-            //                   .Select(u => new { u.MaterialDescription, u.BinType })
-            //                   .Distinct()
-            //                   .ToList();
+            var MaterialsAndBinTypes = conn.ExistingDetails 
+                               .Where(x => x.Action == "LOAD MATERIAL" && x.InspectionType=="Yes")
+                               .Select(u => new { u.MaterialDescription, u.BinType })
+                               .Distinct()
+                               .ToList();
 
-            //ViewBag.Material = new SelectList(MaterialsAndBinTypes, "MaterialDescription", "MaterialDescription");
+            ViewBag.Material = new SelectList(MaterialsAndBinTypes, "MaterialDescription", "MaterialDescription");
             ViewBag.BinType = new SelectList("", "", "");
-            ViewBag.Material = new SelectList("", "", "");
             ViewBag.BinNo = new SelectList("", "", "");
             return View();
            
         }
-        public JsonResult GetGrnNo(string GrnNo)
-        {
-            //fwtch grn details in dropown 
-            var MaterialsAndBinTypes = conn.ExistingDetails
-                 .Where(x => x.Action == "LOAD MATERIAL" && x.InspectionType == GrnNo)
-                 .Select(u => new { u.MaterialDescription, u.BinType })
-                 .Distinct()
-                 .ToList();
-            return Json(MaterialsAndBinTypes, JsonRequestBehavior.AllowGet);
-        }
 
-        public JsonResult GetBinType(string Material, string grnno)
+        ////still not ins used might use in future
+        //public JsonResult GetGrnNo(string GrnNo)
+        //{
+        //    //fwtch grn details in dropown 
+        //    var MaterialsAndBinTypes = conn.ExistingDetails
+        //         .Where(x => x.Action == "LOAD MATERIAL" && x.InspectionType == GrnNo)
+        //         .Select(u => new { u.MaterialDescription, u.BinType })
+        //         .Distinct()
+        //         .ToList();
+        //    return Json(MaterialsAndBinTypes, JsonRequestBehavior.AllowGet);
+        //}
+
+        public JsonResult GetBinType(string Material)
         {
             //gets bintype for dropdown
             var BinType = conn.ExistingDetails
-                               .Where(x => x.Action == "LOAD MATERIAL" && x.MaterialDescription == Material && x.InspectionType == grnno)
+                               .Where(x => x.Action == "LOAD MATERIAL" && x.MaterialDescription == Material && x.InspectionType == "Yes")
                                .Select(u => new { u.BinType })  
                                .Distinct()  
                                .ToList();
@@ -56,11 +57,11 @@ namespace vertical_lift.Controllers
         }   
      
 
-        public JsonResult GetBinno(string BinType, string Material, string grnno)
+        public JsonResult GetBinno(string BinType, string Material)
         {
             //fwtch grn details in dropown 
             var Binloc = conn.ExistingDetails
-                               .Where(x => x.Action == "LOAD MATERIAL" && x.MaterialDescription == Material && x.InspectionType == grnno && x.BinType==BinType)
+                               .Where(x => x.Action == "LOAD MATERIAL" && x.MaterialDescription == Material && x.InspectionType == "Yes" && x.BinType==BinType)
                                .Select(u => new { u.BinLocation })
                                .Distinct()
                                .ToList();

@@ -202,6 +202,7 @@
         font-size: 13px;
     }
 </style>
+
 <main>
     <div class="row">
         <div class="common-heading">
@@ -219,38 +220,34 @@
                 @Html.HiddenFor(model => model.TrayNo)
                 @Html.HiddenFor(model => model.Side)
 
-                <div class="col-md-4">
-                    <label class="form-label">Select Type</label>
-                    @Html.DropDownListFor(model => model.GrnType, null, "", new { @class = "form-control populate", @autofocus = "True" })
-                    @Html.ValidationMessageFor(model => model.GrnType, "", new { style = "color: red" })
-                </div>
-
-                <div class="col-md-4" id="DivMaterial">
+                @*<div class="col-md-4">
+                        <label class="form-label">Select Type</label>
+                        @Html.DropDownListFor(model => model.GrnType, null, "", new { @class = "form-control populate", @autofocus = "True" })
+                        @Html.ValidationMessageFor(model => model.GrnType, "", new { style = "color: red" })
+                    </div>*@
+                <div class="col-md-3" id="DivMaterial">
                     <label class="form-label">Select Material</label>
                     @Html.DropDownListFor(model => model.Material, null, "", new { @class = "form-control populate", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.Material, "", new { style = "color: red" })
                 </div>
 
-                <div class="col-md-4" id="DivBinType">
+                <div class="col-md-2" id="DivBinType">
                     <label class="form-label">Select Bin Type</label>
                     @Html.DropDownListFor(model => model.BinType, null, "", new { @class = "form-control populate", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.BinType, "", new { style = "color: red" })
                 </div>
+                <div class="col-md-2" id="DivBinNo">
+                    <label class="form-label">Select Bin Number</label>
+                    @Html.DropDownListFor(model => model.BinNo, null, "", new { @class = "form-control populate", @autofocus = "True" })
+                    @Html.ValidationMessageFor(model => model.BinNo, "", new { style = "color: red" })
                 </div>
-
-            <div class="row mb-4">
-                <div class="col-md-4" id="DivDimension">
+                <div class="col-md-3" id="DivDimension">
                     <label class="form-label">Dimension</label>
                     @Html.TextBoxFor(model => model.Dimension, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Dimension, "", new { style = "color: red" })
                 </div>
 
-                <div class="col-md-4" id="DivBinNo">
-                    <label class="form-label">Select Bin Number</label>
-                    @Html.DropDownListFor(model => model.BinNo, null, "", new { @class = "form-control populate", @autofocus = "True" })
-                    @Html.ValidationMessageFor(model => model.BinNo, "", new { style = "color: red" })
-                </div>
-                <div class="col-md-4" id="DivAvlqty">
+                <div class="col-md-2" id="DivAvlqty">
                     <label class="form-label">Available Quantity</label>
                     @Html.TextBoxFor(model => model.Avlqty, new { @class = "form-control ", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.Avlqty, "", new { style = "color: red" })
@@ -258,80 +255,78 @@
             </div>
 
             <div class="row mb-4">
-                <div class="col-md-4" id="DivMaterialBarcode">
+                <div class="col-md-3" id="DivMaterialBarcode">
                     <label class="form-label">Scan Material Barcode</label>
                     @Html.TextBoxFor(model => model.MaterialBarcode, new { @class = "form-control ", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.MaterialBarcode, "", new { style = "color: red" })
                 </div>
-
-                <div class="col-md-4" id="DivRefilQty">
+                <div class="col-md-2" id="DivRefilQty">
                     <label class="form-label">Refill Quantity</label>
                     @Html.TextBoxFor(model => model.RefilQty, new { @class = "form-control", @autofocus = "True", type = "number", min = "1", step = "1", oninput = "this.value=this.value.replace(/[^0-9]/g,'');" })
                     @Html.ValidationMessageFor(model => model.RefilQty, "", new { style = "color: red" })
                 </div>
-
                 <div class="col-md-2 d-flex align-items-end">
                     <button type="button" class="btn btn-primary" value="add" name="add" id="AddButton">Add</button>
                 </div>
-            </div>
-
-                <div class="col-md-3 text-center">
+                <div class="col-md-3 d-flex  align-items-end">
                     <button type="button" class="btn btn-primary" value="Submit" name="add" id="submitButton">Refill</button>
                 </div>
-                <!-- Bin Position -->
-                <h5 id="bin-poss" class="mt-2"><b>Bin Position</b></h5>
-                <div class="bin-grids" id="bins">
-                    <div class="bin-grid binposition" id="Types1">
-                        @for (int i = 0; i < 18; i++)
-                        {
-                            <div class="bin-item"></div>
-                        }
-                    </div>
+            </div>
 
-                    <div class="bin-grid binposition1" id="Types2">
-                        @for (int i = 0; i < 15; i++)
-                        {
-                            <div class="bin-item"></div>
-                        }
-                    </div>
-
-                    <div class="bin-grid binposition2" id="Types3">
-                        @for (int i = 0; i < 6; i++)
-                        {
-                            <div class="bin-item"></div>
-                        }
-                    </div>
+            <!-- Bin Position -->
+            <h5 id="bin-poss" class="mt-2"><b>Bin Position</b></h5>
+            <div class="bin-grids" id="bins">
+                <div class="bin-grid binposition" id="Types1">
+                    @for (int i = 0; i < 18; i++)
+                    {
+                        <div class="bin-item"></div>
+                    }
                 </div>
 
-                <!-- View List Table -->
-                <h5 class="mt-4"><b>View List</b></h5>
-                <table id="binTable" class="display">
-                    <thead>
-                        <tr>
-                            <th>Bin No</th>
-                            <th>Bin Barcode</th>
-                            <th>Material Description</th>
-                            <th>Material Barcode</th>
-                            <th>Batch No</th>
-                            <th>Style</th>
-                            <th>Avl Qty</th>
-                            <th>Refill Qty</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Data Rows go here -->
-                    </tbody>
-                </table>
+                <div class="bin-grid binposition1" id="Types2">
+                    @for (int i = 0; i < 15; i++)
+                    {
+                        <div class="bin-item"></div>
+                    }
+                </div>
 
-                <!-- Total Weight Display -->
-                <br />
-                <center>
-                    <h6>Total Weight: <span id="weightkg">90</span> KG</h6>
-                    <p id="weighterror"></p>
-                    <button class="btn btn-success w-30" id="submit">Submit</button>
-                </center>
+                <div class="bin-grid binposition2" id="Types3">
+                    @for (int i = 0; i < 6; i++)
+                    {
+                        <div class="bin-item"></div>
+                    }
+                </div>
             </div>
+
+            <!-- View List Table -->
+            <h5 class="mt-4"><b>View List</b></h5>
+            <table id="binTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Bin No</th>
+                        <th>Bin Barcode</th>
+                        <th>Material Description</th>
+                        <th>Material Barcode</th>
+                        <th>Batch No</th>
+                        <th>Style</th>
+                        <th>Avl Qty</th>
+                        <th>Refill Qty</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data Rows go here -->
+                </tbody>
+            </table>
+
+            <!-- Total Weight Display -->
+            <br />
+            <center>
+                <h6>Total Weight: <span id="weightkg">90</span> KG</h6>
+                <p id="weighterror"></p>
+                <button class="btn btn-success w-30" id="submit">Submit</button>
+            </center>
+        </div>
     </div>
 
     <!-- Loader Overlays -->
@@ -357,7 +352,6 @@
     $(document).ready(function () {
         $('#Types1, #Types2, #Types3').hide();
         $('#DivBinType').hide();
-        $('#DivMaterial').hide();
         $('#DivDimension').hide();
         $('#DivAvlqty').hide();
         $('#DivRefilQty').hide();
@@ -367,42 +361,39 @@
         $('#DivMaterialBarcode').hide();
     });
 
-    $('#GrnType').change(function () {
-        var grnno = $('#GrnType').val();
-        $.ajax({
-            url: 'GetGrnNo',
-            type: 'GET',
-            data: { grnno: grnno },  // Send the selected material
-            success: function (result) {
-                //add details to Material dropdown
-                $('#DivMaterial').show();
-                $('#Material').empty().append('<option value=""></option>');
-                // Check if there are any results
-                if (result.length > 0) {
-                    for (var i = 0; i < result.length; i++) {
-                        $('#Material').append('<option value="' + result[i].MaterialDescription + '">' + result[i].MaterialDescription + '</option>');
-                    }
-                }
-            },
-        });
-    });
+    //$('#GrnType').change(function () {
+    //    var grnno = $('#GrnType').val();
+    //    $.ajax({
+    //        url: 'GetGrnNo',
+    //        type: 'GET',
+    //        data: { grnno: grnno },  // Send the selected material
+    //        success: function (result) {
+    //            //add details to Material dropdown
+    //            $('#DivMaterial').show();
+    //            $('#Material').empty().append('<option value=""></option>');
+    //            // Check if there are any results
+    //            if (result.length > 0) {
+    //                for (var i = 0; i < result.length; i++) {
+    //                    $('#Material').append('<option value="' + result[i].MaterialDescription + '">' + result[i].MaterialDescription + '</option>');
+    //                }
+    //            }
+    //        },
+    //    });
+    //});
 
     $('#Material').change(function () {
-        var grnno = $('#GrnType').val();
         var material = $('#Material').val();  // Get selected material
         $.ajax({
             url: 'GetBinType',
             type: 'GET',
             data: {
                 material: material,
-                grnno: grnno
             },  // Send the selected material
-            success: function (result)
-            {
+            success: function (result) {
                 //add details to bintype dropdown
                 $('#DivBinType').show();
                 $('#BinType').empty().append('<option value=""></option>');
-                if (result.length > 0) {  
+                if (result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
                         $('#BinType').append('<option value="' + result[i].BinType + '">' + result[i].BinType + '</option>');
                     }
@@ -419,7 +410,6 @@
 
         var material = $('#Material').val();
         var BinType = $('#BinType').val();
-        var grnno = $('#GrnType').val();
 
         $.ajax({
             url: 'GetBinno',
@@ -427,7 +417,6 @@
             data: {
                 BinType: BinType,
                 material: material,
-                grnno: grnno
             },
             success: function (result) {
                 console.log(result);
@@ -439,7 +428,7 @@
                         $('#BinNo').append('<option value="' + result.Binloc[i].BinLocation + '">' + result.Binloc[i].BinLocation + '</option>');
                     }
                 }
-                $('#Dimension').val(result.getdiemension);
+                $('#Dimension').val(result.getdiemension);//set diemsion & disable it
                 $('#Dimension').prop('disabled', true);
             },
         });
@@ -453,8 +442,8 @@
         $('#AddButton').show();
         $('#DivMaterialBarcode').show();
 
-        var material = $('#Material').val(); 
-        var BinType = $('#BinType').val();  
+        var material = $('#Material').val();
+        var BinType = $('#BinType').val();
         var binlocation = $('#BinNo').val();
 
         $.ajax({
@@ -464,7 +453,7 @@
                 BinType: BinType,
                 material: material,
                 binlocation: binlocation
-            },  
+            },
             success: function (result) {
                 console.log(result);
                 $('#Avlqty').val(result.Qty);
@@ -476,8 +465,24 @@
         });
     });
 
-        
-    $('#AddButton').click (function () {
+    //on scan buton
+    $('#MaterialBarcode').on('keypress', function (e) {
+        if (e.key === 'Enter') {
+            MaterialBarcode = $('#MaterialBarcode').val();
+            // Check if the Enter key was pressed
+            if (!/^\d{4}$/.test(MaterialBarcode)) {
+                $('#MaterialBarcode').focus();
+                //showToast("Please Scan a Proper valid 4-digit Trolley QR", "error");
+                pNof('Notification Title', 'Please Scan a Proper valid 4-digit Trolley QR');
+                $('#MaterialBarcode').val(""); // Clear invalid input
+                $('#MaterialBarcode').focus(); // Refocus input
+                return false;
+            }
+        }
+    });
+
+
+    $('#AddButton').click(function () {
         var material = $('#Material').val();
         var BinType = $('#BinType').val();
         var binlocation = $('#BinNo').val();
@@ -514,6 +519,6 @@
 
     });
 
-   
+
 
 </script>

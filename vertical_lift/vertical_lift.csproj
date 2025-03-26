@@ -236,6 +236,8 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\img\login-bg.jpg" />
+    <Content Include="Content\pnotify\pnotify.custom.css" />
+    <Content Include="Content\pnotify\pnotify.custom.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -283,6 +285,7 @@
     <Content Include="Scripts\js\sweetalert2.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\pnotify\pnotify.custom.js" />
+    <Content Include="Views\Shared\Message.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
