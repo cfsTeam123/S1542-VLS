@@ -133,6 +133,7 @@
     <Compile Include="Controllers\LoadOperationController.cs" />
     <Compile Include="Controllers\LoadOperationWithoutGRNController.cs" />
     <Compile Include="Controllers\MaterialMasterController.cs" />
+    <Compile Include="Controllers\RefillOperationController.cs" />
     <Compile Include="Controllers\TrayAllocationMasterController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UtilityController.cs" />
@@ -166,6 +167,13 @@
       <DependentUpon>S1542.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MaterialMasterValidation.cs" />
+    <Compile Include="Models\RefillOpValidation.cs" />
+    <Compile Include="Models\Refill_Temp_Table.cs">
+      <DependentUpon>S1542.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Refill_Temp_Table1.cs">
+      <DependentUpon>S1542.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\S1542.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -300,6 +308,7 @@
     <Content Include="Views\LoadOperation\LoadOperation.cshtml" />
     <Content Include="Views\LoadOperation\LoadOperationWithGRN.cshtml" />
     <Content Include="Views\LoadOperationWithoutGRN\LoadWithoutGRN.cshtml" />
+    <Content Include="Views\RefillOperation\Refill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -60,14 +60,11 @@
     <Property Name="ModifiedBy" Type="int" />
     <Property Name="MaxQty" Type="int" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'S1542.dbo.finger_id' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="finger_id">
     <Key>
       <PropertyRef Name="MTransNo" />
-      <PropertyRef Name="finger" />
     </Key>
-    <Property Name="MTransNo" Type="int" Nullable="false" />
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="finger" Type="smallint" Nullable="false" />
     <Property Name="status" Type="varchar" MaxLength="50" />
   </EntityType>
@@ -105,6 +102,8 @@ warning 6002: The table/view 'S1542.dbo.finger_id' does not have a primary key d
     <Property Name="Style" Type="varchar" MaxLength="100" />
     <Property Name="Qty" Type="int" Nullable="false" />
     <Property Name="MaxQty" Type="int" />
+    <Property Name="TrayNo" Type="int" />
+    <Property Name="Side" Type="int" />
   </EntityType>
   <EntityType Name="MaterialMaster">
     <Key>
@@ -119,6 +118,37 @@ warning 6002: The table/view 'S1542.dbo.finger_id' does not have a primary key d
     <Property Name="CreatedOn" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
     <Property Name="ModifiedOn" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Refill_Temp_Table">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BinNo" Type="int" Nullable="false" />
+    <Property Name="BinBarcode" Type="int" Nullable="false" />
+    <Property Name="GRNNO" Type="varchar" MaxLength="200" />
+    <Property Name="MaterialDesc" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="MaterialBarcode" Type="int" Nullable="false" />
+    <Property Name="BatchNo" Type="varchar" MaxLength="100" />
+    <Property Name="Style" Type="varchar" MaxLength="100" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Refill_Temp_Table1">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BinNo" Type="int" Nullable="false" />
+    <Property Name="Side" Type="int" Nullable="false" />
+    <Property Name="TrayNo" Type="int" Nullable="false" />
+    <Property Name="BinBarcode" Type="int" Nullable="false" />
+    <Property Name="GRNNO" Type="varchar" MaxLength="200" />
+    <Property Name="MaterialDesc" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="MaterialBarcode" Type="int" Nullable="false" />
+    <Property Name="BatchNo" Type="varchar" MaxLength="100" />
+    <Property Name="Style" Type="varchar" MaxLength="100" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="1" Nullable="false" />
   </EntityType>
   <EntityType Name="TransactionDetails">
     <Key>
@@ -189,18 +219,14 @@ warning 6002: The table/view 'S1542.dbo.finger_id' does not have a primary key d
     <EntitySet Name="BinMaster" EntityType="Self.BinMaster" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="BinMasterTable" EntityType="Self.BinMasterTable" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ExistingDetails" EntityType="Self.ExistingDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="finger_id" EntityType="Self.finger_id" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Goods_Existing" EntityType="Self.Goods_Existing" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Load_Temp_Table" EntityType="Self.Load_Temp_Table" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MaterialMaster" EntityType="Self.MaterialMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Refill_Temp_Table" EntityType="Self.Refill_Temp_Table" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Refill_Temp_Table1" EntityType="Self.Refill_Temp_Table1" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TrayMaster" EntityType="Self.TrayMaster" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="finger_id" EntityType="Self.finger_id" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [finger_id].[MTransNo] AS [MTransNo], 
-    [finger_id].[finger] AS [finger], 
-    [finger_id].[status] AS [status]
-    FROM [dbo].[finger_id] AS [finger_id]</DefiningQuery>
-    </EntitySet>
   </EntityContainer>
 </Schema>

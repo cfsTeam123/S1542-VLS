@@ -4,13 +4,15 @@
     <EntitySet Name="BinMasters" EntityType="S1542Model.BinMaster" />
     <EntitySet Name="BinMasterTables" EntityType="S1542Model.BinMasterTable" />
     <EntitySet Name="ExistingDetails" EntityType="S1542Model.ExistingDetail" />
+    <EntitySet Name="finger_id" EntityType="S1542Model.finger_id" />
     <EntitySet Name="Goods_Existing" EntityType="S1542Model.Goods_Existing" />
     <EntitySet Name="Load_Temp_Table" EntityType="S1542Model.Load_Temp_Table" />
     <EntitySet Name="MaterialMasters" EntityType="S1542Model.MaterialMaster" />
+    <EntitySet Name="Refill_Temp_Table" EntityType="S1542Model.Refill_Temp_Table" />
+    <EntitySet Name="Refill_Temp_Table1" EntityType="S1542Model.Refill_Temp_Table1" />
     <EntitySet Name="TransactionDetails" EntityType="S1542Model.TransactionDetail" />
     <EntitySet Name="TrayMasters" EntityType="S1542Model.TrayMaster" />
     <EntitySet Name="UserMasters" EntityType="S1542Model.UserMaster" />
-    <EntitySet Name="finger_id" EntityType="S1542Model.finger_id" />
   </EntityContainer>
   <EntityType Name="BinMaster">
     <Key>
@@ -72,6 +74,14 @@
     <Property Name="ModifiedBy" Type="Int32" />
     <Property Name="MaxQty" Type="Int32" />
   </EntityType>
+  <EntityType Name="finger_id">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="finger" Type="Int16" Nullable="false" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
   <EntityType Name="Goods_Existing">
     <Key>
       <PropertyRef Name="MTransNo" />
@@ -106,6 +116,8 @@
     <Property Name="Style" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Qty" Type="Int32" Nullable="false" />
     <Property Name="MaxQty" Type="Int32" />
+    <Property Name="TrayNo" Type="Int32" />
+    <Property Name="Side" Type="Int32" />
   </EntityType>
   <EntityType Name="MaterialMaster">
     <Key>
@@ -120,6 +132,37 @@
     <Property Name="CreatedOn" Type="DateTime" Precision="3" />
     <Property Name="ModifiedBy" Type="Int32" />
     <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Refill_Temp_Table">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BinNo" Type="Int32" Nullable="false" />
+    <Property Name="BinBarcode" Type="Int32" Nullable="false" />
+    <Property Name="GRNNO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="MaterialDesc" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="MaterialBarcode" Type="Int32" Nullable="false" />
+    <Property Name="BatchNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Style" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Qty" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Refill_Temp_Table1">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BinNo" Type="Int32" Nullable="false" />
+    <Property Name="Side" Type="Int32" Nullable="false" />
+    <Property Name="TrayNo" Type="Int32" Nullable="false" />
+    <Property Name="BinBarcode" Type="Int32" Nullable="false" />
+    <Property Name="GRNNO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="MaterialDesc" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="MaterialBarcode" Type="Int32" Nullable="false" />
+    <Property Name="BatchNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Style" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Qty" Type="Int32" Nullable="false" />
+    <Property Name="Status" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="TransactionDetail">
     <Key>
@@ -185,14 +228,5 @@
     <Property Name="DeleteStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
     <Property Name="SubscID" Type="Int16" />
     <Property Name="LastLogin" Type="DateTime" Precision="0" />
-  </EntityType>
-  <EntityType Name="finger_id">
-    <Key>
-      <PropertyRef Name="MTransNo" />
-      <PropertyRef Name="finger" />
-    </Key>
-    <Property Name="MTransNo" Type="Int32" Nullable="false" />
-    <Property Name="finger" Type="Int16" Nullable="false" />
-    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

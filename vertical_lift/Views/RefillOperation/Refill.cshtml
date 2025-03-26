@@ -1,0 +1,519 @@
+﻿@model vertical_lift.Models.RefillOpValidation
+@using vertical_lift.Models;
+
+@{
+    ViewBag.Title = "Refill Operation";
+}
+<style>
+    #sidebar {
+        width: 0px !important;
+        overflow: hidden;
+    }
+
+    .binimg {
+        width: 60px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 26px;
+        position: absolute;
+        top: 8px !important;
+        right: 10px !important;
+        width: 20px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        border: 0 !important;
+    }
+
+    .select2-container {
+        display: block !important;
+        width: 100%;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: .375rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    #sidebar.collapsed {
+        width: 230px !important;
+    }
+
+    .operation {
+        background-color: black !important;
+    }
+
+    .form-control:disabled {
+        background-color: #e9ecef !important;
+    }
+
+    #weighterror {
+        color: red;
+    }
+
+    #Types1 {
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+        width: 50%;
+        padding: 20px;
+        background-color: #1958DF;
+    }
+
+        #Types1 > .bin-item {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 5px;
+        }
+
+    #Types2 {
+        display: grid;
+        grid-template-columns: repeat(18, 1fr); /* Finer control */
+        gap: 4px;
+        width: 100%;
+        max-width: 800px;
+        background-color: #1958DF;
+        padding: 20px;
+    }
+
+        #Types2 > .bin-item {
+            background-color: red;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Top 9 bins: each spans 2 columns */
+        #Types2 .bin-item:nth-child(-n+9) {
+            grid-column: span 2;
+        }
+
+        /* Bottom 6 bins: each spans 3 columns */
+        #Types2 .bin-item:nth-child(n+10) {
+            grid-column: span 3;
+        }
+
+    #Types3 {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+        width: 50%;
+        padding: 20px;
+        background-color: #1958DF;
+    }
+
+        #Types3 > .bin-item {
+            width: 85px;
+            height: 50px;
+            background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 5px;
+        }
+
+    .bin-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 60px;
+    }
+
+    @@keyframes binblink {
+        50% {
+            background-color: green;
+        }
+
+        100% {
+            background-color: orange;
+        }
+    }
+
+    .highlight {
+        border: 1px solid white;
+        background-color: green;
+        animation: binblink 1s infinite alternate;
+    }
+
+    #other-content {
+        display: none;
+    }
+
+
+
+    /* Full-screen overlay */
+    .loadonscreen {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        z-index: 9999; /* Ensure it appears above everything */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Loader animation */
+    .loader1 {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #fff;
+        border-top: 5px solid green;
+        border-radius: 50%;
+        animation: spinloaders 1s linear infinite;
+    }
+
+    @@keyframes spinloaders {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    tbody, td, tfoot, th, thead, tr {
+        border: 1px solid #B5ACAC;
+    }
+
+    td {
+        padding: 10px;
+        font-size: 13px;
+    }
+</style>
+<main>
+    <div class="row">
+        <div class="common-heading">
+            <h2 class="common-head">
+                <i class="fa-solid fa-code-compare hicon"></i> Refill Operation
+            </h2>
+        </div>
+    </div>
+
+    <br />
+    <div class="container-outer">
+        <div class="custom-form">
+            <!-- Form Start -->
+            <div class="row mb-4">
+                @Html.HiddenFor(model => model.TrayNo)
+                @Html.HiddenFor(model => model.Side)
+
+                <div class="col-md-4">
+                    <label class="form-label">Select Type</label>
+                    @Html.DropDownListFor(model => model.GrnType, null, "", new { @class = "form-control populate", @autofocus = "True" })
+                    @Html.ValidationMessageFor(model => model.GrnType, "", new { style = "color: red" })
+                </div>
+
+                <div class="col-md-4" id="DivMaterial">
+                    <label class="form-label">Select Material</label>
+                    @Html.DropDownListFor(model => model.Material, null, "", new { @class = "form-control populate", @autofocus = "True" })
+                    @Html.ValidationMessageFor(model => model.Material, "", new { style = "color: red" })
+                </div>
+
+                <div class="col-md-4" id="DivBinType">
+                    <label class="form-label">Select Bin Type</label>
+                    @Html.DropDownListFor(model => model.BinType, null, "", new { @class = "form-control populate", @autofocus = "True" })
+                    @Html.ValidationMessageFor(model => model.BinType, "", new { style = "color: red" })
+                </div>
+                </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4" id="DivDimension">
+                    <label class="form-label">Dimension</label>
+                    @Html.TextBoxFor(model => model.Dimension, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Dimension, "", new { style = "color: red" })
+                </div>
+
+                <div class="col-md-4" id="DivBinNo">
+                    <label class="form-label">Select Bin Number</label>
+                    @Html.DropDownListFor(model => model.BinNo, null, "", new { @class = "form-control populate", @autofocus = "True" })
+                    @Html.ValidationMessageFor(model => model.BinNo, "", new { style = "color: red" })
+                </div>
+                <div class="col-md-4" id="DivAvlqty">
+                    <label class="form-label">Available Quantity</label>
+                    @Html.TextBoxFor(model => model.Avlqty, new { @class = "form-control ", @autofocus = "True" })
+                    @Html.ValidationMessageFor(model => model.Avlqty, "", new { style = "color: red" })
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4" id="DivMaterialBarcode">
+                    <label class="form-label">Scan Material Barcode</label>
+                    @Html.TextBoxFor(model => model.MaterialBarcode, new { @class = "form-control ", @autofocus = "True" })
+                    @Html.ValidationMessageFor(model => model.MaterialBarcode, "", new { style = "color: red" })
+                </div>
+
+                <div class="col-md-4" id="DivRefilQty">
+                    <label class="form-label">Refill Quantity</label>
+                    @Html.TextBoxFor(model => model.RefilQty, new { @class = "form-control", @autofocus = "True", type = "number", min = "1", step = "1", oninput = "this.value=this.value.replace(/[^0-9]/g,'');" })
+                    @Html.ValidationMessageFor(model => model.RefilQty, "", new { style = "color: red" })
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary" value="add" name="add" id="AddButton">Add</button>
+                </div>
+            </div>
+
+                <div class="col-md-3 text-center">
+                    <button type="button" class="btn btn-primary" value="Submit" name="add" id="submitButton">Refill</button>
+                </div>
+                <!-- Bin Position -->
+                <h5 id="bin-poss" class="mt-2"><b>Bin Position</b></h5>
+                <div class="bin-grids" id="bins">
+                    <div class="bin-grid binposition" id="Types1">
+                        @for (int i = 0; i < 18; i++)
+                        {
+                            <div class="bin-item"></div>
+                        }
+                    </div>
+
+                    <div class="bin-grid binposition1" id="Types2">
+                        @for (int i = 0; i < 15; i++)
+                        {
+                            <div class="bin-item"></div>
+                        }
+                    </div>
+
+                    <div class="bin-grid binposition2" id="Types3">
+                        @for (int i = 0; i < 6; i++)
+                        {
+                            <div class="bin-item"></div>
+                        }
+                    </div>
+                </div>
+
+                <!-- View List Table -->
+                <h5 class="mt-4"><b>View List</b></h5>
+                <table id="binTable" class="display">
+                    <thead>
+                        <tr>
+                            <th>Bin No</th>
+                            <th>Bin Barcode</th>
+                            <th>Material Description</th>
+                            <th>Material Barcode</th>
+                            <th>Batch No</th>
+                            <th>Style</th>
+                            <th>Avl Qty</th>
+                            <th>Refill Qty</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data Rows go here -->
+                    </tbody>
+                </table>
+
+                <!-- Total Weight Display -->
+                <br />
+                <center>
+                    <h6>Total Weight: <span id="weightkg">90</span> KG</h6>
+                    <p id="weighterror"></p>
+                    <button class="btn btn-success w-30" id="submit">Submit</button>
+                </center>
+            </div>
+    </div>
+
+    <!-- Loader Overlays -->
+    <div id="loader-overlay" class="loadonscreen" style="display:none;">
+        <div class="d-block">
+            <center>
+                <div class="loader1"></div>
+                <h6 class="text-center text-white mt-4">Please Wait Tray Is Arriving To the Loading Station...</h6>
+            </center>
+        </div>
+    </div>
+
+    <div id="loader-overlay1" class="loadonscreen" style="display:none;">
+        <div class="d-block">
+            <center>
+                <div class="loader1"></div>
+                <h6 class="text-center text-white mt-4">Please Wait Operation Is Processing...</h6>
+            </center>
+        </div>
+    </div>
+</main>
+<script>
+    $(document).ready(function () {
+        $('#Types1, #Types2, #Types3').hide();
+        $('#DivBinType').hide();
+        $('#DivMaterial').hide();
+        $('#DivDimension').hide();
+        $('#DivAvlqty').hide();
+        $('#DivRefilQty').hide();
+        $('#DivBinNo').hide();
+        $('#AddButton').hide();
+        $('#submitButton').hide();
+        $('#DivMaterialBarcode').hide();
+    });
+
+    $('#GrnType').change(function () {
+        var grnno = $('#GrnType').val();
+        $.ajax({
+            url: 'GetGrnNo',
+            type: 'GET',
+            data: { grnno: grnno },  // Send the selected material
+            success: function (result) {
+                //add details to Material dropdown
+                $('#DivMaterial').show();
+                $('#Material').empty().append('<option value=""></option>');
+                // Check if there are any results
+                if (result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        $('#Material').append('<option value="' + result[i].MaterialDescription + '">' + result[i].MaterialDescription + '</option>');
+                    }
+                }
+            },
+        });
+    });
+
+    $('#Material').change(function () {
+        var grnno = $('#GrnType').val();
+        var material = $('#Material').val();  // Get selected material
+        $.ajax({
+            url: 'GetBinType',
+            type: 'GET',
+            data: {
+                material: material,
+                grnno: grnno
+            },  // Send the selected material
+            success: function (result)
+            {
+                //add details to bintype dropdown
+                $('#DivBinType').show();
+                $('#BinType').empty().append('<option value=""></option>');
+                if (result.length > 0) {  
+                    for (var i = 0; i < result.length; i++) {
+                        $('#BinType').append('<option value="' + result[i].BinType + '">' + result[i].BinType + '</option>');
+                    }
+                }
+            },
+        });
+    });
+
+
+
+    $('#BinType').change(function () {
+        $('#DivDimension').show();
+        $('#DivBinNo').show();
+
+        var material = $('#Material').val();
+        var BinType = $('#BinType').val();
+        var grnno = $('#GrnType').val();
+
+        $.ajax({
+            url: 'GetBinno',
+            type: 'GET',
+            data: {
+                BinType: BinType,
+                material: material,
+                grnno: grnno
+            },
+            success: function (result) {
+                console.log(result);
+                //add details to bin location/number dropdown
+                $('#DivBinNo').show();
+                $('#BinNo').empty().append('<option value=""></option>');
+                if (result.Binloc.length > 0) {
+                    for (var i = 0; i < result.Binloc.length; i++) {
+                        $('#BinNo').append('<option value="' + result.Binloc[i].BinLocation + '">' + result.Binloc[i].BinLocation + '</option>');
+                    }
+                }
+                $('#Dimension').val(result.getdiemension);
+                $('#Dimension').prop('disabled', true);
+            },
+        });
+    });
+
+    $('#BinNo').change(function () {
+        $('#DivDimension').show();
+        $('#DivAvlqty').show();
+        $('#DivRefilQty').show();
+        $('#DivBinNo').show();
+        $('#AddButton').show();
+        $('#DivMaterialBarcode').show();
+
+        var material = $('#Material').val(); 
+        var BinType = $('#BinType').val();  
+        var binlocation = $('#BinNo').val();
+
+        $.ajax({
+            url: 'GetDtl',
+            type: 'GET',
+            data: {
+                BinType: BinType,
+                material: material,
+                binlocation: binlocation
+            },  
+            success: function (result) {
+                console.log(result);
+                $('#Avlqty').val(result.Qty);
+                $('#TrayNo').val(result.TrayNo);
+                $('#Side').val(result.Side);
+
+                $('#Avlqty').prop('disabled', true);
+            },
+        });
+    });
+
+        
+    $('#AddButton').click (function () {
+        var material = $('#Material').val();
+        var BinType = $('#BinType').val();
+        var binlocation = $('#BinNo').val();
+        var Dimension = $('#Dimension').val();
+        var Avlqty = $('#Avlqty').val();
+        var Refilqty = $('#RefilQty').val();
+        var TrayNo = $('#TrayNo').val();
+        var Side = $('#Side').val();
+        var MaterialBarcode = $('#MaterialBarcode').val();
+
+        $.ajax({
+            url: 'SaveDtl',
+            type: 'POST',
+            data: {
+                BinType: BinType,
+                material: material,
+                Dimension: Dimension,
+                binlocation: binlocation,
+                Avlqty: Avlqty,
+                Refilqty: Refilqty,
+                TrayNo: TrayNo,
+                Side: Side,
+                MaterialBarcode: MaterialBarcode
+
+            },
+            success: function (result) {
+                console.log(result);
+                $('#Dimension').val(result.Dimension);
+                $('#Dimension').prop('disabled', true);
+                $('#Avlqty').val(result.Qty);
+                $('#Avlqty').prop('disabled', true);
+            },
+        });
+
+    });
+
+   
+
+</script>

@@ -12,7 +12,7 @@ namespace vertical_lift.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Load_Temp_Table
+    public partial class Refill_Temp_Table
     {
         public int MTransNo { get; set; }
         public int BinNo { get; set; }
@@ -23,8 +23,5 @@ namespace vertical_lift.Models
         public string BatchNo { get; set; }
         public string Style { get; set; }
         public int Qty { get; set; }
-        public Nullable<int> MaxQty { get; set; }
-        public Nullable<int> TrayNo { get; set; }
-        public Nullable<int> Side { get; set; }
     }
 }
