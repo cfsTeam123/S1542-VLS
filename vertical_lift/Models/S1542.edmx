@@ -129,14 +129,19 @@
             <PropertyRef Name="MTransNo" />
           </Key>
           <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BinNo" Type="int" Nullable="false" />
-          <Property Name="BinBarcode" Type="int" Nullable="false" />
+          <Property Name="BinNo" Type="int" />
+          <Property Name="Side" Type="int" />
+          <Property Name="TrayNo" Type="int" />
+          <Property Name="BinType" Type="varchar" MaxLength="200" />
+          <Property Name="BinBarcode" Type="int" />
           <Property Name="GRNNO" Type="varchar" MaxLength="200" />
-          <Property Name="MaterialDesc" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="MaterialBarcode" Type="int" Nullable="false" />
+          <Property Name="MaterialDesc" Type="varchar" MaxLength="200" />
+          <Property Name="MaterialBarcode" Type="int" />
           <Property Name="BatchNo" Type="varchar" MaxLength="100" />
           <Property Name="Style" Type="varchar" MaxLength="100" />
-          <Property Name="Qty" Type="int" Nullable="false" />
+          <Property Name="RefilQty" Type="int" />
+          <Property Name="AvlQty" Type="int" />
+          <Property Name="Status" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Refill_Temp_Table1">
           <Key>
@@ -144,8 +149,6 @@
           </Key>
           <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BinNo" Type="int" Nullable="false" />
-          <Property Name="Side" Type="int" Nullable="false" />
-          <Property Name="TrayNo" Type="int" Nullable="false" />
           <Property Name="BinBarcode" Type="int" Nullable="false" />
           <Property Name="GRNNO" Type="varchar" MaxLength="200" />
           <Property Name="MaterialDesc" Type="varchar" MaxLength="200" Nullable="false" />
@@ -153,7 +156,6 @@
           <Property Name="BatchNo" Type="varchar" MaxLength="100" />
           <Property Name="Style" Type="varchar" MaxLength="100" />
           <Property Name="Qty" Type="int" Nullable="false" />
-          <Property Name="Status" Type="varchar" MaxLength="1" Nullable="false" />
         </EntityType>
         <EntityType Name="TransactionDetails">
           <Key>
@@ -246,11 +248,11 @@
           <EntitySet Name="Goods_Existing" EntityType="S1542Model.Goods_Existing" />
           <EntitySet Name="Load_Temp_Table" EntityType="S1542Model.Load_Temp_Table" />
           <EntitySet Name="MaterialMasters" EntityType="S1542Model.MaterialMaster" />
-          <EntitySet Name="Refill_Temp_Table" EntityType="S1542Model.Refill_Temp_Table" />
           <EntitySet Name="Refill_Temp_Table1" EntityType="S1542Model.Refill_Temp_Table1" />
           <EntitySet Name="TransactionDetails" EntityType="S1542Model.TransactionDetail" />
           <EntitySet Name="TrayMasters" EntityType="S1542Model.TrayMaster" />
           <EntitySet Name="UserMasters" EntityType="S1542Model.UserMaster" />
+          <EntitySet Name="Refill_Temp_Table" EntityType="S1542Model.Refill_Temp_Table" />
         </EntityContainer>
         <EntityType Name="BinMaster">
           <Key>
@@ -371,28 +373,12 @@
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="Refill_Temp_Table">
-          <Key>
-            <PropertyRef Name="MTransNo" />
-          </Key>
-          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BinNo" Type="Int32" Nullable="false" />
-          <Property Name="BinBarcode" Type="Int32" Nullable="false" />
-          <Property Name="GRNNO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="MaterialDesc" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="MaterialBarcode" Type="Int32" Nullable="false" />
-          <Property Name="BatchNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Style" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Qty" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="Refill_Temp_Table1">
           <Key>
             <PropertyRef Name="MTransNo" />
           </Key>
           <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BinNo" Type="Int32" Nullable="false" />
-          <Property Name="Side" Type="Int32" Nullable="false" />
-          <Property Name="TrayNo" Type="Int32" Nullable="false" />
           <Property Name="BinBarcode" Type="Int32" Nullable="false" />
           <Property Name="GRNNO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="MaterialDesc" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -400,7 +386,6 @@
           <Property Name="BatchNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Style" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Qty" Type="Int32" Nullable="false" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TransactionDetail">
           <Key>
@@ -466,6 +451,25 @@
           <Property Name="DeleteStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="SubscID" Type="Int16" />
           <Property Name="LastLogin" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="Refill_Temp_Table">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BinNo" Type="Int32" />
+          <Property Name="Side" Type="Int32" />
+          <Property Name="TrayNo" Type="Int32" />
+          <Property Name="BinType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="BinBarcode" Type="Int32" />
+          <Property Name="GRNNO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MaterialDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MaterialBarcode" Type="Int32" />
+          <Property Name="BatchNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Style" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RefilQty" Type="Int32" />
+          <Property Name="AvlQty" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -599,25 +603,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Refill_Temp_Table">
-            <EntityTypeMapping TypeName="S1542Model.Refill_Temp_Table">
-              <MappingFragment StoreEntitySet="Refill_Temp_Table">
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="Style" ColumnName="Style" />
-                <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
-                <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
-                <ScalarProperty Name="MaterialDesc" ColumnName="MaterialDesc" />
-                <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
-                <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
-                <ScalarProperty Name="BinNo" ColumnName="BinNo" />
-                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Refill_Temp_Table1">
             <EntityTypeMapping TypeName="S1542Model.Refill_Temp_Table1">
               <MappingFragment StoreEntitySet="Refill_Temp_Table1">
-                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Qty" ColumnName="Qty" />
                 <ScalarProperty Name="Style" ColumnName="Style" />
                 <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
@@ -625,8 +613,6 @@
                 <ScalarProperty Name="MaterialDesc" ColumnName="MaterialDesc" />
                 <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
                 <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
-                <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
-                <ScalarProperty Name="Side" ColumnName="Side" />
                 <ScalarProperty Name="BinNo" ColumnName="BinNo" />
                 <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
               </MappingFragment>
@@ -696,6 +682,26 @@
                 <ScalarProperty Name="PW" ColumnName="PW" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Refill_Temp_Table">
+            <EntityTypeMapping TypeName="S1542Model.Refill_Temp_Table">
+              <MappingFragment StoreEntitySet="Refill_Temp_Table">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="AvlQty" ColumnName="AvlQty" />
+                <ScalarProperty Name="RefilQty" ColumnName="RefilQty" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
+                <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
+                <ScalarProperty Name="MaterialDesc" ColumnName="MaterialDesc" />
+                <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
+                <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+                <ScalarProperty Name="BinType" ColumnName="BinType" />
+                <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
+                <ScalarProperty Name="Side" ColumnName="Side" />
+                <ScalarProperty Name="BinNo" ColumnName="BinNo" />
                 <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
               </MappingFragment>
             </EntityTypeMapping>

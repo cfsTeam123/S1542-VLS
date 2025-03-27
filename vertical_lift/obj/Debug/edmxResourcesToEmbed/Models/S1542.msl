@@ -127,25 +127,9 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Refill_Temp_Table">
-      <EntityTypeMapping TypeName="S1542Model.Refill_Temp_Table">
-        <MappingFragment StoreEntitySet="Refill_Temp_Table">
-          <ScalarProperty Name="Qty" ColumnName="Qty" />
-          <ScalarProperty Name="Style" ColumnName="Style" />
-          <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
-          <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
-          <ScalarProperty Name="MaterialDesc" ColumnName="MaterialDesc" />
-          <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
-          <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
-          <ScalarProperty Name="BinNo" ColumnName="BinNo" />
-          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Refill_Temp_Table1">
       <EntityTypeMapping TypeName="S1542Model.Refill_Temp_Table1">
         <MappingFragment StoreEntitySet="Refill_Temp_Table1">
-          <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="Qty" ColumnName="Qty" />
           <ScalarProperty Name="Style" ColumnName="Style" />
           <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
@@ -153,8 +137,6 @@
           <ScalarProperty Name="MaterialDesc" ColumnName="MaterialDesc" />
           <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
           <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
-          <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
-          <ScalarProperty Name="Side" ColumnName="Side" />
           <ScalarProperty Name="BinNo" ColumnName="BinNo" />
           <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
         </MappingFragment>
@@ -224,6 +206,26 @@
           <ScalarProperty Name="PW" ColumnName="PW" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Refill_Temp_Table">
+      <EntityTypeMapping TypeName="S1542Model.Refill_Temp_Table">
+        <MappingFragment StoreEntitySet="Refill_Temp_Table">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="AvlQty" ColumnName="AvlQty" />
+          <ScalarProperty Name="RefilQty" ColumnName="RefilQty" />
+          <ScalarProperty Name="Style" ColumnName="Style" />
+          <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
+          <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
+          <ScalarProperty Name="MaterialDesc" ColumnName="MaterialDesc" />
+          <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
+          <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+          <ScalarProperty Name="BinType" ColumnName="BinType" />
+          <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
+          <ScalarProperty Name="Side" ColumnName="Side" />
+          <ScalarProperty Name="BinNo" ColumnName="BinNo" />
           <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
         </MappingFragment>
       </EntityTypeMapping>

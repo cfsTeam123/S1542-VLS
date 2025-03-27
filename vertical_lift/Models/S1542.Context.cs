@@ -32,10 +32,10 @@ namespace vertical_lift.Models
         public virtual DbSet<Goods_Existing> Goods_Existing { get; set; }
         public virtual DbSet<Load_Temp_Table> Load_Temp_Table { get; set; }
         public virtual DbSet<MaterialMaster> MaterialMasters { get; set; }
-        public virtual DbSet<Refill_Temp_Table> Refill_Temp_Table { get; set; }
         public virtual DbSet<Refill_Temp_Table1> Refill_Temp_Table1 { get; set; }
         public virtual DbSet<TransactionDetail> TransactionDetails { get; set; }
         public virtual DbSet<TrayMaster> TrayMasters { get; set; }
         public virtual DbSet<UserMaster> UserMasters { get; set; }
+        public virtual DbSet<Refill_Temp_Table> Refill_Temp_Table { get; set; }
     }
 }

@@ -221,41 +221,49 @@
                 @Html.HiddenFor(model => model.Side)
 
                 @*<div class="col-md-4">
-                        <label class="form-label">Select Type</label>
-                        @Html.DropDownListFor(model => model.GrnType, null, "", new { @class = "form-control populate", @autofocus = "True" })
-                        @Html.ValidationMessageFor(model => model.GrnType, "", new { style = "color: red" })
-                    </div>*@
-                <div class="col-md-3" id="DivMaterial">
+            <label class="form-label">Select Type</label>
+            @Html.DropDownListFor(model => model.GrnType, null, "", new { @class = "form-control populate", @autofocus = "True" })
+            @Html.ValidationMessageFor(model => model.GrnType, "", new { style = "color: red" })
+        </div>*@
+                <div class="col-md-4" id="DivMaterial">
                     <label class="form-label">Select Material</label>
                     @Html.DropDownListFor(model => model.Material, null, "", new { @class = "form-control populate", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.Material, "", new { style = "color: red" })
                 </div>
-
-                <div class="col-md-2" id="DivBinType">
+                <div class="col-md-4" id="DivBinType">
                     <label class="form-label">Select Bin Type</label>
                     @Html.DropDownListFor(model => model.BinType, null, "", new { @class = "form-control populate", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.BinType, "", new { style = "color: red" })
                 </div>
-                <div class="col-md-2" id="DivBinNo">
+                <div class="col-md-4" id="DivBinNo">
                     <label class="form-label">Select Bin Number</label>
                     @Html.DropDownListFor(model => model.BinNo, null, "", new { @class = "form-control populate", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.BinNo, "", new { style = "color: red" })
                 </div>
-                <div class="col-md-3" id="DivDimension">
+
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-4" id="DivDimension">
                     <label class="form-label">Dimension</label>
                     @Html.TextBoxFor(model => model.Dimension, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Dimension, "", new { style = "color: red" })
                 </div>
 
-                <div class="col-md-2" id="DivAvlqty">
+                <div class="col-md-4" id="DivAvlqty">
                     <label class="form-label">Available Quantity</label>
                     @Html.TextBoxFor(model => model.Avlqty, new { @class = "form-control ", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.Avlqty, "", new { style = "color: red" })
                 </div>
+
+                <div class="col-md-4" id="DivMaxQty">
+                    <label class="form-label">Maximum Quantity</label>
+                    @Html.TextBoxFor(model => model.MaxQty, new { @class = "form-control ", @autofocus = "True" })
+                    @Html.ValidationMessageFor(model => model.MaxQty, "", new { style = "color: red" })
+                </div>
             </div>
 
             <div class="row mb-4">
-                <div class="col-md-3" id="DivMaterialBarcode">
+                <div class="col-md-4" id="DivMaterialBarcode">
                     <label class="form-label">Scan Material Barcode</label>
                     @Html.TextBoxFor(model => model.MaterialBarcode, new { @class = "form-control ", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.MaterialBarcode, "", new { style = "color: red" })
@@ -303,6 +311,9 @@
             <table id="binTable" class="display">
                 <thead>
                     <tr>
+                        <th>Sl No</th>
+                        <th>Tray No</th>
+                        <th>Side </th>
                         <th>Bin No</th>
                         <th>Bin Barcode</th>
                         <th>Material Description</th>
@@ -311,6 +322,7 @@
                         <th>Style</th>
                         <th>Avl Qty</th>
                         <th>Refill Qty</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -358,7 +370,75 @@
         $('#DivBinNo').hide();
         $('#AddButton').hide();
         $('#submitButton').hide();
+        $('#DivMaxQty').hide();
         $('#DivMaterialBarcode').hide();
+    });
+
+    function Tabledata() {
+        $.ajax({
+            url: 'tabledtl',
+            type: 'GET',
+            data: {},
+            success: function (result) {
+                /*    console.log(result);*/
+                AddTable(result);
+            }
+        });
+    }
+
+
+    function AddTable(result) {
+        $('#binTable tbody').empty();
+        for (let i = 0; i < result.length; i++) {
+            let item = result[i];
+            let k = i + 1; // Serial Number
+            let rowClass = item.Side === "1" ? "Rear" : "Front"; // Assign row class based on Side value
+
+            // Construct the row content
+            let event_data = `<tr>
+            <td class="text-sm-center form-control-sm">${k}</td>
+            <td class="text-sm-center form-control-sm">${item.TrayNo}</td>
+            <td class="text-sm-center form-control-sm">${rowClass}</td>
+            <td class="text-sm-center form-control-sm">${item.BinNo}</td>
+            <td class="text-sm-center form-control-sm">${item.BinBarcode}</td>
+            <td class="text-sm-center form-control-sm">${item.MaterialDesc}</td>
+            <td class="text-sm-center form-control-sm">${item.MaterialBarcode}</td>
+            <td class="text-sm-center form-control-sm">${item.BatchNo}</td>
+            <td class="text-sm-center form-control-sm">${item.Style}</td>
+            <td class="text-sm-center form-control-sm NetWeightCell">${item.AvlQty}</td>
+            <td class="text-sm-center form-control-sm NetWeightCell">${item.RefilQty}</td>
+            <td class="text-sm-center form-control-sm NetWeightCell">${item.Status}</td>
+            <td class="delete-icon form-control-sm NetWeightCell" title="Delete"  data-id="${item.MTransNo}">
+                <i class="fa fa-trash"></i> 
+        </tr>`;
+
+            // Append the constructed row to the table body
+            $('#binTable tbody').append(event_data);
+        }
+    }
+
+    //onclick of delete button 
+    $(document).on('click', '.delete-icon', function () {
+
+        var mTransNo = $(this).data('id');
+        $.ajax({
+            url: 'DeleteItem',
+            type: 'POST',
+            data: { mTransNo: mTransNo },
+            success: function (response) {
+                if (response === 'Success') {
+
+                    alert("Record deleted successfully");
+                } else {
+                    alert("Error deleting record");
+                }
+            },
+            error: function (error) {
+                console.error("Error deleting item", error);
+                alert("An error occurred while deleting the record.");
+            }
+        });
+
     });
 
     //$('#GrnType').change(function () {
@@ -380,7 +460,7 @@
     //        },
     //    });
     //});
-
+    setInterval(Tabledata, 1000);
     $('#Material').change(function () {
         var material = $('#Material').val();  // Get selected material
         $.ajax({
@@ -440,6 +520,7 @@
         $('#DivRefilQty').show();
         $('#DivBinNo').show();
         $('#AddButton').show();
+        $('#DivMaxQty').show();
         $('#DivMaterialBarcode').show();
 
         var material = $('#Material').val();
@@ -459,7 +540,8 @@
                 $('#Avlqty').val(result.Qty);
                 $('#TrayNo').val(result.TrayNo);
                 $('#Side').val(result.Side);
-
+                $('#MaxQty').val(result.MaxQty);
+                $('#MaxQty').prop('disabled', true);
                 $('#Avlqty').prop('disabled', true);
             },
         });
@@ -472,9 +554,9 @@
             // Check if the Enter key was pressed
             if (!/^\d{4}$/.test(MaterialBarcode)) {
                 $('#MaterialBarcode').focus();
-                //showToast("Please Scan a Proper valid 4-digit Trolley QR", "error");
-                pNof('Notification Title', 'Please Scan a Proper valid 4-digit Trolley QR');
+                pNoffail('Error', 'Please Scan a Proper valid 4-digit Trolley QR');
                 $('#MaterialBarcode').val(""); // Clear invalid input
+                $('#RefilQty').val("");
                 $('#MaterialBarcode').focus(); // Refocus input
                 return false;
             }
@@ -483,15 +565,45 @@
 
 
     $('#AddButton').click(function () {
+
+        $('#submitButton').show();//enable refill button show 
         var material = $('#Material').val();
         var BinType = $('#BinType').val();
-        var binlocation = $('#BinNo').val();
         var Dimension = $('#Dimension').val();
-        var Avlqty = $('#Avlqty').val();
-        var Refilqty = $('#RefilQty').val();
         var TrayNo = $('#TrayNo').val();
         var Side = $('#Side').val();
         var MaterialBarcode = $('#MaterialBarcode').val();
+        var binlocation = parseInt($('#BinNo').val());
+        var MaxQty = parseInt($('#MaxQty').val());
+        var Avlqty = parseInt($('#Avlqty').val());
+        var Refilqty = parseInt($('#RefilQty').val());
+
+        // Validation: Check if any required field is empty
+        if (!material || !BinType || !binlocation || !Dimension || !Avlqty || !Refilqty || !TrayNo || !Side || !MaterialBarcode) {
+            pNoffail('Error', 'Please Ensure All Fields Are Filled In Properly.');
+            return false; // Stop further execution if validation fails
+        } else if (!/^\d{4}$/.test(MaterialBarcode)) {
+            pNoffail('Error', 'Please Scan a Proper valid 4-digit Trolley QR');
+            $('#MaterialBarcode').val(""); // Clear invalid input
+            $('#RefilQty').val("");
+            $('#MaterialBarcode').focus(); // Refocus input
+            return false;
+        }else if (isNaN(Refilqty) || Refilqty <= 0) {
+                $('#RefilQty').val("");
+                $('#RefilQty').focus();
+                pNoffail('Error', 'Please enter a valid refill quantity');
+                return false;
+        } else if (Refilqty >= Avlqty) {
+            $('#RefilQty').val("");
+            $('#RefilQty').focus();
+            pNoffail('Error', 'Refill Quantity Should Not Be Grater Than Available Quantity');
+            return false; 
+        } else if (Refilqty >= MaxQty) {
+            $('#RefilQty').val("");
+            $('#RefilQty').focus();
+            pNoffail('Error', 'Refill Quantity Should Not Be Grater Than Maximum Quantity');
+            return false; 
+        } 
 
         $.ajax({
             url: 'SaveDtl',
@@ -506,19 +618,26 @@
                 TrayNo: TrayNo,
                 Side: Side,
                 MaterialBarcode: MaterialBarcode
-
             },
             success: function (result) {
                 console.log(result);
-                $('#Dimension').val(result.Dimension);
-                $('#Dimension').prop('disabled', true);
-                $('#Avlqty').val(result.Qty);
-                $('#Avlqty').prop('disabled', true);
+                //based on bin type dispaly bin location
+                if (result == "Saved") {
+                    if (BinType === 'Type A') {
+                        $('#Types1').show();
+                    } else if (BinType === 'Type B') {
+                        $('#Types2').show();
+                    } else if (BinType === 'Type C') {
+                        $('#Types3').show();
+                    }
+                } else {
+                    pNoffail('Error', 'Data Already Exists');
+                }
             },
         });
-
     });
 
-
+    
+    
 
 </script>

@@ -15,13 +15,18 @@ namespace vertical_lift.Models
     public partial class Refill_Temp_Table
     {
         public int MTransNo { get; set; }
-        public int BinNo { get; set; }
-        public int BinBarcode { get; set; }
+        public Nullable<int> BinNo { get; set; }
+        public Nullable<int> Side { get; set; }
+        public Nullable<int> TrayNo { get; set; }
+        public string BinType { get; set; }
+        public Nullable<int> BinBarcode { get; set; }
         public string GRNNO { get; set; }
         public string MaterialDesc { get; set; }
-        public int MaterialBarcode { get; set; }
+        public Nullable<int> MaterialBarcode { get; set; }
         public string BatchNo { get; set; }
         public string Style { get; set; }
-        public int Qty { get; set; }
+        public Nullable<int> RefilQty { get; set; }
+        public Nullable<int> AvlQty { get; set; }
+        public string Status { get; set; }
     }
 }

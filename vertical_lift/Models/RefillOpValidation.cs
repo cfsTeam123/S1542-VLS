@@ -29,7 +29,7 @@ namespace vertical_lift.Models
         public int Type { get; set; }
         public int Avlqty { get; set; }
         public int RefilQty { get; set; }
-        public int Maxqty { get; set; }
+        public int MaxQty { get; set; }
 
         public string BinTypeWGRN { get; set; }
         public int TypeWGRN { get; set; }

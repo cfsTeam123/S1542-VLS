@@ -124,14 +124,19 @@
       <PropertyRef Name="MTransNo" />
     </Key>
     <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="BinNo" Type="int" Nullable="false" />
-    <Property Name="BinBarcode" Type="int" Nullable="false" />
+    <Property Name="BinNo" Type="int" />
+    <Property Name="Side" Type="int" />
+    <Property Name="TrayNo" Type="int" />
+    <Property Name="BinType" Type="varchar" MaxLength="200" />
+    <Property Name="BinBarcode" Type="int" />
     <Property Name="GRNNO" Type="varchar" MaxLength="200" />
-    <Property Name="MaterialDesc" Type="varchar" MaxLength="200" Nullable="false" />
-    <Property Name="MaterialBarcode" Type="int" Nullable="false" />
+    <Property Name="MaterialDesc" Type="varchar" MaxLength="200" />
+    <Property Name="MaterialBarcode" Type="int" />
     <Property Name="BatchNo" Type="varchar" MaxLength="100" />
     <Property Name="Style" Type="varchar" MaxLength="100" />
-    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="RefilQty" Type="int" />
+    <Property Name="AvlQty" Type="int" />
+    <Property Name="Status" Type="varchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="Refill_Temp_Table1">
     <Key>
@@ -139,8 +144,6 @@
     </Key>
     <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="BinNo" Type="int" Nullable="false" />
-    <Property Name="Side" Type="int" Nullable="false" />
-    <Property Name="TrayNo" Type="int" Nullable="false" />
     <Property Name="BinBarcode" Type="int" Nullable="false" />
     <Property Name="GRNNO" Type="varchar" MaxLength="200" />
     <Property Name="MaterialDesc" Type="varchar" MaxLength="200" Nullable="false" />
@@ -148,7 +151,6 @@
     <Property Name="BatchNo" Type="varchar" MaxLength="100" />
     <Property Name="Style" Type="varchar" MaxLength="100" />
     <Property Name="Qty" Type="int" Nullable="false" />
-    <Property Name="Status" Type="varchar" MaxLength="1" Nullable="false" />
   </EntityType>
   <EntityType Name="TransactionDetails">
     <Key>
