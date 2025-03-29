@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace S0368.Types
+namespace vertical_lift.Types
 {
     public static class Byte
     {
@@ -10,7 +10,7 @@ namespace S0368.Types
         #region ToByteArray
         public static byte[] ToByteArray(byte value)
         {
-            byte[] bytes = new byte[] { value };
+            byte[] bytes = new byte[] { value};
             return bytes;
         }
         #endregion

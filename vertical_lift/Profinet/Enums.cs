@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace S0368.Profinet
+namespace vertical_lift.Profinet
 {
     #region CPU_Type
     public enum CPU_Type

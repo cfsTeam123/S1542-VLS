@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace S0368.Profinet
+namespace vertical_lift.Profinet
 {
     public static class Conversion
     {
@@ -131,7 +131,7 @@ namespace S0368.Profinet
                 }
                 return txt;
             }
-            catch
+            catch 
             {
                 return "";
             }

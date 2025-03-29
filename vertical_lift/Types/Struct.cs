@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace S0368.Types
+namespace vertical_lift.Types
 {
     public static class Struct
     {
@@ -41,7 +41,7 @@ namespace S0368.Types
                             numBytes++;
                         numBytes += 4;
                         break;
-                    case "Float":
+                    case "Float": 
                     case "Double":
                         numBytes = Math.Ceiling(numBytes);
                         if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
@@ -99,7 +99,7 @@ namespace S0368.Types
                         if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
                             numBytes++;
                         // hier auswerten
-                        info.SetValue(structValue, S0368.Types.Word.FromBytes(bytes[(int)numBytes + 1],
+                        info.SetValue(structValue, vertical_lift.Types.Word.FromBytes(bytes[(int)numBytes + 1],
                                                                           bytes[(int)numBytes]));
                         numBytes += 2;
                         break;
@@ -109,7 +109,7 @@ namespace S0368.Types
                         if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
                             numBytes++;
                         // hier auswerten
-                        info.SetValue(structValue, S0368.Types.DWord.FromBytes(bytes[(int)numBytes],
+                        info.SetValue(structValue, vertical_lift.Types.DWord.FromBytes(bytes[(int)numBytes],
                                                                            bytes[(int)numBytes + 1],
                                                                            bytes[(int)numBytes + 2],
                                                                            bytes[(int)numBytes + 3]));
@@ -120,7 +120,7 @@ namespace S0368.Types
                         if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
                             numBytes++;
                         // hier auswerten
-                        info.SetValue(structValue, S0368.Types.Double.FromByteArray(new byte[] { bytes[(int)numBytes],
+                        info.SetValue(structValue, vertical_lift.Types.Double.FromByteArray(new byte[] { bytes[(int)numBytes],
                                                                            bytes[(int)numBytes + 1],
                                                                            bytes[(int)numBytes + 2],
                                                                            bytes[(int)numBytes + 3] }));
@@ -140,7 +140,7 @@ namespace S0368.Types
         {
             Type type = structValue.GetType();
 
-            int size = S0368.Types.Struct.GetStructSize(type);
+            int size = vertical_lift.Types.Struct.GetStructSize(type);
             byte[] bytes = new byte[size];
             byte[] bytes2 = null;
 
@@ -171,19 +171,19 @@ namespace S0368.Types
                         numBytes++;
                         break;
                     case "Int16":
-                        bytes2 = S0368.Types.Int.ToByteArray((Int16)info.GetValue(structValue));
+                        bytes2 = vertical_lift.Types.Int.ToByteArray((Int16)info.GetValue(structValue));
                         break;
                     case "UInt16":
-                        bytes2 = S0368.Types.Word.ToByteArray((UInt16)info.GetValue(structValue));
+                        bytes2 = vertical_lift.Types.Word.ToByteArray((UInt16)info.GetValue(structValue));
                         break;
                     case "Int32":
-                        bytes2 = S0368.Types.DInt.ToByteArray((Int32)info.GetValue(structValue));
+                        bytes2 = vertical_lift.Types.DInt.ToByteArray((Int32)info.GetValue(structValue));
                         break;
                     case "UInt32":
-                        bytes2 = S0368.Types.DWord.ToByteArray((UInt32)info.GetValue(structValue));
+                        bytes2 = vertical_lift.Types.DWord.ToByteArray((UInt32)info.GetValue(structValue));
                         break;
                     case "Double":
-                        bytes2 = S0368.Types.Double.ToByteArray((double)info.GetValue(structValue));
+                        bytes2 = vertical_lift.Types.Double.ToByteArray((double)info.GetValue(structValue));
                         break;
                 }
                 if (bytes2 != null)
@@ -193,7 +193,7 @@ namespace S0368.Types
                     if ((numBytes / 2 - Math.Floor(numBytes / 2.0)) > 0)
                         numBytes++;
                     bytePos = (int)numBytes;
-                    for (int bCnt = 0; bCnt < bytes2.Length; bCnt++)
+                    for (int bCnt=0; bCnt<bytes2.Length; bCnt++)
                         bytes[bytePos + bCnt] = bytes2[bCnt];
                     numBytes += bytes2.Length;
                 }

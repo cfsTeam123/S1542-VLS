@@ -4,195 +4,72 @@
 @{
     ViewBag.Title = "Refill Operation";
 }
+
 <style>
-    #sidebar {
-        width: 0px !important;
-        overflow: hidden;
-    }
-
-    .binimg {
-        width: 60px;
-    }
-
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 26px;
-        position: absolute;
-        top: 8px !important;
-        right: 10px !important;
-        width: 20px;
-    }
-
-    .select2-container--default .select2-selection--single {
-        border: 0 !important;
-    }
-
-    .select2-container {
-        display: block !important;
-        width: 100%;
-        padding: .375rem .75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #212529;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #ced4da;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        border-radius: .375rem;
-        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    }
-
-    #sidebar.collapsed {
-        width: 230px !important;
-    }
-
-    .operation {
-        background-color: black !important;
-    }
-
-    .form-control:disabled {
-        background-color: #e9ecef !important;
-    }
-
-    #weighterror {
-        color: red;
-    }
-
-    #Types1 {
-        display: grid;
-        grid-template-columns: repeat(9, 1fr);
-        gap: 10px;
-        justify-content: center;
-        margin: 20px 0;
-        width: 50%;
-        padding: 20px;
-        background-color: #1958DF;
-    }
-
-        #Types1 > .bin-item {
-            width: 50px;
-            height: 50px;
-            background-color: red;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            border-radius: 5px;
-        }
-
-    #Types2 {
-        display: grid;
-        grid-template-columns: repeat(18, 1fr); /* Finer control */
-        gap: 4px;
-        width: 100%;
-        max-width: 800px;
-        background-color: #1958DF;
-        padding: 20px;
-    }
-
-        #Types2 > .bin-item {
-            background-color: red;
-            color: white;
-            text-align: center;
-            font-size: 24px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        /* Top 9 bins: each spans 2 columns */
-        #Types2 .bin-item:nth-child(-n+9) {
-            grid-column: span 2;
-        }
-
-        /* Bottom 6 bins: each spans 3 columns */
-        #Types2 .bin-item:nth-child(n+10) {
-            grid-column: span 3;
-        }
-
-    #Types3 {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 10px;
-        justify-content: center;
-        margin: 20px 0;
-        width: 50%;
-        padding: 20px;
-        background-color: #1958DF;
-    }
-
-        #Types3 > .bin-item {
-            width: 85px;
-            height: 50px;
-            background-color: red;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            border-radius: 5px;
-        }
-
-    .bin-item {
+    /* Container to hold the LHS and RHS */
+    .container-outer {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 60px;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
     }
 
-    @@keyframes binblink {
-        50% {
-            background-color: green;
-        }
-
-        100% {
-            background-color: orange;
-        }
+    /* Left-side form (wider than RHS) */
+    .lhs-form {
+        width: 58%; /* Increased the width to make it larger */
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
     }
 
-    .highlight {
-        border: 1px solid white;
-        background-color: green;
-        animation: binblink 1s infinite alternate;
+    /* Right-side form with 2 columns per row */
+    .rhs-form {
+        width: 40%; /* Slightly smaller than LHS */
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
     }
 
-    #other-content {
-        display: none;
-    }
-
-
-
-    /* Full-screen overlay */
-    .loadonscreen {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-        z-index: 9999; /* Ensure it appears above everything */
+    /* Layout for RHS form with 2 fields per row */
+    .rhs-form .row {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
     }
 
-    /* Loader animation */
-    .loader1 {
-        width: 50px;
-        height: 50px;
-        border: 5px solid #fff;
-        border-top: 5px solid green;
-        border-radius: 50%;
-        animation: spinloaders 1s linear infinite;
+    .rhs-form .col-md-6 {
+        width: 48%; /* Adjusted to fit two fields per row */
     }
 
-    @@keyframes spinloaders {
-        100% {
-            transform: rotate(360deg);
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .container-outer {
+            flex-direction: column;
+        }
+        .lhs-form, .rhs-form {
+            width: 100%;
         }
     }
 
+    /* Bin Position and Table */
+    .bottom-section {
+        margin-top: 20px;
+    }
+
+    /* Bin Position */
+    .bin-grids {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    /* View List Table */
+    #binTable {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    /* Styling for the table */
     tbody, td, tfoot, th, thead, tr {
         border: 1px solid #B5ACAC;
     }
@@ -200,6 +77,21 @@
     td {
         padding: 10px;
         font-size: 13px;
+    }
+
+    /* Hide and show sections */
+    .loadonscreen {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>
 
@@ -214,17 +106,11 @@
 
     <br />
     <div class="container-outer">
-        <div class="custom-form">
-            <!-- Form Start -->
+        <!-- Left Side Section (LHS) -->
+        <div class="lhs-form">
             <div class="row mb-4">
                 @Html.HiddenFor(model => model.TrayNo)
                 @Html.HiddenFor(model => model.Side)
-
-                @*<div class="col-md-4">
-            <label class="form-label">Select Type</label>
-            @Html.DropDownListFor(model => model.GrnType, null, "", new { @class = "form-control populate", @autofocus = "True" })
-            @Html.ValidationMessageFor(model => model.GrnType, "", new { style = "color: red" })
-        </div>*@
                 <div class="col-md-4" id="DivMaterial">
                     <label class="form-label">Select Material</label>
                     @Html.DropDownListFor(model => model.Material, null, "", new { @class = "form-control populate", @autofocus = "True" })
@@ -240,7 +126,6 @@
                     @Html.DropDownListFor(model => model.BinNo, null, "", new { @class = "form-control populate", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.BinNo, "", new { style = "color: red" })
                 </div>
-
             </div>
             <div class="row mb-4">
                 <div class="col-md-4" id="DivDimension">
@@ -248,97 +133,112 @@
                     @Html.TextBoxFor(model => model.Dimension, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Dimension, "", new { style = "color: red" })
                 </div>
-
                 <div class="col-md-4" id="DivAvlqty">
                     <label class="form-label">Available Quantity</label>
                     @Html.TextBoxFor(model => model.Avlqty, new { @class = "form-control ", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.Avlqty, "", new { style = "color: red" })
                 </div>
-
                 <div class="col-md-4" id="DivMaxQty">
                     <label class="form-label">Maximum Quantity</label>
                     @Html.TextBoxFor(model => model.MaxQty, new { @class = "form-control ", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.MaxQty, "", new { style = "color: red" })
                 </div>
             </div>
-
             <div class="row mb-4">
                 <div class="col-md-4" id="DivMaterialBarcode">
                     <label class="form-label">Scan Material Barcode</label>
                     @Html.TextBoxFor(model => model.MaterialBarcode, new { @class = "form-control ", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.MaterialBarcode, "", new { style = "color: red" })
                 </div>
-                <div class="col-md-2" id="DivRefilQty">
+                <div class="col-md-4" id="DivRefilQty">
                     <label class="form-label">Refill Quantity</label>
                     @Html.TextBoxFor(model => model.RefilQty, new { @class = "form-control", @autofocus = "True", type = "number", min = "1", step = "1", oninput = "this.value=this.value.replace(/[^0-9]/g,'');" })
                     @Html.ValidationMessageFor(model => model.RefilQty, "", new { style = "color: red" })
                 </div>
-                <div class="col-md-2 d-flex align-items-end">
+                <div class="col-md-4 d-flex align-items-end">
                     <button type="button" class="btn btn-primary" value="add" name="add" id="AddButton">Add</button>
                 </div>
-                <div class="col-md-3 d-flex  align-items-end">
-                    <button type="button" class="btn btn-primary" value="Submit" name="add" id="submitButton">Refill</button>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary" value="Refill" name="add" id="RefillButton">Refill</button>
                 </div>
             </div>
-
-            <!-- Bin Position -->
-            <h5 id="bin-poss" class="mt-2"><b>Bin Position</b></h5>
-            <div class="bin-grids" id="bins">
-                <div class="bin-grid binposition" id="Types1">
-                    @for (int i = 0; i < 18; i++)
-                    {
-                        <div class="bin-item"></div>
-                    }
-                </div>
-
-                <div class="bin-grid binposition1" id="Types2">
-                    @for (int i = 0; i < 15; i++)
-                    {
-                        <div class="bin-item"></div>
-                    }
-                </div>
-
-                <div class="bin-grid binposition2" id="Types3">
-                    @for (int i = 0; i < 6; i++)
-                    {
-                        <div class="bin-item"></div>
-                    }
-                </div>
-            </div>
-
-            <!-- View List Table -->
-            <h5 class="mt-4"><b>View List</b></h5>
-            <table id="binTable" class="display">
-                <thead>
-                    <tr>
-                        <th>Sl No</th>
-                        <th>Tray No</th>
-                        <th>Side </th>
-                        <th>Bin No</th>
-                        <th>Bin Barcode</th>
-                        <th>Material Description</th>
-                        <th>Material Barcode</th>
-                        <th>Batch No</th>
-                        <th>Style</th>
-                        <th>Avl Qty</th>
-                        <th>Refill Qty</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data Rows go here -->
-                </tbody>
-            </table>
-
-            <!-- Total Weight Display -->
-            <br />
-            <center>
-                <h6>Total Weight: <span id="weightkg">90</span> KG</h6>
-                <p id="weighterror"></p>
-                <button class="btn btn-success w-30" id="submit">Submit</button>
-            </center>
         </div>
+
+        <!-- Right Side Section (RHS) -->
+        <div class="rhs-form">
+            <div class="row mb-4">
+                <div class="col-md-6" id="DivMaterialDescription">
+                    <label class="form-label">Material Description</label>
+                    @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.MaterialDesc, "", new { style = "color: red" })
+                </div>
+                <div class="col-md-6" id="DivRefilQty">
+                    <label class="form-label">Refill Quantity</label>
+                    @Html.TextBoxFor(model => model.RefilQty, new { @class = "form-control", type = "number", min = "1", step = "1", oninput = "this.value=this.value.replace(/[^0-9]/g,'');" })
+                    @Html.ValidationMessageFor(model => model.RefilQty, "", new { style = "color: red" })
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-6" id="DivBinBarcode">
+                    <label class="form-label">Scan Bin Barcode</label>
+                    @Html.TextBoxFor(model => model.MaterialBarcode, new { @class = "form-control", @autofocus = "True" })
+                    @Html.ValidationMessageFor(model => model.MaterialBarcode, "", new { style = "color: red" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Section: Bin Position and Table -->
+    <div class="bottom-section">
+        <!-- Bin Position -->
+        <h5 id="bin-poss" class="mt-2"><b>Bin Position</b></h5>
+        <div class="bin-grids" id="bins">
+            <div class="bin-grid binposition" id="Types1">
+                @for (int i = 0; i < 18; i++)
+                {
+                    <div class="bin-item"></div>
+                }
+            </div>
+
+            <div class="bin-grid binposition1" id="Types2">
+                @for (int i = 0; i < 15; i++)
+                {
+                    <div class="bin-item"></div>
+                }
+            </div>
+
+            <div class="bin-grid binposition2" id="Types3">
+                @for (int i = 0; i < 6; i++)
+                {
+                    <div class="bin-item"></div>
+                }
+            </div>
+        </div>
+
+        <!-- View List Table -->
+        <h5 class="mt-4"><b>View List</b></h5>
+        <table id="binTable" class="display">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Tray No</th>
+                    <th>Side</th>
+                    <th>Bin No</th>
+                    <th>Bin Barcode</th>
+                    <th>Material Description</th>
+                    <th>Material Barcode</th>
+                    <th>Batch No</th>
+                    <th>Style</th>
+                    <th>Avl Qty</th>
+                    <th>Refill Qty</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data Rows go here -->
+            </tbody>
+        </table>
     </div>
 
     <!-- Loader Overlays -->
@@ -360,18 +260,21 @@
         </div>
     </div>
 </main>
+
+
+
 <script>
     $(document).ready(function () {
         $('#Types1, #Types2, #Types3').hide();
-        $('#DivBinType').hide();
-        $('#DivDimension').hide();
-        $('#DivAvlqty').hide();
-        $('#DivRefilQty').hide();
-        $('#DivBinNo').hide();
-        $('#AddButton').hide();
-        $('#submitButton').hide();
-        $('#DivMaxQty').hide();
-        $('#DivMaterialBarcode').hide();
+        //$('#DivBinType').hide();
+        //$('#DivDimension').hide();
+        //$('#DivAvlqty').hide();
+        //$('#DivRefilQty').hide();
+        //$('#DivBinNo').hide();
+        //$('#AddButton').hide();
+        //$('#RefillButton').hide();
+        //$('#DivMaxQty').hide();
+        //$('#DivMaterialBarcode').hide();
     });
 
     function Tabledata() {
@@ -409,7 +312,7 @@
             <td class="text-sm-center form-control-sm NetWeightCell">${item.RefilQty}</td>
             <td class="text-sm-center form-control-sm NetWeightCell">${item.Status}</td>
             <td class="delete-icon form-control-sm NetWeightCell" title="Delete"  data-id="${item.MTransNo}">
-                <i class="fa fa-trash"></i> 
+                <i class="fa fa-trash"></i>
         </tr>`;
 
             // Append the constructed row to the table body
@@ -417,7 +320,7 @@
         }
     }
 
-    //onclick of delete button 
+    //onclick of delete button
     $(document).on('click', '.delete-icon', function () {
 
         var mTransNo = $(this).data('id');
@@ -566,7 +469,7 @@
 
     $('#AddButton').click(function () {
 
-        $('#submitButton').show();//enable refill button show 
+        $('#RefillButton').show();//enable refill button show
         var material = $('#Material').val();
         var BinType = $('#BinType').val();
         var Dimension = $('#Dimension').val();
@@ -588,22 +491,23 @@
             $('#RefilQty').val("");
             $('#MaterialBarcode').focus(); // Refocus input
             return false;
-        }else if (isNaN(Refilqty) || Refilqty <= 0) {
-                $('#RefilQty').val("");
-                $('#RefilQty').focus();
-                pNoffail('Error', 'Please enter a valid refill quantity');
-                return false;
-        } else if (Refilqty >= Avlqty) {
+        } else if (isNaN(Refilqty) || Refilqty <= 0) {
             $('#RefilQty').val("");
             $('#RefilQty').focus();
-            pNoffail('Error', 'Refill Quantity Should Not Be Grater Than Available Quantity');
-            return false; 
+            pNoffail('Error', 'Please enter a valid refill quantity');
+            return false;
+            //} else if (Refilqty >= Avlqty) {
+            //    $('#RefilQty').val("");
+            //    $('#RefilQty').focus();
+            //    pNoffail('Error', 'Refill Quantity Should Not Be Grater Than Available Quantity');
+            //    return false;
+            // maxqty-avlqty
         } else if (Refilqty >= MaxQty) {
             $('#RefilQty').val("");
             $('#RefilQty').focus();
             pNoffail('Error', 'Refill Quantity Should Not Be Grater Than Maximum Quantity');
-            return false; 
-        } 
+            return false;
+        }
 
         $.ajax({
             url: 'SaveDtl',
@@ -637,7 +541,66 @@
         });
     });
 
-    
-    
+    //refill button to call tray
+    $('#RefillButton').click(function () {
+        $("#loader-overlay").fadeIn();
+        setTimeout(function () {
+            $("#loader-overlay").fadeOut();
+        }, 3000);
+
+        //on submit call tray by fifo
+        $.ajax({
+            url: 'TrayCall',
+            type: 'POST',
+            data: {
+
+            },
+            success: function (result) {
+                console.log(result);
+                if (result == "success") {
+                    // Show loader
+                    $("#loader-overlay1").fadeIn();
+                    setTimeout(function () {
+                        $("#loader-overlay1").fadeOut();
+                    }, 3000);
+
+
+                    //now enable other feild like binno, etc
+
+                    // dfgdf
+
+
+                }
+                //based on bin type dispaly bin location
+
+            },
+        });
+
+    });
+
+
+    //check weight every 1 second
+    var alertShown = false;
+    setInterval(function () {
+        var weightkg = $('#weightkg').text();
+        //$.ajax({
+        //    //call utility class function of checkingweight
+        //});
+        if (weightkg !== "") {
+            if (parseFloat(weightkg) > 200) {
+                if (!alertShown) {
+                    $('#weighterror').text('Weight should be less than 200KG');
+                    $('#submit').hide();
+                    alertShown = true;
+                }
+            } else {
+                $('#weighterror').text('');
+                $('#submit').show();
+                alertShown = false;
+            }
+
+        }
+    }, 1000);
+
 
 </script>

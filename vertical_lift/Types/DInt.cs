@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace S0368.Types
-{
+namespace vertical_lift.Types
+{   
     public static class DInt
     {
         // publics

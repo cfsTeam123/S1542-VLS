@@ -1,29 +1,40 @@
-﻿using System;
+﻿
+using vertical_lift.Profinet;
+using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using vertical_lift.Models;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace vertical_lift.Controllers
 {
     public class RefillOperationController : Controller
     {
+        //for plc communication
+        //private PLC plc = null;
+        //private ExceptionCode errCode;
+        ////private int close_flag = 0;
+        //static int counter = 0;
+        //string plc_ip = "192.168.0.1";
+
+        private PLC plc = null;
+        private ExceptionCode errCode;
+        string plc_ip = "192.168.0.1";
+        static int counter = 0;
+
+
         // GET: RefillOperation
         S1542Entities conn = new S1542Entities();
         public ActionResult Refill()
         {
-            //for GRN dropdown
-            //ViewBag.GrnType = new List<SelectListItem>
-            //    {
-            //        new SelectListItem { Text = "With GRN", Value = "Yes",Selected=false },
-            //        new SelectListItem { Text = "Without GRN", Value = "No",Selected=false },                   
-            //    };
-
             var MaterialsAndBinTypes = conn.ExistingDetails
                                .Where(x => x.Action == "LOAD MATERIAL" && x.InspectionType == "Yes")
-                               .Select(u => new { u.MaterialDescription, u.BinType })
+                               .Select(u => new { u.MaterialDescription})
                                .Distinct()
                                .ToList();
 
@@ -34,35 +45,22 @@ namespace vertical_lift.Controllers
 
         }
 
-        ////still not ins used might use in future
-        //public JsonResult GetGrnNo(string GrnNo)
-        //{
-        //    //fwtch grn details in dropown 
-        //    var MaterialsAndBinTypes = conn.ExistingDetails
-        //         .Where(x => x.Action == "LOAD MATERIAL" && x.InspectionType == GrnNo)
-        //         .Select(u => new { u.MaterialDescription, u.BinType })
-        //         .Distinct()
-        //         .ToList();
-        //    return Json(MaterialsAndBinTypes, JsonRequestBehavior.AllowGet);
-        //}
-
         public JsonResult tabledtl()
         {
             //gets bintype for dropdown
             var tabdtl = conn.Refill_Temp_Table.ToList();
             return Json(tabdtl, JsonRequestBehavior.AllowGet);
-        }   
+        }
         public JsonResult DeleteItem(int mTransNo)
         {
-         var itemToDelete = conn.Refill_Temp_Table
-                                           .FirstOrDefault(x => x.MTransNo == mTransNo);
+            var itemToDelete = conn.Refill_Temp_Table.FirstOrDefault(x => x.MTransNo == mTransNo);
             if (itemToDelete != null)
             {
                 conn.Refill_Temp_Table.Remove(itemToDelete);
                 conn.SaveChanges();
                 return Json("Success", JsonRequestBehavior.AllowGet);
             }
-            else{
+            else {
                 return Json("Record not found", JsonRequestBehavior.AllowGet);
             }
 
@@ -155,9 +153,217 @@ namespace vertical_lift.Controllers
                 conn.SaveChanges();
 
             }
-            
+
             return Json("Saved", JsonRequestBehavior.AllowGet);  // Return as JSON
         }
+
+
+
+        public string TrayCall()
+        {
+            //call temmptable data  fifo and send to plc
+            //take the first data and send it to plc call the tray  
+            //var data = tempdata.FirstOrDefault();
+            //int trayno = (Int16)data.TrayNo;
+            //int side = (Int16)data.Side;
+
+            var checkstatus = chekfunction();//calling the function
+            var jsonData = checkstatus.Data as dynamic; //taking the json data 
+
+            if (jsonData != null)
+            {
+                // Access Auto, Healthy, and Control values from the JSON result
+                var Auto = jsonData.Auto.ToString();
+                var Healthy = jsonData.Healthy.ToString();
+                var Control = jsonData.Control.ToString();
+
+                if (Auto == "1" && Healthy == "1" && Control == "1")
+                {
+                    //fetches all the data from temptable
+                    var tempdata = conn.Refill_Temp_Table.Where(x => x.Status == "submit").OrderBy(x => x.TrayNo).ThenBy(x => x.BinNo).ToList();
+                 //   var groupedByTray = tempdata.GroupBy(x => x.TrayNo);
+
+                    if (tempdata.Count() > 0)
+                    {
+                        foreach (var item in tempdata)
+                        {
+                            //if (item.count1 >= tempdata)
+                            //{
+
+                            //Give command to PLC
+                            int side = Convert.ToInt16(item.Side);
+                            int level = Convert.ToInt16(item.TrayNo);//need tocheck with level what
+
+                            try
+                            {
+                                //writing plc value
+                                var ItagValu1e1 = (from PT in conn.plc_tags
+                                                   where PT.PLCIPAddre == plc_ip && PT.TagAction == "write"
+                                                   select new
+                                                   {
+                                                       MTransNo = PT.MTransNo,
+                                                       Tag = PT.Tags,
+                                                       Bit = PT.DataBit,
+                                                       Data = PT.TagData,
+                                                       Operation = PT.PLCOperation
+
+                                                   }).OrderBy(x => x.MTransNo).ToList();
+
+                                foreach (var tg in ItagValu1e1)
+                                {
+                                    switch (tg.Operation)
+                                    {
+                                        case "SIDE":
+                                            plc.Write(tg.Tag, side).ToString();
+                                            Thread.Sleep(50);
+                                            break;
+                                        // Thread.Sleep(50);
+                                        case "TRAY":
+                                            plc.Write(tg.Tag, level).ToString();
+                                            Thread.Sleep(50);
+                                            break;
+                                        // Thread.Sleep(50);                                    
+
+                                        case "TRAYPICK":
+                                            plc.Write(tg.Tag, 1).ToString();//station is 1 always
+                                            Thread.Sleep(50);
+                                            //Thread.Sleep(50);
+                                            break;
+                                    }
+                                }
+
+                            }
+                            catch (Exception e)
+                            {
+                                plc.Close();
+                                Console.WriteLine(e.Message);
+                                return e.Message;
+                            }
+                            plc.Close();
+                            return "success";
+                        }
+                    }
+                    plc.Close();
+                   // return "no space";
+                    return "success";
+                }
+                else
+                {
+                    plc.Close();
+                 //   return "no space";
+                    return "success";
+                }
+            }
+            else
+            {
+                plc.Close();
+            //    return "error"; // "Error";
+                return "success";
+            }
+
+        }
+
+
+        //check all statuses  OF PLC 
+        public JsonResult chekfunction()
+        {
+            string Auto = "";
+            string Healthy = "";
+            string Control = "";
+
+            //read plc statuses
+            plc = new PLC(CPU_Type.S71200, plc_ip, (short)0, (short)1);
+            //Thread.Sleep(100);
+            errCode = plc.Open();
+            var ItagValue = (from PT in conn.plc_tags
+                             where PT.PLCIPAddre == plc_ip && PT.TagAction == "error" && (PT.PLCOperation == "AutoMode" || PT.PLCOperation == "SystemHealthy" || PT.PLCOperation == "ReadyForAuto" || PT.PLCOperation == "HMICONTROL")
+                             select new
+                             {
+                                 MTransNo = PT.MTransNo,
+                                 Tag = PT.Tags,
+                                 Bit = PT.DataBit,
+                                 Data = PT.TagData,
+                                 Operation = PT.PLCOperation
+
+                             }).ToList();
+
+            foreach (var tg in ItagValue)
+            {
+                switch (tg.Operation)
+                {
+                    case "AutoMode":
+                        //send goTo cell 
+
+                        if (plc.readBits(Convert.ToInt32(tg.Tag), Convert.ToInt32(tg.Bit)) == tg.Data)
+                        {
+                            Auto = "1";
+                        }
+                        else
+                        {
+                            //Thread.Sleep(50);
+                            if (plc.readBits(Convert.ToInt32(tg.Tag), Convert.ToInt32(tg.Bit)) == tg.Data)
+                            {
+                                Auto = "1";
+                            }
+                            else
+                            {
+                                //Auto = "0";
+                                Auto = "1";
+                            }
+                        }
+                        // Thread.Sleep(50);
+                        break;
+                    case "SystemHealthy":
+                        //send  level MW142
+                        if (plc.readBits(Convert.ToInt32(tg.Tag), Convert.ToInt32(tg.Bit)) == tg.Data)
+                        {
+                            Healthy = "1";
+                        }
+                        else
+                        {
+                            //Thread.Sleep(50);
+                            if (plc.readBits(Convert.ToInt32(tg.Tag), Convert.ToInt32(tg.Bit)) == tg.Data)
+                            {
+                                Healthy = "1";
+                            }
+                            else
+                            {
+                                //Healthy = "0";
+                                Healthy = "1";
+                            }
+
+                        }
+
+                        //Thread.Sleep(50);
+                        break;
+
+                    case "HMICONTROL":
+                        //send  lhs_rhs MW144
+                        if (plc.readBits(Convert.ToInt32(tg.Tag), Convert.ToInt32(tg.Bit)) == tg.Data)
+                        {
+                            Control = "1";
+                        }
+                        else
+                        {
+                            // Thread.Sleep(50);
+                            if (plc.readBits(Convert.ToInt32(tg.Tag), Convert.ToInt32(tg.Bit)) == tg.Data)
+                            {
+                                Control = "1";
+                            }
+                            else
+                            {
+                                //Control = "0";
+                                Control = "1";
+                            }
+                        }
+                        //  Thread.Sleep(50);
+                        break;
+                }
+            }
+            return Json(new { Auto, Healthy, Control }, JsonRequestBehavior.AllowGet);
+        }
+
     }
-    
+
+
 }

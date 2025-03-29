@@ -119,6 +119,22 @@
     <Property Name="ModifiedBy" Type="int" />
     <Property Name="ModifiedOn" Type="datetime" />
   </EntityType>
+  <EntityType Name="plc_tags">
+    <Key>
+      <PropertyRef Name="MTransNo" />
+    </Key>
+    <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PLCIPAddre" Type="varchar" MaxLength="20" />
+    <Property Name="Tags" Type="varchar" MaxLength="20" />
+    <Property Name="DataBit" Type="varchar" MaxLength="5" />
+    <Property Name="TagData" Type="varchar" MaxLength="50" />
+    <Property Name="TagAction" Type="varchar" MaxLength="10" />
+    <Property Name="ErrorDescription" Type="varchar" MaxLength="255" />
+    <Property Name="PLCOperation" Type="varchar" MaxLength="50" />
+    <Property Name="Desription" Type="varchar" MaxLength="500" />
+    <Property Name="Status" Type="varchar" MaxLength="5" />
+    <Property Name="TagType" Type="varchar" MaxLength="10" />
+  </EntityType>
   <EntityType Name="Refill_Temp_Table">
     <Key>
       <PropertyRef Name="MTransNo" />
@@ -225,6 +241,7 @@
     <EntitySet Name="Goods_Existing" EntityType="Self.Goods_Existing" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Load_Temp_Table" EntityType="Self.Load_Temp_Table" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MaterialMaster" EntityType="Self.MaterialMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="plc_tags" EntityType="Self.plc_tags" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Refill_Temp_Table" EntityType="Self.Refill_Temp_Table" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Refill_Temp_Table1" EntityType="Self.Refill_Temp_Table1" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />

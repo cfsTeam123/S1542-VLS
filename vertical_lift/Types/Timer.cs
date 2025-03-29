@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using S0368.Profinet;
+using vertical_lift.Profinet;
 
-namespace S0368.Types
+
+namespace vertical_lift.Types
 {
     public static class Timer
     {

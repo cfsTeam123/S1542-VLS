@@ -12,11 +12,12 @@
         <EntityTypeShape EntityType="S1542Model.Goods_Existing" Width="1.5" PointX="6.75" PointY="0.75" />
         <EntityTypeShape EntityType="S1542Model.Load_Temp_Table" Width="1.5" PointX="6.75" PointY="5.75" />
         <EntityTypeShape EntityType="S1542Model.MaterialMaster" Width="1.5" PointX="0.75" PointY="7.75" />
-        <EntityTypeShape EntityType="S1542Model.Refill_Temp_Table1" Width="1.5" PointX="8.75" PointY="0.75" />
-        <EntityTypeShape EntityType="S1542Model.TransactionDetail" Width="1.5" PointX="8.75" PointY="4.75" />
+        <EntityTypeShape EntityType="S1542Model.plc_tags" Width="1.5" PointX="2.75" PointY="7.75" />
+        <EntityTypeShape EntityType="S1542Model.Refill_Temp_Table" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="S1542Model.Refill_Temp_Table1" Width="1.5" PointX="8.75" PointY="5.75" />
+        <EntityTypeShape EntityType="S1542Model.TransactionDetail" Width="1.5" PointX="8.75" PointY="9.75" />
         <EntityTypeShape EntityType="S1542Model.TrayMaster" Width="1.5" PointX="10.75" PointY="0.75" />
         <EntityTypeShape EntityType="S1542Model.UserMaster" Width="1.5" PointX="10.75" PointY="3.75" />
-        <EntityTypeShape EntityType="S1542Model.Refill_Temp_Table" Width="1.5" PointX="3.375" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

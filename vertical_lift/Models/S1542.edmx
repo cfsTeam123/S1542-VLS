@@ -124,6 +124,22 @@
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedOn" Type="datetime" />
         </EntityType>
+        <EntityType Name="plc_tags">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PLCIPAddre" Type="varchar" MaxLength="20" />
+          <Property Name="Tags" Type="varchar" MaxLength="20" />
+          <Property Name="DataBit" Type="varchar" MaxLength="5" />
+          <Property Name="TagData" Type="varchar" MaxLength="50" />
+          <Property Name="TagAction" Type="varchar" MaxLength="10" />
+          <Property Name="ErrorDescription" Type="varchar" MaxLength="255" />
+          <Property Name="PLCOperation" Type="varchar" MaxLength="50" />
+          <Property Name="Desription" Type="varchar" MaxLength="500" />
+          <Property Name="Status" Type="varchar" MaxLength="5" />
+          <Property Name="TagType" Type="varchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="Refill_Temp_Table">
           <Key>
             <PropertyRef Name="MTransNo" />
@@ -230,6 +246,7 @@
           <EntitySet Name="Goods_Existing" EntityType="Self.Goods_Existing" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Load_Temp_Table" EntityType="Self.Load_Temp_Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MaterialMaster" EntityType="Self.MaterialMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="plc_tags" EntityType="Self.plc_tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Refill_Temp_Table" EntityType="Self.Refill_Temp_Table" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Refill_Temp_Table1" EntityType="Self.Refill_Temp_Table1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />
@@ -248,11 +265,12 @@
           <EntitySet Name="Goods_Existing" EntityType="S1542Model.Goods_Existing" />
           <EntitySet Name="Load_Temp_Table" EntityType="S1542Model.Load_Temp_Table" />
           <EntitySet Name="MaterialMasters" EntityType="S1542Model.MaterialMaster" />
+          <EntitySet Name="plc_tags" EntityType="S1542Model.plc_tags" />
+          <EntitySet Name="Refill_Temp_Table" EntityType="S1542Model.Refill_Temp_Table" />
           <EntitySet Name="Refill_Temp_Table1" EntityType="S1542Model.Refill_Temp_Table1" />
           <EntitySet Name="TransactionDetails" EntityType="S1542Model.TransactionDetail" />
           <EntitySet Name="TrayMasters" EntityType="S1542Model.TrayMaster" />
           <EntitySet Name="UserMasters" EntityType="S1542Model.UserMaster" />
-          <EntitySet Name="Refill_Temp_Table" EntityType="S1542Model.Refill_Temp_Table" />
         </EntityContainer>
         <EntityType Name="BinMaster">
           <Key>
@@ -373,6 +391,41 @@
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="plc_tags">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PLCIPAddre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Tags" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DataBit" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="TagData" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TagAction" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ErrorDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PLCOperation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Desription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="TagType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Refill_Temp_Table">
+          <Key>
+            <PropertyRef Name="MTransNo" />
+          </Key>
+          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BinNo" Type="Int32" />
+          <Property Name="Side" Type="Int32" />
+          <Property Name="TrayNo" Type="Int32" />
+          <Property Name="BinType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="BinBarcode" Type="Int32" />
+          <Property Name="GRNNO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MaterialDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="MaterialBarcode" Type="Int32" />
+          <Property Name="BatchNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Style" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RefilQty" Type="Int32" />
+          <Property Name="AvlQty" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="Refill_Temp_Table1">
           <Key>
             <PropertyRef Name="MTransNo" />
@@ -451,25 +504,6 @@
           <Property Name="DeleteStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="SubscID" Type="Int16" />
           <Property Name="LastLogin" Type="DateTime" Precision="0" />
-        </EntityType>
-        <EntityType Name="Refill_Temp_Table">
-          <Key>
-            <PropertyRef Name="MTransNo" />
-          </Key>
-          <Property Name="MTransNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BinNo" Type="Int32" />
-          <Property Name="Side" Type="Int32" />
-          <Property Name="TrayNo" Type="Int32" />
-          <Property Name="BinType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="BinBarcode" Type="Int32" />
-          <Property Name="GRNNO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="MaterialDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="MaterialBarcode" Type="Int32" />
-          <Property Name="BatchNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Style" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="RefilQty" Type="Int32" />
-          <Property Name="AvlQty" Type="Int32" />
-          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -603,6 +637,43 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="plc_tags">
+            <EntityTypeMapping TypeName="S1542Model.plc_tags">
+              <MappingFragment StoreEntitySet="plc_tags">
+                <ScalarProperty Name="TagType" ColumnName="TagType" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Desription" ColumnName="Desription" />
+                <ScalarProperty Name="PLCOperation" ColumnName="PLCOperation" />
+                <ScalarProperty Name="ErrorDescription" ColumnName="ErrorDescription" />
+                <ScalarProperty Name="TagAction" ColumnName="TagAction" />
+                <ScalarProperty Name="TagData" ColumnName="TagData" />
+                <ScalarProperty Name="DataBit" ColumnName="DataBit" />
+                <ScalarProperty Name="Tags" ColumnName="Tags" />
+                <ScalarProperty Name="PLCIPAddre" ColumnName="PLCIPAddre" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Refill_Temp_Table">
+            <EntityTypeMapping TypeName="S1542Model.Refill_Temp_Table">
+              <MappingFragment StoreEntitySet="Refill_Temp_Table">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="AvlQty" ColumnName="AvlQty" />
+                <ScalarProperty Name="RefilQty" ColumnName="RefilQty" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
+                <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
+                <ScalarProperty Name="MaterialDesc" ColumnName="MaterialDesc" />
+                <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
+                <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
+                <ScalarProperty Name="BinType" ColumnName="BinType" />
+                <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
+                <ScalarProperty Name="Side" ColumnName="Side" />
+                <ScalarProperty Name="BinNo" ColumnName="BinNo" />
+                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Refill_Temp_Table1">
             <EntityTypeMapping TypeName="S1542Model.Refill_Temp_Table1">
               <MappingFragment StoreEntitySet="Refill_Temp_Table1">
@@ -682,26 +753,6 @@
                 <ScalarProperty Name="PW" ColumnName="PW" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Refill_Temp_Table">
-            <EntityTypeMapping TypeName="S1542Model.Refill_Temp_Table">
-              <MappingFragment StoreEntitySet="Refill_Temp_Table">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="AvlQty" ColumnName="AvlQty" />
-                <ScalarProperty Name="RefilQty" ColumnName="RefilQty" />
-                <ScalarProperty Name="Style" ColumnName="Style" />
-                <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
-                <ScalarProperty Name="MaterialBarcode" ColumnName="MaterialBarcode" />
-                <ScalarProperty Name="MaterialDesc" ColumnName="MaterialDesc" />
-                <ScalarProperty Name="GRNNO" ColumnName="GRNNO" />
-                <ScalarProperty Name="BinBarcode" ColumnName="BinBarcode" />
-                <ScalarProperty Name="BinType" ColumnName="BinType" />
-                <ScalarProperty Name="TrayNo" ColumnName="TrayNo" />
-                <ScalarProperty Name="Side" ColumnName="Side" />
-                <ScalarProperty Name="BinNo" ColumnName="BinNo" />
                 <ScalarProperty Name="MTransNo" ColumnName="MTransNo" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace S0368.Types
+namespace vertical_lift.Types
 {
     class ByteArray
     {
@@ -23,7 +23,7 @@ namespace S0368.Types
         {
             list = new List<byte>(size);
         }
-
+        
         public void Clear()
         {
             list = new List<byte>();

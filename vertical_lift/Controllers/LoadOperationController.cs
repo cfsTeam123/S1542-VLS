@@ -1,21 +1,21 @@
 ﻿using Microsoft.Ajax.Utilities;
-using S0368.Profinet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using vertical_lift.Models;
+using vertical_lift.Profinet;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace vertical_lift.Controllers
 {
     public class LoadOperationController : Controller
     {
-      /*  private PLC plc = null;
-        private ExceptionCode errCode;
-        private int close_flag = 0;
-        string plc_ip = "192.168.0.1";*/
+        //private PLC plc = null;
+        //private ExceptionCode errCode;
+        //private int close_flag = 0;
+        //string plc_ip = "192.168.0.1";
 
         S1542Entities db = new S1542Entities();
         // GET: LoadOperation
@@ -154,13 +154,13 @@ namespace vertical_lift.Controllers
 
             //Communication with PLC  Click on try send command 
             //Communication with PLC  Click on try send command 
-            /*   PLC plc = new PLC(CPU_Type.S71200, plc_ip, (short)0, (short)1);
-               errCode = plc.Open();
+            //PLC plc = new PLC(CPU_Type.S71200, plc_ip, (short)0, (short)1);
+            //errCode = plc.Open();
 
-               plc.Write("MW142", nearestTray.TrayNo);
-               plc.Write("MW144", nearestTray.Side);
-               bool data = plc.ReadBits(102, 1);
-               plc.Close();*/
+            //plc.Write("MW142", nearestTray.TrayNo);
+            //plc.Write("MW144", nearestTray.Side);
+            //bool data = plc.ReadBits(102, 1);//checkking %M102.1 this
+            //plc.Close();
             bool data1 = true;
 
             return Json(new { success = true, tray = new { nearestTray.TrayNo, nearestTray.Status, nearestTray.Location, nearestTray.Side, data = data1 } }, JsonRequestBehavior.AllowGet);

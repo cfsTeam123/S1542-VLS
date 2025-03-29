@@ -167,6 +167,9 @@
       <DependentUpon>S1542.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MaterialMasterValidation.cs" />
+    <Compile Include="Models\plc_tags.cs">
+      <DependentUpon>S1542.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\RefillOpValidation.cs" />
     <Compile Include="Models\Refill_Temp_Table.cs">
       <DependentUpon>S1542.tt</DependentUpon>
@@ -201,9 +204,9 @@
       <DependentUpon>S1542.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserMasterValidation.cs" />
-    <Compile Include="Profinet\Profinet\Conversion.cs" />
-    <Compile Include="Profinet\Profinet\Enums.cs" />
-    <Compile Include="Profinet\Profinet\PLC.cs" />
+    <Compile Include="Profinet\Conversion.cs" />
+    <Compile Include="Profinet\Enums.cs" />
+    <Compile Include="Profinet\PLC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\Boolean.cs" />
     <Compile Include="Types\Byte.cs" />

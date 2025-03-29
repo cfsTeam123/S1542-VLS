@@ -10,8 +10,9 @@ using System.Text;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
+using vertical_lift.Models;
 
-namespace S0368.Profinet
+namespace vertical_lift.Profinet
 {
     public class PLC
     {
@@ -101,7 +102,8 @@ namespace S0368.Profinet
             {
                 lastErrorCode = ExceptionCode.IPAdressNotAvailable;
                 //lastErrorString = "Destination IP-Address '" + IP + "' is not available!";
-                lastErrorString = "Địa chỉ IP '" + IP + "' không tồn tại!";
+                lastErrorString = "Địa chỉ IP '" + IP + "' không tồn tại!"; // adress ip does not exist
+
                 return lastErrorCode;
             }
 
@@ -201,8 +203,8 @@ namespace S0368.Profinet
         {
             if (mSocket.Connected)
             {
-                mSocket.Close();
-                IsConnected = false;
+                //mSocket.Close();
+                IsConnected = true;
             }
         }
 
@@ -281,7 +283,13 @@ namespace S0368.Profinet
                         package.Add(Types.Word.ToByteArray((ushort)((StartByteAdr) * 8)));
                         break;
                 }
+                //try
+                //{
 
+                //}
+                //catch(Exception e) {
+                
+                //}
                 mSocket.Send(package.array, package.array.Length, SocketFlags.None);
 
                 byte[] bReceive = new byte[512];
@@ -300,7 +308,66 @@ namespace S0368.Profinet
                 return null;
             }
         }
+
+
         #endregion
+
+        //Created By Raju Veeragoudar
+        //returns boolean if '1' true or '0' false
+        #region ReadBits(int StartByteAdr, int readBit)
+
+        public Boolean ReadBits(int StartByteAdr, int readBit)
+        {
+
+            int start_byte = StartByteAdr;
+            byte[] bytes = ReadBytes(DataType.Marker, 0, start_byte, 1);
+            string yourByteString = Convert.ToString(bytes[0], 2).PadLeft(8, '0');
+
+            char[] ch = yourByteString.ToCharArray();
+            char[] result = new char[ch.Length];
+            for (int i = 0, j = yourByteString.Length - 1; i < yourByteString.Length; i++, j--)
+            {
+                result[i] = ch[j];
+            }
+            string a = result[readBit].ToString();
+            return (Convert.ToInt32(a) == 1);
+            // return result[readBit].ToString();
+        }
+        #endregion
+
+        public string readBits(int tags, int bit)
+        {
+            try
+            {
+                int start_byte = tags;
+                byte[] bytes = ReadBytes(DataType.Marker, 0, start_byte, 1);
+                if (bytes != null)
+                {
+                    string yourByteString = Convert.ToString(bytes[0], 2).PadLeft(8, '0');
+
+                    char[] ch = yourByteString.ToCharArray();
+                    char[] result = new char[ch.Length];
+                    for (int i = 0, j = yourByteString.Length - 1; i < yourByteString.Length; i++, j--)
+                    {
+                        result[i] = ch[j];
+                    }
+                    return result[bit].ToString();
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch
+            {
+                return null;
+            }
+
+
+        }
+
+
         #region Read(DataType DataType, int DB, int StartByteAdr, VarType VarType, int VarCount)
         public object Read(DataType DataType, int DB, int StartByteAdr, VarType VarType, int VarCount)
         {
@@ -318,6 +385,9 @@ namespace S0368.Profinet
                         return bytes[0];
                     else
                         return bytes;
+
+
+
                 case VarType.Word:
                     cntBytes = VarCount * 2;
                     bytes = ReadBytes(DataType, DB, StartByteAdr, cntBytes);
@@ -392,25 +462,6 @@ namespace S0368.Profinet
             }
         }
         #endregion
-
-        public Boolean ReadBits(int StartByteAdr, int readBit)
-        {
-
-            int start_byte = StartByteAdr;
-            byte[] bytes = ReadBytes(DataType.Marker, 0, start_byte, 1);
-            string yourByteString = Convert.ToString(bytes[0], 2).PadLeft(8, '0');
-
-            char[] ch = yourByteString.ToCharArray();
-            char[] result = new char[ch.Length];
-            for (int i = 0, j = yourByteString.Length - 1; i < yourByteString.Length; i++, j--)
-            {
-                result[i] = ch[j];
-            }
-            string a = result[readBit].ToString();
-            return (Convert.ToInt32(a) == 1);
-            // return result[readBit].ToString();
-        }
-
         #region Read(string variable)
         public object Read(string variable)
         {
@@ -717,51 +768,51 @@ namespace S0368.Profinet
                                 throw new Exception();
                         }
                     case "EB":
-                        // Eingangsbyte
+                        // Eingangsbyte //input byte
                         objValue = Convert.ChangeType(value, typeof(byte));
                         return Write(DataType.Input, 0, int.Parse(txt.Substring(2)), (byte)objValue);
                     case "EW":
-                        // Eingangswort
+                        // Eingangswort //input word
                         objValue = Convert.ChangeType(value, typeof(UInt16));
                         return Write(DataType.Input, 0, int.Parse(txt.Substring(2)), (UInt16)objValue);
                     case "ED":
-                        // Eingangsdoppelwort
+                        // Eingangsdoppelwort //input double word
                         objValue = Convert.ChangeType(value, typeof(UInt32));
                         return Write(DataType.Input, 0, int.Parse(txt.Substring(2)), (UInt32)objValue);
                     case "AB":
-                        // Ausgangsbyte
+                        // Ausgangsbyte output byte
                         objValue = Convert.ChangeType(value, typeof(byte));
                         return Write(DataType.Output, 0, int.Parse(txt.Substring(2)), (byte)objValue);
                     case "AW":
-                        // Ausgangswort
+                        // Ausgangswort output word
                         objValue = Convert.ChangeType(value, typeof(UInt16));
                         return Write(DataType.Output, 0, int.Parse(txt.Substring(2)), (UInt16)objValue);
                     case "AD":
-                        // Ausgangsdoppelwort
+                        // Ausgangsdoppelwort output double word
                         objValue = Convert.ChangeType(value, typeof(UInt32));
                         return Write(DataType.Output, 0, int.Parse(txt.Substring(2)), (UInt32)objValue);
                     case "MB":
-                        // Merkerbyte
+                        // Merkerbyte 
                         objValue = Convert.ChangeType(value, typeof(byte));
                         return Write(DataType.Marker, 0, int.Parse(txt.Substring(2)), (byte)objValue);
                     case "MW":
-                        // Merkerwort
+                        // Merkerwort Merkerword
                         objValue = Convert.ChangeType(value, typeof(UInt16));
                         return Write(DataType.Marker, 0, int.Parse(txt.Substring(2)), (UInt16)objValue);
                     case "MD":
-                        // Merkerdoppelwort
+                        // Merkerdoppelwort Marker double word
                         return Write(DataType.Marker, 0, int.Parse(txt.Substring(2)), value);
                     default:
                         switch (txt.Substring(0, 1))
                         {
                             case "E":
                             case "I":
-                                // Eingang
+                                // Eingang entry
                                 mDataType = DataType.Input;
                                 break;
                             case "A":
                             case "O":
-                                // Ausgang
+                                // Ausgang exit
                                 mDataType = DataType.Output;
                                 break;
                             case "M":
@@ -773,10 +824,10 @@ namespace S0368.Profinet
                                 return Write(DataType.Timer, 0, int.Parse(txt.Substring(1)), (double)value);
                             case "Z":
                             case "C":
-                                // Zähler
+                                // Zähler counter
                                 return Write(DataType.Counter, 0, int.Parse(txt.Substring(1)), (short)value);
                             default:
-                                throw new Exception("Unbekannte Variable");
+                                throw new Exception("unknown Variable");
                         }
 
                         txt2 = txt.Substring(1);
@@ -785,13 +836,48 @@ namespace S0368.Profinet
                         mByte = int.Parse(txt2.Substring(0, txt2.IndexOf(".")));
                         mBit = int.Parse(txt2.Substring(txt2.IndexOf(".") + 1));
                         if (mBit > 7) throw new Exception("Unbekannte Variable");
-                        _byte = (byte)Read(mDataType, 0, mByte, VarType.Byte, 1);
-                        if ((int)value == 1)
-                            _byte = (byte)(_byte | (byte)Math.Pow(2, mBit));      // Bit setzen
-                        else
-                            _byte = (byte)(_byte & (_byte ^ (byte)Math.Pow(2, mBit))); // Bit rücksetzen
 
-                        return Write(mDataType, 0, mByte, (byte)_byte);
+                        if (Read(mDataType, 0, mByte, VarType.Byte, 1) != null)
+                        {
+                            try
+                            {
+                                _byte = (byte)Read(mDataType, 0, mByte, VarType.Byte, 1);
+                                if ((int)value == 1)
+                                    _byte = (byte)(_byte | (byte)Math.Pow(2, mBit));      // Bit set
+                                else
+                                    _byte = (byte)(_byte & (_byte ^ (byte)Math.Pow(2, mBit))); // Bit reset
+
+
+                                return Write(mDataType, 0, mByte, (byte)_byte);
+                            }
+                            catch (Exception e)
+                            {
+                                return "NULL";
+                            }
+
+
+                        }
+                        else
+                        {
+                            //Thread.Sleep(200);
+                            //try
+                            //{
+                            //    _byte = (byte)Read(mDataType, 0, mByte, VarType.Byte, 1);
+                            //    if ((int)value == 1)
+                            //        _byte = (byte)(_byte | (byte)Math.Pow(2, mBit));      // Bit set
+                            //    else
+                            //        _byte = (byte)(_byte & (_byte ^ (byte)Math.Pow(2, mBit))); // Bit reset
+
+                            //    return Write(mDataType, 0, mByte, (byte)_byte);
+                            //}
+                            //catch (NullReferenceException e)
+                            //{
+                            return "NULL";
+                            //  }
+
+                        }
+
+
                 }
             }
             catch (Exception ex)

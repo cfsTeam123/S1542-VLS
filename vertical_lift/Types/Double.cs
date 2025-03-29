@@ -1,10 +1,11 @@
-﻿using System;
+﻿
+using vertical_lift.Profinet;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using S0368;
-using S0368.Profinet;
 
-namespace S0368.Types
+
+namespace vertical_lift.Types
 {
     public static class Double
     {
@@ -49,14 +50,14 @@ namespace S0368.Types
         #region FromDWord
         public static double FromDWord(Int32 value)
         {
-            byte[] b = S0368.Types.DInt.ToByteArray(value);
+            byte[] b = vertical_lift.Types.DInt.ToByteArray(value);
             double d = FromByteArray(b);
             return d;
         }
 
         public static double FromDWord(UInt32 value)
         {
-            byte[] b = S0368.Types.DWord.ToByteArray(value);
+            byte[] b = vertical_lift.Types.DWord.ToByteArray(value);
             double d = FromByteArray(b);
             return d;
         }
@@ -129,7 +130,7 @@ namespace S0368.Types
             return values;
         }
         #endregion
-
+        
         // privates
         #region ValToBinString
         private static string ValToBinString(byte value)
