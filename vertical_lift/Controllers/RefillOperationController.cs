@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using vertical_lift.Models;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
+using System.Web.UI;
 
 namespace vertical_lift.Controllers
 {
@@ -159,15 +160,25 @@ namespace vertical_lift.Controllers
 
 
 
-        public string TrayCall()
+     //   public string TrayCall()
+        public JsonResult TrayCall()
         {
-            //call temmptable data  fifo and send to plc
-            //take the first data and send it to plc call the tray  
-            //var data = tempdata.FirstOrDefault();
-            //int trayno = (Int16)data.TrayNo;
-            //int side = (Int16)data.Side;
+            int level=0;
+            int side=0;
+            //fetches all the data from temptable
+            var tempdata = conn.Refill_Temp_Table.Where(x => x.Status == "submit").OrderBy(x => x.TrayNo).ThenBy(x => x.BinNo).ToList();
+            if (tempdata.Count() > 0)
+            {
+                foreach (var item in tempdata)
+                {
 
-            var checkstatus = chekfunction();//calling the function
+                     level = Convert.ToInt32(item.TrayNo); // Tray number
+                     side = Convert.ToInt32(item.Side); // Side (same for all bins in the tray)
+
+                }
+
+            // get the first tray detials and side tray and binlocaion
+             var checkstatus = chekfunction();//calling the function
             var jsonData = checkstatus.Data as dynamic; //taking the json data 
 
             if (jsonData != null)
@@ -179,47 +190,33 @@ namespace vertical_lift.Controllers
 
                 if (Auto == "1" && Healthy == "1" && Control == "1")
                 {
-                    //fetches all the data from temptable
-                    var tempdata = conn.Refill_Temp_Table.Where(x => x.Status == "submit").OrderBy(x => x.TrayNo).ThenBy(x => x.BinNo).ToList();
-                 //   var groupedByTray = tempdata.GroupBy(x => x.TrayNo);
 
-                    if (tempdata.Count() > 0)
-                    {
-                        foreach (var item in tempdata)
+                    try
                         {
-                            //if (item.count1 >= tempdata)
-                            //{
+                            //writing plc value
+                            var ItagValu1e1 = (from PT in conn.plc_tags
+                                                where PT.PLCIPAddre == plc_ip && PT.TagAction == "write"
+                                                select new
+                                                {
+                                                    MTransNo = PT.MTransNo,
+                                                    Tag = PT.Tags,
+                                                    Bit = PT.DataBit,
+                                                    Data = PT.TagData,
+                                                    Operation = PT.PLCOperation
 
-                            //Give command to PLC
-                            int side = Convert.ToInt16(item.Side);
-                            int level = Convert.ToInt16(item.TrayNo);//need tocheck with level what
-
-                            try
-                            {
-                                //writing plc value
-                                var ItagValu1e1 = (from PT in conn.plc_tags
-                                                   where PT.PLCIPAddre == plc_ip && PT.TagAction == "write"
-                                                   select new
-                                                   {
-                                                       MTransNo = PT.MTransNo,
-                                                       Tag = PT.Tags,
-                                                       Bit = PT.DataBit,
-                                                       Data = PT.TagData,
-                                                       Operation = PT.PLCOperation
-
-                                                   }).OrderBy(x => x.MTransNo).ToList();
+                                                }).OrderBy(x => x.MTransNo).ToList();
 
                                 foreach (var tg in ItagValu1e1)
                                 {
                                     switch (tg.Operation)
                                     {
                                         case "SIDE":
-                                            plc.Write(tg.Tag, side).ToString();
+                                        plc.Write(tg.Tag, side).ToString();
                                             Thread.Sleep(50);
                                             break;
                                         // Thread.Sleep(50);
                                         case "TRAY":
-                                            plc.Write(tg.Tag, level).ToString();
+                                        plc.Write(tg.Tag, level).ToString();
                                             Thread.Sleep(50);
                                             break;
                                         // Thread.Sleep(50);                                    
@@ -235,32 +232,27 @@ namespace vertical_lift.Controllers
                             }
                             catch (Exception e)
                             {
-                                plc.Close();
+                                //plc.Close();
                                 Console.WriteLine(e.Message);
-                                return e.Message;
+
+                                return Json(new { tempdata, otpt = "success" }, JsonRequestBehavior.AllowGet);
                             }
-                            plc.Close();
-                            return "success";
                         }
+                           // plc.Close();
+                            return Json(new { tempdata, otpt="success" }, JsonRequestBehavior.AllowGet);
                     }
-                    plc.Close();
+                
+                   // plc.Close();
                    // return "no space";
-                    return "success";
+                   
+                    return Json(new { otpt = "no space" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    plc.Close();
+                   // plc.Close();
                  //   return "no space";
-                    return "success";
+                     return Json(new { otpt= "no space" }, JsonRequestBehavior.AllowGet);
                 }
-            }
-            else
-            {
-                plc.Close();
-            //    return "error"; // "Error";
-                return "success";
-            }
-
         }
 
 

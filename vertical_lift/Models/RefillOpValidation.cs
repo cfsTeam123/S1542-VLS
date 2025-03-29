@@ -14,6 +14,7 @@ namespace vertical_lift.Models
         public string GRNNO { get; set; }
         public string GrnType { get; set; }
         public string MaterialDesc { get; set; }
+        public string DispMaterialDesc { get; set; }
 
         [RegularExpression(@"^\d{4}$", ErrorMessage = "MaterialBarcode must be exactly 4 digits.")]
         public string MaterialBarcode { get; set; }
@@ -29,9 +30,12 @@ namespace vertical_lift.Models
         public int Type { get; set; }
         public int Avlqty { get; set; }
         public int RefilQty { get; set; }
+        public int DispRefilQty { get; set; }
         public int MaxQty { get; set; }
 
         public string BinTypeWGRN { get; set; }
+        public int BinBarcode { get; set; }
+        public int matchbarcode { get; set; }
         public int TypeWGRN { get; set; }
 
 

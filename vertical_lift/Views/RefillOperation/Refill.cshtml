@@ -7,6 +7,110 @@
 
 <style>
     /* Container to hold the LHS and RHS */
+    #sidebar {
+        width: 0px !important;
+        overflow: hidden;
+    }
+
+    .binimg {
+        width: 60px;
+    }
+    #sidebar.collapsed {
+        width: 230px !important;
+    }
+
+    .operation {
+        background-color: black !important;
+    }
+
+    .form-control:disabled {
+        background-color: #e9ecef !important;
+    }
+
+    #weighterror {
+        color: red;
+    }
+
+    #Types1 {
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+        width: 50%;
+        padding: 20px;
+        background-color: #1958DF;
+    }
+
+        #Types1 > .bin-item {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 5px;
+        }
+
+    #Types2 {
+        display: grid;
+        grid-template-columns: repeat(18, 1fr); /* Finer control */
+        gap: 4px;
+        width: 100%;
+        max-width: 800px;
+        background-color: #1958DF;
+        padding: 20px;
+    }
+
+        #Types2 > .bin-item {
+            background-color: red;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Top 9 bins: each spans 2 columns */
+        #Types2 .bin-item:nth-child(-n+9) {
+            grid-column: span 2;
+        }
+
+        /* Bottom 6 bins: each spans 3 columns */
+        #Types2 .bin-item:nth-child(n+10) {
+            grid-column: span 3;
+        }
+
+    .bin-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 60px;
+    }
+
+    #Types3 {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+        width: 50%;
+        padding: 20px;
+        background-color: #1958DF;
+    }
+
+        #Types3 > .bin-item {
+            width: 85px;
+            height: 50px;
+            background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 5px;
+        }
+
     .container-outer {
         display: flex;
         justify-content: space-between;
@@ -16,31 +120,51 @@
 
     /* Left-side form (wider than RHS) */
     .lhs-form {
-        width: 58%; /* Increased the width to make it larger */
+        width: 70%; /* Increased the width to make it bigger */
         background-color: #f8f9fa;
         padding: 20px;
         border-radius: 8px;
     }
 
-    /* Right-side form with 2 columns per row */
+    /* Right-side form with 3 fields */
     .rhs-form {
-        width: 40%; /* Slightly smaller than LHS */
+        width: 28%; /* Smaller width for RHS */
         background-color: #f8f9fa;
         padding: 20px;
         border-radius: 8px;
     }
 
-    /* Layout for RHS form with 2 fields per row */
+    /* Layout for RHS form with 1 field per row (3 fields total) */
     .rhs-form .row {
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
     }
 
-    .rhs-form .col-md-6 {
-        width: 48%; /* Adjusted to fit two fields per row */
+    .rhs-form .col-md-12 {
+        width: 100%; /* Make the fields in RHS full width */
     }
 
+
+    @@keyframes binblink {
+        50% {
+            background-color: green;
+        }
+
+        100% {
+            background-color: orange;
+        }
+    }
+
+    .highlight {
+        border: 1px solid white;
+        background-color: green;
+        animation: binblink 1s infinite alternate;
+    }
+
+    #other-content {
+        display: none;
+    }
     /* Responsive adjustments */
     @@media (max-width: 768px) {
         .container-outer {
@@ -93,6 +217,23 @@
         align-items: center;
         justify-content: center;
     }
+
+    /* Loader animation */
+    .loader1 {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #fff;
+        border-top: 5px solid green;
+        border-radius: 50%;
+        animation: spinloaders 1s linear infinite;
+    }
+
+    @@keyframes spinloaders {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
 </style>
 
 <main>
@@ -111,6 +252,7 @@
             <div class="row mb-4">
                 @Html.HiddenFor(model => model.TrayNo)
                 @Html.HiddenFor(model => model.Side)
+                @Html.HiddenFor(model => model.matchbarcode)
                 <div class="col-md-4" id="DivMaterial">
                     <label class="form-label">Select Material</label>
                     @Html.DropDownListFor(model => model.Material, null, "", new { @class = "form-control populate", @autofocus = "True" })
@@ -150,39 +292,41 @@
                     @Html.TextBoxFor(model => model.MaterialBarcode, new { @class = "form-control ", @autofocus = "True" })
                     @Html.ValidationMessageFor(model => model.MaterialBarcode, "", new { style = "color: red" })
                 </div>
-                <div class="col-md-4" id="DivRefilQty">
+                <div class="col-md-3" id="DivRefilQty">
                     <label class="form-label">Refill Quantity</label>
                     @Html.TextBoxFor(model => model.RefilQty, new { @class = "form-control", @autofocus = "True", type = "number", min = "1", step = "1", oninput = "this.value=this.value.replace(/[^0-9]/g,'');" })
                     @Html.ValidationMessageFor(model => model.RefilQty, "", new { style = "color: red" })
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
+                <div class="col-md-2 d-flex align-items-end">
                     <button type="button" class="btn btn-primary" value="add" name="add" id="AddButton">Add</button>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
+                <div class="col-md-3 d-flex align-items-end">
                     <button type="button" class="btn btn-primary" value="Refill" name="add" id="RefillButton">Refill</button>
                 </div>
             </div>
         </div>
 
         <!-- Right Side Section (RHS) -->
-        <div class="rhs-form">
+        <div class="rhs-form" id="DivRHS">
             <div class="row mb-4">
-                <div class="col-md-6" id="DivMaterialDescription">
+                <div class="col-md-12" >
                     <label class="form-label">Material Description</label>
-                    @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.MaterialDesc, "", new { style = "color: red" })
-                </div>
-                <div class="col-md-6" id="DivRefilQty">
-                    <label class="form-label">Refill Quantity</label>
-                    @Html.TextBoxFor(model => model.RefilQty, new { @class = "form-control", type = "number", min = "1", step = "1", oninput = "this.value=this.value.replace(/[^0-9]/g,'');" })
-                    @Html.ValidationMessageFor(model => model.RefilQty, "", new { style = "color: red" })
+                    @Html.TextBoxFor(model => model.DispMaterialDesc, new { @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.DispMaterialDesc, "", new { style = "color: red" })
                 </div>
             </div>
             <div class="row mb-4">
-                <div class="col-md-6" id="DivBinBarcode">
+                <div class="col-md-12" >
+                    <label class="form-label">Refill Quantity</label>
+                    @Html.TextBoxFor(model => model.DispRefilQty, new { @class = "form-control", type = "number", min = "1", step = "1", @readonly = "readonly", oninput = "this.value=this.value.replace(/[^0-9]/g,'');" })
+                    @Html.ValidationMessageFor(model => model.DispRefilQty, "", new { style = "color: red" })
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-12">
                     <label class="form-label">Scan Bin Barcode</label>
-                    @Html.TextBoxFor(model => model.MaterialBarcode, new { @class = "form-control", @autofocus = "True" })
-                    @Html.ValidationMessageFor(model => model.MaterialBarcode, "", new { style = "color: red" })
+                    @Html.TextBoxFor(model => model.BinBarcode, new { @class = "form-control", @autofocus = "True" })
+                    @Html.ValidationMessageFor(model => model.BinBarcode, "", new { style = "color: red" })
                 </div>
             </div>
         </div>
@@ -194,23 +338,23 @@
         <h5 id="bin-poss" class="mt-2"><b>Bin Position</b></h5>
         <div class="bin-grids" id="bins">
             <div class="bin-grid binposition" id="Types1">
-                @for (int i = 0; i < 18; i++)
+                @for (int i = 1; i <=18; i++)
                 {
-                    <div class="bin-item"></div>
+                    <div class="bin-item"><span>@i</span></div>
                 }
             </div>
 
             <div class="bin-grid binposition1" id="Types2">
-                @for (int i = 0; i < 15; i++)
+                @for (int i = 1; i <=15; i++)
                 {
-                    <div class="bin-item"></div>
+                    <div class="bin-item"><span>@i</span></div>
                 }
             </div>
 
             <div class="bin-grid binposition2" id="Types3">
-                @for (int i = 0; i < 6; i++)
+                @for (int i = 1; i <=6; i++)
                 {
-                    <div class="bin-item"></div>
+                    <div class="bin-item"><span>@i</span></div>
                 }
             </div>
         </div>
@@ -263,19 +407,21 @@
 
 
 
+
 <script>
     $(document).ready(function () {
-        $('#Types1, #Types2, #Types3').hide();
-        //$('#DivBinType').hide();
-        //$('#DivDimension').hide();
-        //$('#DivAvlqty').hide();
-        //$('#DivRefilQty').hide();
-        //$('#DivBinNo').hide();
-        //$('#AddButton').hide();
-        //$('#RefillButton').hide();
-        //$('#DivMaxQty').hide();
-        //$('#DivMaterialBarcode').hide();
-    });
+    //    $('#Types1, #Types2, #Types3').hide();
+    //    $('#DivBinType').hide();
+    //    $('#DivDimension').hide();
+    //    $('#DivAvlqty').hide();
+    //    $('#DivRefilQty').hide();
+    //    $('#DivBinNo').hide();
+    //    $('#AddButton').hide();
+    //    $('#RefillButton').hide();
+    //    $('#DivMaxQty').hide();
+    //    $('#DivMaterialBarcode').hide();
+    //    $('#DivRHS').hide();
+    //});
 
     function Tabledata() {
         $.ajax({
@@ -363,6 +509,7 @@
     //        },
     //    });
     //});
+
     setInterval(Tabledata, 1000);
     $('#Material').change(function () {
         var material = $('#Material').val();  // Get selected material
@@ -543,11 +690,6 @@
 
     //refill button to call tray
     $('#RefillButton').click(function () {
-        $("#loader-overlay").fadeIn();
-        setTimeout(function () {
-            $("#loader-overlay").fadeOut();
-        }, 3000);
-
         //on submit call tray by fifo
         $.ajax({
             url: 'TrayCall',
@@ -557,18 +699,19 @@
             },
             success: function (result) {
                 console.log(result);
-                if (result == "success") {
+                if (result.otpt == "success") {
                     // Show loader
                     $("#loader-overlay1").fadeIn();
                     setTimeout(function () {
                         $("#loader-overlay1").fadeOut();
                     }, 3000);
+                    $('#DivRHS').show();
+                    //set to text feild the data which user need to scan
+                    $('#DispMaterialDesc').val(result.tempdata[i].MaterialDesc);
+                    $('#DispRefilQty').val(result.tempdata[i].RefilQty);
+                    $('#BinBarcode').val(result.tempdata[i].BinBarcode);
 
-
-                    //now enable other feild like binno, etc
-
-                    // dfgdf
-
+                    //also dipslay from which bin he has to pick adn change the color 
 
                 }
                 //based on bin type dispaly bin location
@@ -578,6 +721,19 @@
 
     });
 
+
+    $('#BinBarcode').on('keypress', function (e) {
+        if (e.key === 'Enter') {
+            var binbarcode = $('#BinBarcode').val().trim();
+            var matchbarcode = $('#matchbarcode').val().trim();
+            //match both barcodes
+            if (binbarcode != matchbarcode) {
+                pNoffail('', 'Bin Barcode Does Not Match, Please Scan The display Bin Barcode');
+            }
+            //match this barcode and table barcode
+        }
+    });
+      
 
     //check weight every 1 second
     var alertShown = false;
